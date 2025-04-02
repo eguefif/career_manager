@@ -3,4 +3,13 @@ name = "career_manager"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "seed"
+path = "./src/seed.rs"
+
+[[bin]]
+name = "run"
+path = "./src/main.rs"
+
 [dependencies]
+sqlite = "0.32.0"

@@ -90,7 +90,7 @@ function getPortfolioContent() {
 <section id="portfolio">
 </section>
             <div class="project-box">
-    <a href="https://github.com/yourusername/yourproject" class="github-link" target="_blank">
+        <a href="https://github.com/PelletierM/miniRT" class="github-link" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="github-icon" />
     </a>
 
@@ -104,7 +104,7 @@ function getPortfolioContent() {
         </div>
     </div>
     <div class="project-box">
-    <a href="https://github.com/yourusername/yourproject" class="github-link" target="_blank">
+        <a href="https://github.com/demarque/marc-record-ex" class="github-link" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="github-icon" />
     </a>
 
@@ -118,7 +118,7 @@ function getPortfolioContent() {
         </div>
     </div>
     <div class="project-box">
-    <a href="https://github.com/yourusername/yourproject" class="github-link" target="_blank">
+        <a href="https://github.com/eguefif/monkey_interpreter" class="github-link" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="github-icon" />
     </a>
 
@@ -132,7 +132,7 @@ function getPortfolioContent() {
         </div>
     </div>
     <div class="project-box">
-    <a href="https://github.com/yourusername/yourproject" class="github-link" target="_blank">
+        <a href="https://github.com/eguefif/game_boy_emulator" class="github-link" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="github-icon" />
     </a>
 

@@ -5,6 +5,7 @@ pub struct Project {
     pub description: String,
     pub picture: String,
     pub skills: Vec<String>,
+    pub github: String,
 }
 
 impl Project {
@@ -27,6 +28,11 @@ impl Project {
             } else {
                 "".to_string()
             };
+            let github = if let SqlType::Text(value) = result.get("github").unwrap() {
+                value.to_string()
+            } else {
+                "".to_string()
+            };
             let skills = if let SqlType::Text(value) = result.get("skills").unwrap() {
                 let mut skills = Vec::new();
                 let splits = value.split(",");
@@ -42,6 +48,7 @@ impl Project {
                 description,
                 picture,
                 skills,
+                github,
             });
         }
         retval

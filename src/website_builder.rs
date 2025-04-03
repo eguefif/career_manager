@@ -72,6 +72,7 @@ fn add_project_page(engine: &mut SqlEngine) {
             ("{title}", project.name),
             ("{description}", project.description),
             ("{picture}", format!("images/{}", project.picture)),
+            ("{github}", project.github),
             ("{skills}", skills),
         ];
         for (token, value) in context {

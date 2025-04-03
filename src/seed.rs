@@ -50,14 +50,14 @@ Lifelong learner, I made my first program when I was sixteen. It was a GCD calcu
 fn get_project1_query() -> String {
     let description = "This 42 project is all about Ray Tracing. I worked especially on the implementation of different figure: sphere, place, cylinder, triangle. We optimized rendering by implementing a sample accumulator. We also take advantage of multithreading to render ray by batch.";
     format!("INSERT INTO project (name, picture, description, skills, github)
-        VALUES (\"Ray tracer\", \"spheres.png\", \"{}\", \"language C, multithreading, Ray Tracing\", \"\");", description)
+        VALUES (\"Ray tracer\", \"spheres.png\", \"{}\", \"language C, multithreading, Ray Tracing\", \"https://github.com/PelletierM/miniRT\");", description)
 }
 
 fn get_project2_query() -> String {
     let description = "I made this project for my work at Demarque. This project bind a marc record library with an elixir package. When I used this project in the parser, I had to optimize memory usage.";
     format!(
         "INSERT INTO project (name, picture, description, skills, github)
-        VALUES (\"Marc-record-ex\", \"marc21.jpg\", \"{}\", \"Rust, Rustler, memory\", \"\");",
+        VALUES (\"Marc-record-ex\", \"marc21.jpg\", \"{}\", \"Rust, Rustler, memory\", \"https://github.com/demarque/marc-record-ex\");",
         description
     )
 }
@@ -66,7 +66,7 @@ fn get_project3_query() -> String {
     let description = "This project was made when I was reading the book, 'Make a Monkey interpreter in Go. I did in Rust. I've learned a lot about parsing and recursion.";
     format!(
         "INSERT INTO project (name, picture, description, skills, github)
-        VALUES (\"Monkey Interpreter\", \"monkey.gif\", \"{}\", \"Rust, parsing\", \"\");",
+        VALUES (\"Monkey Interpreter\", \"monkey.gif\", \"{}\", \"Rust, parsing\", \"https://github.com/eguefif/monkey_interpreter\");",
         description
     )
 }
@@ -75,7 +75,7 @@ fn get_project4_query() -> String {
     let description = "This GameBoy emulator is able make Tetris works. This was not an easy project. There is no official documentation but there is a lot of resource you have to gather yourself. It was the occasion to learn by looking at other people code and understand the logic.";
     format!(
         "INSERT INTO project (name, picture, description, skills, github)
-        VALUES (\"GameBoy Emulator\", \"tetris.jpg\", \"{}\", \"Rust, CPU architecture, System Interrupt, Low-level Rendering\", \"\");",
+        VALUES (\"GameBoy Emulator\", \"tetris.jpg\", \"{}\", \"Rust, CPU architecture, System Interrupt, Low-level Rendering\", \"https://github.com/eguefif/game_boy_emulator\");",
         description
     )
 }

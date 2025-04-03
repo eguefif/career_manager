@@ -7,8 +7,11 @@ pub struct Profile {
 }
 
 impl Profile {
-    pub fn take_first(engine: &mut SqlEngine) -> Self {
+    pub fn take_first(engine: &mut SqlEngine) -> Option<Self> {
         let result = engine.execute("SELECT * FROM profile LIMIT 1");
+        if result.len() != 1 {
+            return None;
+        }
         let display_name = if let SqlType::Text(value) = result[0].get("display_name").unwrap() {
             value.to_string()
         } else {
@@ -24,10 +27,10 @@ impl Profile {
         } else {
             "".to_string()
         };
-        Self {
+        Some(Self {
             display_name,
             description,
             picture,
-        }
+        })
     }
 }

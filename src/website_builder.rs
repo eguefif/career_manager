@@ -14,8 +14,10 @@ impl WebsiteBuilder {
     pub fn build(&mut self) {
         let mut engine = SqlEngine::new("./cm.db");
         let profile = Profile::take_first(&mut engine);
-        println!("name: {}", profile.display_name);
-        println!("description: {}", profile.description);
-        println!("picture: {}", profile.picture);
+        if let Some(profile) = profile {
+            println!("name: {}", profile.display_name);
+            println!("description: {}", profile.description);
+            println!("picture: {}", profile.picture);
+        }
     }
 }

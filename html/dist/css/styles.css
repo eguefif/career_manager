@@ -63,6 +63,8 @@ a:focus {
     position: fixed;
     top: 0;
     left: 0;
+    background-color: #252627; /* Ensures it has a solid background */
+    z-index: 1000; /* Ensures it's above other content */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
 }
 

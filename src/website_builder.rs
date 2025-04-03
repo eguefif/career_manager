@@ -71,7 +71,8 @@ fn add_project_page(engine: &mut SqlEngine) {
         let context: Vec<(&str, String)> = vec![
             ("{title}", project.name),
             ("{description}", project.description),
-            ("{picture}", format!("./images/{}", project.picture)),
+            ("{picture}", format!("images/{}", project.picture)),
+            ("{github}", project.github),
             ("{skills}", skills),
         ];
         for (token, value) in context {

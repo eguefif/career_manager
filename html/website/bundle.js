@@ -58,31 +58,6 @@ function loadBlog() {
     document.getElementById("content").innerHTML = getBlogContent();
 }
 
-function getPortfolioContent() {
-        return `
-<section id="portfolio">
-    <h1>My Portfolio</h1>
-    
-    <div class="project-box">
-    <a href="https://github.com/yourusername/yourproject" class="github-link" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="github-icon" />
-    </a>
-
-        <img src="project1.jpeg" alt="Project 1" class="project-img">
-        <div class="project-info">
-            <h2 class="project-title">Project Title 1</h2>
-            <p class="project-description">This is a brief description of the project, showcasing its key features and functionality.</p>
-            <ul class="skills-list">
-                <li>HTML</li>
-                <li>CSS</li>
-                <li>JavaScript</li>
-            </ul>
-        </div>
-    </div>
-</section>
-        `
-}
-        
 function getBlogContent() {
     return `
         <section id="blog-section">
@@ -92,19 +67,4 @@ function getBlogContent() {
             </p>
         </section>
         `
-}
-function getHomeContent() {
-        return `
-    <section id="who-i-am-section">
-        <h1>I am {Emmanuel Guefif}</h1>
-        <div class="who-i-am-container">
-            <img src="{emmanuel.jpeg}" alt="Your Picture" class="who-i-am-img">
-            <div class="who-i-am-text">
-                <p>
-                    {Lifelong learner, I made my first program when I was sixteen. It was a GCD calculator implementing an algorithm I had learned at school. In the first part of my adult life, I studied sociology and then became a teacher to share my passion for learning and nurture my student's curiosity. After meeting one of my student's father, I realized that talking about computers made me feel very good, and I decided to turn what was a passion into a profession. I now work as a full stack developper and learn everything I can about architecture.}
-            </p>
-            </div>
-        </div>
-    </section>
-    `
 }

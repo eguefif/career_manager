@@ -94,12 +94,12 @@ function getPortfolioContent() {
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="github-icon" />
     </a>
 
-        <img src="./images/project1.jpeg" alt="Project 1" class="project-img">
+        <img src="images/spheres.png" alt="Project 1" class="project-img">
         <div class="project-info">
-            <h2 class="project-title">ft_transcendance</h2>
-            <p class="project-description">Single Page Application pong with a backend. </p>
+            <h2 class="project-title">Ray tracer</h2>
+            <p class="project-description">This 42 project is all about Ray Tracing. I worked especially on the implementation of different figure: sphere, place, cylinder, triangle. We optimized rendering by implementing a sample accumulator. We also take advantage of multithreading to render ray by batch.</p>
             <ul class="skills-list">
-                <li>django</li><li>javascript</li><li>python</li><li>async/await</li>
+                <li>language C</li><li>multithreading</li><li>Ray Tracing</li>
             </ul>
         </div>
     </div>
@@ -108,12 +108,40 @@ function getPortfolioContent() {
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="github-icon" />
     </a>
 
-        <img src="./images/project1.jpeg" alt="Project 1" class="project-img">
+        <img src="images/marc21.jpg" alt="Project 1" class="project-img">
         <div class="project-info">
-            <h2 class="project-title">Weather app</h2>
-            <p class="project-description">Weather app with search location</p>
+            <h2 class="project-title">Marc-record-ex</h2>
+            <p class="project-description">I made this project for my work at Demarque. This project bind a marc record library with an elixir package. When I used this project in the parser, I had to optimize memory usage.</p>
             <ul class="skills-list">
-                <li>flutter</li><li>api</li>
+                <li>Rust</li><li>Rustler</li><li>memory</li>
+            </ul>
+        </div>
+    </div>
+    <div class="project-box">
+    <a href="https://github.com/yourusername/yourproject" class="github-link" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="github-icon" />
+    </a>
+
+        <img src="images/monkey.gif" alt="Project 1" class="project-img">
+        <div class="project-info">
+            <h2 class="project-title">Monkey Interpreter</h2>
+            <p class="project-description">This project was made when I was reading the book, 'Make a Monkey interpreter in Go. I did in Rust. I've learned a lot about parsing and recursion.</p>
+            <ul class="skills-list">
+                <li>Rust</li><li>parsing</li>
+            </ul>
+        </div>
+    </div>
+    <div class="project-box">
+    <a href="https://github.com/yourusername/yourproject" class="github-link" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="github-icon" />
+    </a>
+
+        <img src="images/tetris.jpg" alt="Project 1" class="project-img">
+        <div class="project-info">
+            <h2 class="project-title">GameBoy Emulator</h2>
+            <p class="project-description">This GameBoy emulator is able make Tetris works. This was not an easy project. There is no official documentation but there is a lot of resource you have to gather yourself. It was the occasion to learn by looking at other people code and understand the logic.</p>
+            <ul class="skills-list">
+                <li>Rust</li><li>CPU architecture</li><li>System Interrupt</li><li>Low-level Rendering</li>
             </ul>
         </div>
     </div>

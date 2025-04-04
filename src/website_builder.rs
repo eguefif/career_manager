@@ -1,9 +1,10 @@
 use crate::connector::SqlEngine;
 use crate::models::profile::Profile;
 use crate::models::project::Project;
+use std::fs;
 use std::io::Write;
+use std::path::Path;
 
-const BUNDLE_FILE_PATH: &str = "./html/website/bundle.js";
 const BUNDLE_DIST: &str = "./html/dist/bundle.js";
 const HOME_TL: &str = "./html/templates/home_page.tl.html";
 const PROJECTS_TL: &str = "./html/templates/projects.tl.html";
@@ -22,10 +23,43 @@ impl WebsiteBuilder {
 
     pub fn build(&mut self) {
         let mut engine = SqlEngine::new("./cm.db");
-        let _ = std::fs::copy(BUNDLE_FILE_PATH, BUNDLE_DIST);
+        copy_website_to_dist("./html/website", "./html/dist");
+        copy_website_to_dist("./html/website", "./html/interface");
 
         add_home_page(&mut engine);
         add_project_page(&mut engine);
+    }
+}
+
+fn copy_website_to_dist(src: &str, dest: &str) {
+    let src_path = Path::new(src);
+    let dest_path = Path::new(dest);
+    if !dest_path.exists() {
+        fs::create_dir(dest_path).expect("Error: impossible to create html/dist folder");
+    }
+    if src_path.is_dir() {
+        copy_dir(src_path, src, dest);
+    }
+}
+
+fn copy_dir(src: &Path, base: &str, dst: &str) {
+    let dir_list = fs::read_dir(src).unwrap();
+    for file in dir_list {
+        if let Ok(file) = file {
+            let file = file.path();
+            if file.is_dir() {
+                if let Some(new_file) = file.to_str() {
+                    let new_path = new_file.replace(base, dst);
+                    let _ = fs::create_dir(new_path);
+                }
+                copy_dir(&file, base, dst);
+            } else {
+                if let Some(new_file) = file.to_str() {
+                    let new_path = new_file.replace(base, dst);
+                    let _ = fs::copy(file, new_path.clone());
+                }
+            }
+        }
     }
 }
 

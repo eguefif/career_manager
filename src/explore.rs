@@ -1,20 +1,28 @@
-use sqlite;
-use sqlite::{State, Type};
+use std::fs;
+use std::path::Path;
 
 fn main() {
-    let conn = sqlite::open("cm.db").unwrap();
-    let query = "SELECT * FROM project;";
-    let mut statement = conn.prepare(query).unwrap();
-    while let Ok(State::Row) = statement.next() {
-        for (i, col) in statement.column_names().iter().enumerate() {
-            let col_type = statement.column_type(i).unwrap();
-            match col_type {
-                Type::String => {
-                    let value = statement.read::<String, usize>(i).unwrap();
-                    println!("key{col}, value(String){value}");
+    let path = Path::new("./html/website/");
+    copy_dir(&path)
+}
+
+fn copy_dir(path: &Path) {
+    if path.is_dir() {
+        let dir_list = fs::read_dir(path).unwrap();
+        for file in dir_list {
+            let file = file.unwrap().path();
+            if file.is_dir() {
+                if let Some(new_file) = file.to_str() {
+                    let new_path = new_file.replace("website", "dist_test");
+                    println!("DIR: {:?}", new_path);
+                    let _ = fs::create_dir(new_path);
                 }
-                _ => {
-                    println!("not handle");
+                copy_dir(&file);
+            } else {
+                if let Some(file) = file.to_str() {
+                    let new_path = file.replace("website", "dist_test");
+                    let _ = fs::copy(file, new_path.clone());
+                    println!("{:?}", new_path);
                 }
             }
         }

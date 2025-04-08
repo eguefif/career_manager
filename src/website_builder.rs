@@ -11,12 +11,21 @@ const PROJECTS_TL: &str = "./html/templates/projects.tl.html";
 const PROJECT_TL: &str = "./html/templates/project.tl.html";
 const SKILL_TL: &str = "./html/templates/skill.tl.html";
 
+/// A builder that build my personal website
 #[allow(dead_code)]
 pub struct WebsiteBuilder {
     dest: String,
 }
 
 impl WebsiteBuilder {
+    /// Create a WebsiteBuilder
+    /// It takes a destinations foler
+    ///
+    /// Example:
+    /// ```rust
+    /// let mut cm = WebsiteBuilder::new(MY_DEST_PATH);
+    /// cm.build();
+    /// ```
     pub fn new(dest: String) -> Self {
         Self { dest }
     }
@@ -24,7 +33,6 @@ impl WebsiteBuilder {
     pub fn build(&mut self) {
         let mut engine = SqlEngine::new("./cm.db");
         copy_website_to_dist("./html/website", "./html/dist");
-        copy_website_to_dist("./html/website", "./html/interface");
 
         add_home_page(&mut engine);
         add_project_page(&mut engine);

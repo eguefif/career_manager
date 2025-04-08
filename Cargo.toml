@@ -17,3 +17,4 @@ path = "./src/main.rs"
 
 [dependencies]
 sqlite = "0.32.0"
+webserv-rs = { git = "https://github.com/eguefif/webserv-rs.git", rev = "0155a1fb128bbeb862817cfaa62dcaecf6342dbf"}

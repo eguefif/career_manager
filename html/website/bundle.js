@@ -68,3 +68,9 @@ function getBlogContent() {
         </section>
         `
 }
+
+function getHomeContent() {
+    return `
+    {{use("home_page.html")}}
+    `
+}

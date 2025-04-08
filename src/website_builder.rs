@@ -72,6 +72,7 @@ fn copy_dir(src: &Path, base: &str, dst: &str) {
 }
 
 fn add_home_page(engine: &mut SqlEngine) {
+    println!("Building home");
     let profile = Profile::take_first(engine);
     if let Some(profile) = profile {
         let template =
@@ -98,6 +99,7 @@ fn render_template(mut template: String, context: Vec<(&str, String)>) {
 }
 
 fn add_project_page(engine: &mut SqlEngine) {
+    println!("Building portfolio");
     let projects_data = Project::all(engine);
 
     let mut templated_projects = String::new();

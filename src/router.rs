@@ -1,3 +1,4 @@
+use career_manager::website_builder::WebsiteBuilder;
 use webserv_rs::content_type::ContentType;
 use webserv_rs::request::Request;
 use webserv_rs::response::Response;
@@ -9,7 +10,8 @@ pub fn route(request: Request) -> Response {
         "/" => Some(get_index()),
         "/bundle.js" => Some(get_bundle()),
         "/action" => {
-            if handle_action(&request.uri) {
+            let body = String::from_utf8_lossy(&request.body);
+            if handle_action(&body) {
                 Some(("success".to_string().as_bytes().to_vec(), ContentType::Json))
             } else {
                 Some(("failure".to_string().as_bytes().to_vec(), ContentType::Json))
@@ -64,5 +66,14 @@ fn get_image_extension(uri: &str) -> Option<&str> {
 }
 
 fn handle_action(action: &str) -> bool {
-    false
+    match action {
+        "build" => {
+            let config = std::fs::read_to_string("config.txt")
+                .expect("Error: impossible to read config file");
+            let mut cm = WebsiteBuilder::new(config);
+            cm.build();
+            true
+        }
+        _ => false,
+    }
 }

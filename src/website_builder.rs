@@ -1,6 +1,8 @@
 use crate::connector::SqlEngine;
 use crate::models::profile::Profile;
+use crate::models::project::Project;
 use crate::rendering::{render, ValueType};
+use std::collections::HashMap;
 use std::error::Error;
 use std::fs;
 use std::path::Path;
@@ -34,10 +36,9 @@ impl WebsiteBuilder {
         if let Some(home_context) = add_home_page(&mut engine) {
             context.extend_from_slice(&home_context);
         }
-        // NOTE: The following will be operational when template FOR loop is ready
-        //if let Some(project_context) = add_project_page(&mut engine) {
-        //    context.extend_from_slice(&project_context);
-        //}
+        if let Some(project_context) = add_project_page(&mut engine) {
+            context.extend_from_slice(&project_context);
+        }
         render(context)?;
         Ok(())
     }
@@ -99,30 +100,34 @@ fn add_home_page(engine: &mut SqlEngine) -> Option<Context> {
     None
 }
 
-//TODO: We need to implement a new Type for the context to carry a HashMap
-//
-//fn add_project_page(engine: &mut SqlEngine) {
-//    let projects_data = Project::all(engine);
-//
-//    let mut context: Context = vec![];
-//    for project in projects_data {
-//        let skills = get_skills(project.skills);
-//        let project: Vec<(String, String)> = vec![
-//            ("{title}", project.name),
-//            ("{description}", project.description),
-//            ("{picture}", format!("images/{}", project.picture)),
-//            ("{github}", project.github),
-//            ("{skills}", skills),
-//        ];
-//    }
-//}
-//
-//fn get_skills(skills: Vec<String>) -> String {
-//    let template = std::fs::read_to_string(SKILL_TL).unwrap();
-//    let mut retval = String::new();
-//    for skill in skills {
-//        let templated_skill = template.replace("{SKILL}", &skill);
-//        retval.push_str(templated_skill.trim());
-//    }
-//    retval
-//}
+fn add_project_page(engine: &mut SqlEngine) -> Option<Context> {
+    let projects_data = Project::all(engine);
+
+    let mut context: Context = vec![];
+    let mut projects: Vec<ValueType> = Vec::new();
+    for project in projects_data {
+        let mut item: HashMap<String, ValueType> = HashMap::new();
+        item.insert("{title}".to_string(), ValueType::Text(project.name));
+        item.insert(
+            "{description}".to_string(),
+            ValueType::Text(project.description),
+        );
+        item.insert(
+            "{picture}".to_string(),
+            ValueType::Text(format!("images/{}", project.picture)),
+        );
+        item.insert("{github}".to_string(), ValueType::Text(project.github));
+        item.insert("{skills}".to_string(), get_skills(project.skills));
+        projects.push(ValueType::Hash(Box::new(item)));
+    }
+    context.push(("projects".to_string(), ValueType::List(projects)));
+    Some(context)
+}
+
+fn get_skills(skills: Vec<String>) -> ValueType {
+    let mut wrapped_skills = Vec::new();
+    for skill in skills {
+        wrapped_skills.push(ValueType::Text(skill))
+    }
+    ValueType::List(wrapped_skills)
+}

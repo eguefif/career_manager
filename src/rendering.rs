@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use token::Token;
 
 use crate::rendering::render_error::RenderError;
@@ -11,6 +12,8 @@ use std::str::Chars;
 #[derive(Clone)]
 pub enum ValueType {
     Text(String),
+    List(Vec<ValueType>),
+    Hash(Box<HashMap<String, ValueType>>),
 }
 
 mod render_error;
@@ -61,6 +64,9 @@ fn handle_token(
         Token::Use(value) => {
             push_template(filled_template, &context, value)?;
         }
+        Token::For(value) => {
+            push_for(filled_template, &context, value)?;
+        }
     }
     Ok(())
 }
@@ -106,6 +112,14 @@ fn push_template(
     let filename = format!("{}{}", BASE_PATH, var);
     let nested_template = render_template(&filename, context.to_vec())?;
     filled_template.push_str(&nested_template.as_str());
+    Ok(())
+}
+
+fn push_for(
+    filled_template: &mut String,
+    context: &Context,
+    var: String,
+) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 

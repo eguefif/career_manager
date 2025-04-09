@@ -1,7 +1,7 @@
-use template::Token;
+use token::Token;
 
 use crate::rendering::render_error::RenderError;
-use crate::rendering::template::get_token_type;
+use crate::rendering::token::get_token_type;
 use crate::website_builder::Context;
 use std::error::Error;
 use std::io::Write;
@@ -14,11 +14,10 @@ pub enum ValueType {
 }
 
 mod render_error;
-mod template;
+mod token;
 
 const BUNDLE: &str = "./html/website/bundle.js";
 const BASE_PATH: &str = "./html/website/templates/";
-const BASE_DIST_PATH: &str = "./html/dist/";
 const BUNDLE_DIST: &str = "./html/dist/bundle.js";
 
 pub fn render(context: Context) -> Result<(), Box<dyn Error>> {
@@ -31,25 +30,14 @@ fn render_template(filename: &str, context: Context) -> Result<String, Box<dyn E
     let mut filled_template = String::new();
     if let Ok(template) = std::fs::read_to_string(&filename) {
         let mut iter = template.chars().peekable();
-        loop {
-            if let Some(next) = iter.next() {
-                if let Some(peek) = iter.peek() {
-                    if next == '{' && *peek == '{' {
-                        iter.next();
-                        let token = extract_token(&mut iter, &filename)?;
-                        match token {
-                            Token::Var(value) => {
-                                push_var(&mut filled_template, &context, value);
-                            }
-                            Token::Use(value) => {
-                                push_template(&mut filled_template, &context, value)?;
-                            }
-                        }
-                    } else {
-                        filled_template.push(next);
-                    }
+        while let Some(next) = iter.next() {
+            if let Some(peek) = iter.peek() {
+                if next == '{' && *peek == '{' {
+                    iter.next();
+                    let token = extract_token(&mut iter, &filename)?;
+                    handle_token(&mut filled_template, &context, token)?;
                 } else {
-                    break;
+                    filled_template.push(next);
                 }
             } else {
                 break;
@@ -61,6 +49,21 @@ fn render_template(filename: &str, context: Context) -> Result<String, Box<dyn E
     }
 }
 
+fn handle_token(
+    filled_template: &mut String,
+    context: &Context,
+    token: Token,
+) -> Result<(), Box<dyn Error>> {
+    match token {
+        Token::Var(value) => {
+            push_var(filled_template, &context, value);
+        }
+        Token::Use(value) => {
+            push_template(filled_template, &context, value)?;
+        }
+    }
+    Ok(())
+}
 fn extract_token<'a>(
     iter: &mut Peekable<Chars<'a>>,
     filename: &str,

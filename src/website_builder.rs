@@ -34,6 +34,7 @@ impl WebsiteBuilder {
         if let Some(home_context) = add_home_page(&mut engine) {
             context.extend_from_slice(&home_context);
         }
+        // NOTE: The following will be operational when template FOR loop is ready
         //if let Some(project_context) = add_project_page(&mut engine) {
         //    context.extend_from_slice(&project_context);
         //}
@@ -98,6 +99,8 @@ fn add_home_page(engine: &mut SqlEngine) -> Option<Context> {
     None
 }
 
+//TODO: We need to implement a new Type for the context to carry a HashMap
+//
 //fn add_project_page(engine: &mut SqlEngine) {
 //    let projects_data = Project::all(engine);
 //

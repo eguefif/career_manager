@@ -1,6 +1,7 @@
 use crate::connector::SqlEngine;
 use crate::models::profile::Profile;
 use crate::rendering::{render, ValueType};
+use std::error::Error;
 use std::fs;
 use std::path::Path;
 
@@ -25,7 +26,7 @@ impl WebsiteBuilder {
         Self { dest }
     }
 
-    pub fn build(&mut self) {
+    pub fn build(&mut self) -> Result<(), Box<dyn Error>> {
         let mut engine = SqlEngine::new("./cm.db");
         copy_website_to_dist("./html/website", "./html/dist");
         let mut context: Context = Vec::new();
@@ -36,23 +37,25 @@ impl WebsiteBuilder {
         //if let Some(project_context) = add_project_page(&mut engine) {
         //    context.extend_from_slice(&project_context);
         //}
-        render("./bundle.js", context);
+        render(context)?;
+        Ok(())
     }
 }
 
-fn copy_website_to_dist(src: &str, dest: &str) {
+fn copy_website_to_dist(src: &str, dest: &str) -> Result<(), Box<dyn Error>> {
     let src_path = Path::new(src);
     let dest_path = Path::new(dest);
     if !dest_path.exists() {
-        fs::create_dir(dest_path).expect("Error: impossible to create html/dist folder");
+        fs::create_dir(dest_path)?;
     }
     if src_path.is_dir() {
-        copy_dir(src_path, src, dest);
+        copy_dir(src_path, src, dest)?;
     }
+    Ok(())
 }
 
-fn copy_dir(src: &Path, base: &str, dst: &str) {
-    let dir_list = fs::read_dir(src).unwrap();
+fn copy_dir(src: &Path, base: &str, dst: &str) -> Result<(), Box<dyn Error>> {
+    let dir_list = fs::read_dir(src)?;
     for file in dir_list {
         if let Ok(file) = file {
             let file = file.path();
@@ -61,7 +64,7 @@ fn copy_dir(src: &Path, base: &str, dst: &str) {
                     let new_path = new_file.replace(base, dst);
                     let _ = fs::create_dir(new_path);
                 }
-                copy_dir(&file, base, dst);
+                copy_dir(&file, base, dst)?;
             } else {
                 if let Some(new_file) = file.to_str() {
                     let new_path = new_file.replace(base, dst);
@@ -70,6 +73,7 @@ fn copy_dir(src: &Path, base: &str, dst: &str) {
             }
         }
     }
+    Ok(())
 }
 
 fn add_home_page(engine: &mut SqlEngine) -> Option<Context> {

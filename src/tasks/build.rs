@@ -4,5 +4,7 @@ fn main() {
     let config =
         std::fs::read_to_string("config.txt").expect("Error: impossible to read config file");
     let mut cm = WebsiteBuilder::new(config);
-    cm.build();
+    if let Err(e) = cm.build() {
+        eprintln!("Error: building failed: {e}");
+    }
 }

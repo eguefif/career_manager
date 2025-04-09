@@ -64,12 +64,26 @@ fn handle_token(
         Token::Use(value) => {
             push_template(filled_template, &context, value)?;
         }
-        Token::For(value) => {
-            push_for(filled_template, &context, value)?;
+        Token::For(key) => {
+            if let Some(items) = get_value(context, &key) {
+                push_for(filled_template, items)?;
+            } else {
+                return Err(Box::new(RenderError::MissingContextKey(key)));
+            }
         }
     }
     Ok(())
 }
+
+fn get_value<'a>(context: &'a Context, target_key: &str) -> Option<&'a ValueType> {
+    for (key, value) in context {
+        if key == target_key {
+            return Some(value);
+        }
+    }
+    None
+}
+
 fn extract_token<'a>(
     iter: &mut Peekable<Chars<'a>>,
     filename: &str,
@@ -115,11 +129,7 @@ fn push_template(
     Ok(())
 }
 
-fn push_for(
-    filled_template: &mut String,
-    context: &Context,
-    var: String,
-) -> Result<(), Box<dyn Error>> {
+fn push_for(filled_template: &mut String, items: &ValueType) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 

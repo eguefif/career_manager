@@ -20,7 +20,9 @@ impl WebsiteBuilder {
     ///
     /// Example:
     /// ```rust
-    /// let mut cm = WebsiteBuilder::new(MY_DEST_PATH);
+    ///use career_manager::website_builder::WebsiteBuilder;
+    ///
+    /// let mut cm = WebsiteBuilder::new("MY_DEST_PATH".to_string());
     /// cm.build();
     /// ```
     pub fn new(dest: String) -> Self {

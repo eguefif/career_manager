@@ -1,82 +1,82 @@
-use career_manager::website_builder::WebsiteBuilder;
+use crate::router::api_routes::route_api;
+use crate::router::static_routes::route_static;
 use webserv_rs::content_type::ContentType;
 use webserv_rs::request::Request;
 use webserv_rs::response::Response;
 
-const BASE_PATH: &str = "./html/admin/dev/";
+mod api_routes;
+mod static_routes;
 
+#[derive(PartialEq, Debug)]
+enum ResourceType {
+    Static,
+    Api,
+    None,
+}
+
+/// There are two types of routing: Static and Api
+/// # Static Routing
+/// Static routing will return ressources for index.html, bundle.js and images.
+///
+/// # Api Routing
+/// Api routing will route the request toward the right apps. Apis are divided in
+/// apps in the folder Apps. Each apps has its own routing function.
+/// To add a route api, you need to add an arm in the api_routes::route_api() function.
+/// the action_Route has to match with the name of your app.
+/// Then you need to add the route app function that will route the action to the right controllers
 pub fn route(request: Request) -> Response {
-    let retval = match request.uri.as_str() {
-        "/" => Some(get_index()),
-        "/bundle.js" => Some(get_bundle()),
-        "/action" => {
-            let body = String::from_utf8_lossy(&request.body);
-            if handle_action(&body) {
-                Some(("success".to_string().as_bytes().to_vec(), ContentType::Json))
-            } else {
-                Some(("failure".to_string().as_bytes().to_vec(), ContentType::Json))
-            }
-        }
-        _ => get_asset(request.uri.as_str()),
+    let retval = match get_ressource_type_uri(&request.uri) {
+        ResourceType::Static => route_static(request.uri.as_str()),
+        ResourceType::Api => route_api(request),
+        ResourceType::None => None,
     };
-    if let Some((body, content_type)) = retval {
-        Response::new(200, body.to_vec(), vec![], content_type)
+    if let Some(response) = retval {
+        response
     } else {
         Response::new(400, vec![], vec![], ContentType::TextHtml)
     }
 }
 
-fn get_index() -> (Vec<u8>, ContentType) {
-    let index = std::fs::read_to_string(format!("{}/index.html", BASE_PATH)).unwrap();
-    (index.as_bytes().to_vec(), ContentType::TextHtml)
-}
-
-fn get_bundle() -> (Vec<u8>, ContentType) {
-    let index = std::fs::read_to_string(format!("{}/bundle.js", BASE_PATH)).unwrap();
-    (index.as_bytes().to_vec(), ContentType::JS)
-}
-
-fn get_asset(uri: &str) -> Option<(Vec<u8>, ContentType)> {
-    if uri.contains("css") {
-        let css = std::fs::read_to_string(format!("{}/{}", BASE_PATH, uri)).unwrap();
-        Some((css.as_bytes().to_vec(), ContentType::CSS))
-    } else if uri.contains("favicon") {
-        if let Ok(favicon) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
-            Some((favicon, ContentType::Icon))
+fn get_ressource_type_uri(uri: &str) -> ResourceType {
+    let mut splits = uri.split("/");
+    splits.next();
+    if let Some(ressource) = splits.next() {
+        if ressource == "api" {
+            ResourceType::Api
         } else {
-            None
+            ResourceType::Static
         }
-    } else if uri.contains("images") {
-        if let Some(ext) = get_image_extension(uri) {
-            if let Ok(image) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
-                return Some((image, ContentType::Image(ext.to_string())));
-            }
-        }
-        None
     } else {
-        None
+        ResourceType::None
     }
 }
 
-fn get_image_extension(uri: &str) -> Option<&str> {
-    if let Some((_, extension)) = uri.rsplit_once(uri) {
-        return Some(extension);
-    }
-    None
-}
+#[cfg(test)]
 
-fn handle_action(action: &str) -> bool {
-    match action {
-        "build" => {
-            let config = std::fs::read_to_string("config.txt")
-                .expect("Error: impossible to read config file");
-            let mut cm = WebsiteBuilder::new(config);
-            if let Err(e) = cm.build() {
-                eprintln!("Error: action building failed: {e}");
-                return false;
-            }
-            true
-        }
-        _ => false,
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_should_get_api_ressource() {
+        let uri = "/api/homepage/build";
+        let result = get_ressource_type_uri(uri);
+
+        assert_eq!(result, ResourceType::Api)
+    }
+
+    #[test]
+    fn it_should_get_static_ressource() {
+        let uri = "/images/yo.png";
+        let result = get_ressource_type_uri(uri);
+
+        assert_eq!(result, ResourceType::Static)
+    }
+
+    #[test]
+    fn it_should_get_none_ressource() {
+        let uri = "";
+        let result = get_ressource_type_uri(uri);
+
+        assert_eq!(result, ResourceType::None)
     }
 }

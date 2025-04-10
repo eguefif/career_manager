@@ -56,10 +56,9 @@ function loadHome() {
     const buildButton = document.getElementById("buildButton");
     buildButton.addEventListener("click", async (e) => {
         e.preventDefault();
-        console.log("Building");
-        const response = await fetch("/action", {method: "POST", body: "build"});
-        const body = await response.text()
-        if (body == "success") {
+        const response = await fetch("/api/homepage/build", {method: "POST", body: "build"});
+        const body = await response.json()
+        if (body["result"] == "success") {
             alert("Success")
         } else {
             alert("failure")

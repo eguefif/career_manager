@@ -68,3 +68,15 @@ function getBlogContent() {
         </section>
         `
 }
+
+function getHomeContent() {
+    return `
+    {{use("home_page.html")}}
+    `
+}
+
+function getPortfolioContent() {
+    return `
+    {{use("projects.html")}}
+    `
+}

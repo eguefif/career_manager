@@ -1,15 +1,12 @@
 use crate::connector::SqlEngine;
 use crate::models::profile::Profile;
 use crate::models::project::Project;
+use crate::rendering::{render, ValueType};
+use std::error::Error;
 use std::fs;
-use std::io::Write;
 use std::path::Path;
 
-const BUNDLE_DIST: &str = "./html/dist/bundle.js";
-const HOME_TL: &str = "./html/templates/home_page.tl.html";
-const PROJECTS_TL: &str = "./html/templates/projects.tl.html";
-const PROJECT_TL: &str = "./html/templates/project.tl.html";
-const SKILL_TL: &str = "./html/templates/skill.tl.html";
+pub type Context = Vec<(String, ValueType)>;
 
 /// A builder that build my personal website
 #[allow(dead_code)]
@@ -30,28 +27,36 @@ impl WebsiteBuilder {
         Self { dest }
     }
 
-    pub fn build(&mut self) {
+    pub fn build(&mut self) -> Result<(), Box<dyn Error>> {
         let mut engine = SqlEngine::new("./cm.db");
-        copy_website_to_dist("./html/website", "./html/dist");
+        copy_website_to_dist("./html/website", "./html/dist")?;
+        let mut context: Context = Vec::new();
 
-        add_home_page(&mut engine);
-        add_project_page(&mut engine);
+        if let Some(home_context) = add_home_page(&mut engine) {
+            context.extend_from_slice(&home_context);
+        }
+        if let Some(project_context) = add_project_page(&mut engine) {
+            context.extend_from_slice(&project_context);
+        }
+        render(context)?;
+        Ok(())
     }
 }
 
-fn copy_website_to_dist(src: &str, dest: &str) {
+fn copy_website_to_dist(src: &str, dest: &str) -> Result<(), Box<dyn Error>> {
     let src_path = Path::new(src);
     let dest_path = Path::new(dest);
     if !dest_path.exists() {
-        fs::create_dir(dest_path).expect("Error: impossible to create html/dist folder");
+        fs::create_dir(dest_path)?;
     }
     if src_path.is_dir() {
-        copy_dir(src_path, src, dest);
+        copy_dir(src_path, src, dest)?;
     }
+    Ok(())
 }
 
-fn copy_dir(src: &Path, base: &str, dst: &str) {
-    let dir_list = fs::read_dir(src).unwrap();
+fn copy_dir(src: &Path, base: &str, dst: &str) -> Result<(), Box<dyn Error>> {
+    let dir_list = fs::read_dir(src)?;
     for file in dir_list {
         if let Ok(file) = file {
             let file = file.path();
@@ -60,7 +65,7 @@ fn copy_dir(src: &Path, base: &str, dst: &str) {
                     let new_path = new_file.replace(base, dst);
                     let _ = fs::create_dir(new_path);
                 }
-                copy_dir(&file, base, dst);
+                copy_dir(&file, base, dst)?;
             } else {
                 if let Some(new_file) = file.to_str() {
                     let new_path = new_file.replace(base, dst);
@@ -69,71 +74,61 @@ fn copy_dir(src: &Path, base: &str, dst: &str) {
             }
         }
     }
+    Ok(())
 }
 
-fn add_home_page(engine: &mut SqlEngine) {
-    println!("Building home");
+fn add_home_page(engine: &mut SqlEngine) -> Option<Context> {
     let profile = Profile::take_first(engine);
     if let Some(profile) = profile {
-        let template =
-            std::fs::read_to_string(HOME_TL).expect("Impossible to read template homepage");
-        let context: Vec<(&str, String)> = vec![
-            ("display_name", profile.display_name),
-            ("description", profile.description),
-            ("picture", format!("./images/{}", profile.picture)),
+        let context = vec![
+            (
+                "display_name".to_string(),
+                ValueType::Text(profile.display_name),
+            ),
+            (
+                "description".to_string(),
+                ValueType::Text(profile.description),
+            ),
+            (
+                "picture".to_string(),
+                ValueType::Text(format!("./images/{}", profile.picture)),
+            ),
         ];
-        render_template(template, context);
+        return Some(context);
     }
+    None
 }
 
-fn render_template(mut template: String, context: Vec<(&str, String)>) {
-    for (token, value) in context {
-        template = template.replace(format!("{{{token}}}").as_str(), &value);
-    }
-    let mut file = std::fs::OpenOptions::new()
-        .append(true)
-        .open(BUNDLE_DIST)
-        .expect("Cannot open bundle file");
-    file.write(template.as_bytes())
-        .expect("impossible to write in bundle");
-}
-
-fn add_project_page(engine: &mut SqlEngine) {
-    println!("Building portfolio");
+fn add_project_page(engine: &mut SqlEngine) -> Option<Context> {
     let projects_data = Project::all(engine);
 
-    let mut templated_projects = String::new();
-    let template =
-        std::fs::read_to_string(PROJECTS_TL).expect("Impossible to read template projects");
-
-    let empty_template =
-        std::fs::read_to_string(PROJECT_TL).expect("Impossible to read template project");
-
+    let mut context: Context = vec![];
+    let mut projects: Vec<ValueType> = Vec::new();
     for project in projects_data {
-        let mut templated_project = String::from(&empty_template);
-        let skills = get_skills(project.skills);
-        let context: Vec<(&str, String)> = vec![
-            ("{title}", project.name),
-            ("{description}", project.description),
-            ("{picture}", format!("images/{}", project.picture)),
-            ("{github}", project.github),
-            ("{skills}", skills),
+        let item: Context = vec![
+            ("title".to_string(), ValueType::Text(project.name)),
+            (
+                "description".to_string(),
+                ValueType::Text(project.description),
+            ),
+            (
+                "picture".to_string(),
+                ValueType::Text(format!("images/{}", project.picture)),
+            ),
+            ("github".to_string(), ValueType::Text(project.github)),
+            ("skills".to_string(), get_skills(project.skills)),
         ];
-        for (token, value) in context {
-            templated_project = templated_project.replace(token, &value);
-        }
-        templated_projects.push_str(&templated_project);
+        projects.push(ValueType::Context(Box::new(item)));
     }
-    let context: Vec<(&str, String)> = vec![("projects", templated_projects)];
-    render_template(template, context);
+    context.push(("projects".to_string(), ValueType::List(projects)));
+    Some(context)
 }
 
-fn get_skills(skills: Vec<String>) -> String {
-    let template = std::fs::read_to_string(SKILL_TL).unwrap();
-    let mut retval = String::new();
+fn get_skills(skills: Vec<String>) -> ValueType {
+    let mut wrapped_skills = Vec::new();
     for skill in skills {
-        let templated_skill = template.replace("{SKILL}", &skill);
-        retval.push_str(templated_skill.trim());
+        let skill_context = vec![("skill".to_string(), ValueType::Text(skill))];
+        wrapped_skills.push(ValueType::Context(Box::new(skill_context)));
     }
-    retval
+    ValueType::List(wrapped_skills)
 }

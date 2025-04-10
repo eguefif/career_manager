@@ -1,7 +1,22 @@
+use std::fmt;
+
+#[derive(Debug)]
 pub enum Token {
     Var(String),
     Use(String),
     For(String),
+    End,
+}
+
+impl fmt::Display for Token {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Token::Var(value) => write!(f, "{{{{{}}}}}", value),
+            Token::Use(value) => write!(f, "{{{{use(\"{}\")}}}}", value),
+            Token::For(value) => write!(f, "{{{{for {}}}}}", value),
+            Token::End => write!(f, "{{{{end}}}}"),
+        }
+    }
 }
 
 pub fn get_token_type(litteral: &str) -> Token {
@@ -11,6 +26,8 @@ pub fn get_token_type(litteral: &str) -> Token {
     } else if litteral.contains("for") {
         let path = extract_for_variable(litteral);
         Token::For(path)
+    } else if litteral.trim() == "end" {
+        Token::End
     } else {
         let place_holder = extract_place_holder(litteral);
         Token::Var(place_holder)
@@ -52,7 +69,6 @@ fn extract_for_variable(litteral: &str) -> String {
     loop {
         if let Some(next) = iter.next() {
             if next == ' ' {
-                iter.next();
                 while let Some(c) = iter.next() {
                     if c == '}' {
                         return retval;

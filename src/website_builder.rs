@@ -2,7 +2,6 @@ use crate::connector::SqlEngine;
 use crate::models::profile::Profile;
 use crate::models::project::Project;
 use crate::rendering::{render, ValueType};
-use std::collections::HashMap;
 use std::error::Error;
 use std::fs;
 use std::path::Path;
@@ -106,19 +105,20 @@ fn add_project_page(engine: &mut SqlEngine) -> Option<Context> {
     let mut context: Context = vec![];
     let mut projects: Vec<ValueType> = Vec::new();
     for project in projects_data {
-        let mut item: HashMap<String, ValueType> = HashMap::new();
-        item.insert("{title}".to_string(), ValueType::Text(project.name));
-        item.insert(
-            "{description}".to_string(),
-            ValueType::Text(project.description),
-        );
-        item.insert(
-            "{picture}".to_string(),
-            ValueType::Text(format!("images/{}", project.picture)),
-        );
-        item.insert("{github}".to_string(), ValueType::Text(project.github));
-        item.insert("{skills}".to_string(), get_skills(project.skills));
-        projects.push(ValueType::Hash(Box::new(item)));
+        let item: Context = vec![
+            ("title".to_string(), ValueType::Text(project.name)),
+            (
+                "description".to_string(),
+                ValueType::Text(project.description),
+            ),
+            (
+                "picture".to_string(),
+                ValueType::Text(format!("images/{}", project.picture)),
+            ),
+            ("github".to_string(), ValueType::Text(project.github)),
+            ("skills".to_string(), get_skills(project.skills)),
+        ];
+        projects.push(ValueType::Context(Box::new(item)));
     }
     context.push(("projects".to_string(), ValueType::List(projects)));
     Some(context)
@@ -127,7 +127,8 @@ fn add_project_page(engine: &mut SqlEngine) -> Option<Context> {
 fn get_skills(skills: Vec<String>) -> ValueType {
     let mut wrapped_skills = Vec::new();
     for skill in skills {
-        wrapped_skills.push(ValueType::Text(skill))
+        let skill_context = vec![("skill".to_string(), ValueType::Text(skill))];
+        wrapped_skills.push(ValueType::Context(Box::new(skill_context)));
     }
     ValueType::List(wrapped_skills)
 }

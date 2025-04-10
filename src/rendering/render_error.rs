@@ -3,9 +3,10 @@ use std::fmt;
 
 #[derive(Debug)]
 pub enum RenderError {
-    FileNotFound(String),
-    TokenError(String),
+    TokenError,
     MissingContextKey(String),
+    WrongValueTypeForForGen,
+    EOF,
 }
 
 impl Error for RenderError {}
@@ -16,10 +17,11 @@ impl fmt::Display for RenderError {
             RenderError::MissingContextKey(value) => {
                 write!(f, "Error: the context is missing a key: {}", value)
             }
-            RenderError::TokenError(value) => write!(f, "Error: Error in template '{}'", value),
-            RenderError::FileNotFound(filename) => {
-                write!(f, "Error: template file could not be found ({}", filename)
+            RenderError::WrongValueTypeForForGen => {
+                write!(f, "Error: For generator expects a Context")
             }
+            RenderError::EOF => write!(f, "Error: Unexpected end of file"),
+            RenderError::TokenError => write!(f, "Error: Error in template"),
         }
     }
 }

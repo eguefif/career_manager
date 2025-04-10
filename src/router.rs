@@ -8,7 +8,7 @@ mod api_routes;
 mod static_routes;
 
 #[derive(PartialEq, Debug)]
-enum RessourceType {
+enum ResourceType {
     Static,
     Api,
     None,
@@ -26,9 +26,9 @@ enum RessourceType {
 /// Then you need to add the route app function that will route the action to the right controllers
 pub fn route(request: Request) -> Response {
     let retval = match get_ressource_type_uri(&request.uri) {
-        RessourceType::Static => route_static(request.uri.as_str()),
-        RessourceType::Api => route_api(request),
-        RessourceType::None => None,
+        ResourceType::Static => route_static(request.uri.as_str()),
+        ResourceType::Api => route_api(request),
+        ResourceType::None => None,
     };
     if let Some(response) = retval {
         response
@@ -37,17 +37,17 @@ pub fn route(request: Request) -> Response {
     }
 }
 
-fn get_ressource_type_uri(uri: &str) -> RessourceType {
+fn get_ressource_type_uri(uri: &str) -> ResourceType {
     let mut splits = uri.split("/");
     splits.next();
     if let Some(ressource) = splits.next() {
         if ressource == "api" {
-            RessourceType::Api
+            ResourceType::Api
         } else {
-            RessourceType::Static
+            ResourceType::Static
         }
     } else {
-        RessourceType::None
+        ResourceType::None
     }
 }
 
@@ -61,7 +61,7 @@ mod tests {
         let uri = "/api/homepage/build";
         let result = get_ressource_type_uri(uri);
 
-        assert_eq!(result, RessourceType::Api)
+        assert_eq!(result, ResourceType::Api)
     }
 
     #[test]
@@ -69,7 +69,7 @@ mod tests {
         let uri = "/images/yo.png";
         let result = get_ressource_type_uri(uri);
 
-        assert_eq!(result, RessourceType::Static)
+        assert_eq!(result, ResourceType::Static)
     }
 
     #[test]
@@ -77,6 +77,6 @@ mod tests {
         let uri = "";
         let result = get_ressource_type_uri(uri);
 
-        assert_eq!(result, RessourceType::None)
+        assert_eq!(result, ResourceType::None)
     }
 }

@@ -7,9 +7,9 @@ pub fn build() -> Option<Response> {
     let mut cm = WebsiteBuilder::new(config);
     let body = if let Err(e) = cm.build() {
         eprintln!("Error: action building failed: {e}");
-        "{\"result\": \"failed\"".to_string()
+        "{\"result\": \"failed\"}".to_string()
     } else {
-        "{\"result\": \"success\"".to_string()
+        "{\"result\": \"success\"}".to_string()
     };
 
     Some(Response::new(

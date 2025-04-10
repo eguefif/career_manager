@@ -1,6 +1,15 @@
 use crate::apps::homepage;
 use webserv_rs::{request::Request, response::Response};
 
+/// To add an api ressource, you need first to create an app in src/apps
+/// You first add module file and a folder with the name of your app.
+/// In the folder, you need two files:
+/// * routes with a function route
+/// * controllers with your controllers
+///
+/// There is an example with the homepage app.
+///
+/// Then you can add a route in this function.
 pub fn route_api(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
     let action_route = get_action_route(&request.uri)?;
@@ -12,8 +21,8 @@ pub fn route_api(request: Request) -> Option<Response> {
 
 fn get_action_route(uri: &str) -> Option<&str> {
     let mut splits = uri.split("/");
-    splits.next();
-    splits.next();
+    splits.next()?;
+    splits.next()?;
     if let Some(action) = splits.next() {
         if action.chars().last().unwrap() == '/' {
             let before_last = action.len() - 1;

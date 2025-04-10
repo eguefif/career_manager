@@ -51,7 +51,7 @@ fn get_asset(uri: &str) -> Option<(Vec<u8>, ContentType)> {
 }
 
 fn get_image_extension(uri: &str) -> Option<&str> {
-    if let Some((_, extension)) = uri.rsplit_once(uri) {
+    if let Some((_, extension)) = uri.rsplit_once(".") {
         return Some(extension);
     }
     None

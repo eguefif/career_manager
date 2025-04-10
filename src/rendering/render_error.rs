@@ -3,6 +3,7 @@ use std::fmt;
 
 #[derive(Debug)]
 pub enum RenderError {
+    FileNotFound(String),
     TokenError,
     MissingContextKey(String),
     WrongValueTypeForForGen,
@@ -22,6 +23,9 @@ impl fmt::Display for RenderError {
             }
             RenderError::EOF => write!(f, "Error: Unexpected end of file"),
             RenderError::TokenError => write!(f, "Error: Error in template"),
+            RenderError::FileNotFound(file) => {
+                write!(f, "Error: Impossible to open template file ({})", file)
+            }
         }
     }
 }

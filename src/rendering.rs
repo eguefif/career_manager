@@ -33,16 +33,11 @@ fn render_template(template: &str, context: Context) -> Result<String, Box<dyn E
     let mut filled_template = String::new();
     let mut iter = template.chars().peekable();
     while let Some(next) = iter.next() {
-        if let Some(peek) = iter.peek() {
-            if next == '{' && *peek == '{' {
-                iter.next();
-                let token = extract_token(&mut iter)?;
-                handle_token(&mut filled_template, &context, token, &mut iter)?;
-            } else {
-                filled_template.push(next);
-            }
+        if is_token(next, &mut iter) {
+            let token = extract_token(&mut iter)?;
+            handle_token(&mut filled_template, &context, token, &mut iter)?;
         } else {
-            break;
+            filled_template.push(next);
         }
     }
     return Ok(filled_template);
@@ -120,10 +115,13 @@ fn push_template(
     var: String,
 ) -> Result<(), Box<dyn Error>> {
     let filename = format!("{}{}", BASE_PATH, var);
-    let template = std::fs::read_to_string(filename)?;
-    let nested_template = render_template(&template, context.to_vec())?;
-    filled_template.push_str(&nested_template.as_str());
-    Ok(())
+    if let Ok(template) = std::fs::read_to_string(&filename) {
+        let nested_template = render_template(&template, context.to_vec())?;
+        filled_template.push_str(&nested_template.as_str());
+        Ok(())
+    } else {
+        Err(Box::new(RenderError::FileNotFound(filename)))
+    }
 }
 
 fn push_for(

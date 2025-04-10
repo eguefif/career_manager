@@ -3,7 +3,7 @@ use webserv_rs::content_type::ContentType;
 use webserv_rs::request::Request;
 use webserv_rs::response::Response;
 
-const BASE_PATH: &str = "./html/interface/";
+const BASE_PATH: &str = "./html/admin/dev/";
 
 pub fn route(request: Request) -> Response {
     let retval = match request.uri.as_str() {

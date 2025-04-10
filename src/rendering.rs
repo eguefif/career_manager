@@ -18,12 +18,12 @@ pub enum ValueType {
 mod render_error;
 mod token;
 
-const BUNDLE: &str = "./html/website/bundle.js";
-const BASE_PATH: &str = "./html/website/templates/";
-const BUNDLE_DIST: &str = "./html/dist/bundle.js";
+const BUNDLE_DEV: &str = "./html/website/dev/bundle.js";
+const BASE_PATH: &str = "./html/website/dist/templates/";
+const BUNDLE_DIST: &str = "./html/website/dist/bundle.js";
 
 pub fn render(context: Context) -> Result<(), Box<dyn Error>> {
-    let template = std::fs::read_to_string(BUNDLE)?;
+    let template = std::fs::read_to_string(BUNDLE_DEV)?;
     let content = render_template(&template, context)?;
     write_file(&content, BUNDLE_DIST)?;
     Ok(())

@@ -1,23 +1,21 @@
-use career_manager::website_builder::WebsiteBuilder;
+use crate::router::api_ressource::route_api;
+use crate::router::static_ressource::route_static;
 use webserv_rs::content_type::ContentType;
 use webserv_rs::request::Request;
 use webserv_rs::response::Response;
 
-const BASE_PATH: &str = "./html/admin/dev/";
+mod api_ressource;
+mod static_ressource;
+
+enum RessourceType {
+    Static,
+    Api,
+}
 
 pub fn route(request: Request) -> Response {
-    let retval = match request.uri.as_str() {
-        "/" => Some(get_index()),
-        "/bundle.js" => Some(get_bundle()),
-        "/action" => {
-            let body = String::from_utf8_lossy(&request.body);
-            if handle_action(&body) {
-                Some(("success".to_string().as_bytes().to_vec(), ContentType::Json))
-            } else {
-                Some(("failure".to_string().as_bytes().to_vec(), ContentType::Json))
-            }
-        }
-        _ => get_asset(request.uri.as_str()),
+    let retval = match get_ressource_type_uri(&request.uri) {
+        RessourceType::Static => route_static(request.uri.as_str()),
+        RessourceType::Api => route_api(request),
     };
     if let Some((body, content_type)) = retval {
         Response::new(200, body.to_vec(), vec![], content_type)
@@ -26,57 +24,9 @@ pub fn route(request: Request) -> Response {
     }
 }
 
-fn get_index() -> (Vec<u8>, ContentType) {
-    let index = std::fs::read_to_string(format!("{}/index.html", BASE_PATH)).unwrap();
-    (index.as_bytes().to_vec(), ContentType::TextHtml)
-}
-
-fn get_bundle() -> (Vec<u8>, ContentType) {
-    let index = std::fs::read_to_string(format!("{}/bundle.js", BASE_PATH)).unwrap();
-    (index.as_bytes().to_vec(), ContentType::JS)
-}
-
-fn get_asset(uri: &str) -> Option<(Vec<u8>, ContentType)> {
-    if uri.contains("css") {
-        let css = std::fs::read_to_string(format!("{}/{}", BASE_PATH, uri)).unwrap();
-        Some((css.as_bytes().to_vec(), ContentType::CSS))
-    } else if uri.contains("favicon") {
-        if let Ok(favicon) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
-            Some((favicon, ContentType::Icon))
-        } else {
-            None
-        }
-    } else if uri.contains("images") {
-        if let Some(ext) = get_image_extension(uri) {
-            if let Ok(image) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
-                return Some((image, ContentType::Image(ext.to_string())));
-            }
-        }
-        None
-    } else {
-        None
+fn get_ressource_type_uri(uri: &str) -> RessourceType {
+    if uri.contains("/action") {
+        return RessourceType::Api;
     }
-}
-
-fn get_image_extension(uri: &str) -> Option<&str> {
-    if let Some((_, extension)) = uri.rsplit_once(uri) {
-        return Some(extension);
-    }
-    None
-}
-
-fn handle_action(action: &str) -> bool {
-    match action {
-        "build" => {
-            let config = std::fs::read_to_string("config.txt")
-                .expect("Error: impossible to read config file");
-            let mut cm = WebsiteBuilder::new(config);
-            if let Err(e) = cm.build() {
-                eprintln!("Error: action building failed: {e}");
-                return false;
-            }
-            true
-        }
-        _ => false,
-    }
+    RessourceType::Static
 }

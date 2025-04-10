@@ -150,41 +150,46 @@ fn push_for(
 
 fn get_nested_template(iter: &mut Peekable<Chars>) -> Result<String, Box<dyn Error>> {
     let mut template = String::new();
-    let mut scope = 0;
+    let mut scope_depth = 0;
     while let Some(next) = iter.next() {
-        if next == '{' {
-            if let Some(peek) = iter.peek() {
-                if *peek == '{' {
-                    iter.next();
-                    let token = extract_token(iter)?;
-                    match token {
-                        Token::For(_) => {
-                            scope += 1;
-                            template.push_str(&format!("{}", token));
-                        }
-                        Token::End => {
-                            if scope == 0 {
-                                iter.next();
-                                return Ok(template);
-                            } else {
-                                template.push_str(&format!("{}", token));
-                                scope -= 1;
-                            }
-                        }
-                        _ => template.push_str(&format!("{}", token)),
-                    }
-                } else {
-                    iter.next();
-                    template.push(next);
-                }
-            } else {
-                return Err(Box::new(RenderError::EOF));
+        if is_token(next, iter) {
+            let token = extract_token(iter)?;
+            if is_nested_template_end(&token, &mut scope_depth) == true {
+                return Ok(template);
             }
+            template.push_str(&format!("{}", token));
         } else {
             template.push(next);
         }
     }
-    Ok(template)
+    Err(Box::new(RenderError::EOF))
+}
+
+fn is_token(next: char, iter: &mut Peekable<Chars>) -> bool {
+    if let Some(peek) = iter.peek() {
+        if next == '{' && *peek == '{' {
+            iter.next();
+            return true;
+        }
+    }
+    false
+}
+
+fn is_nested_template_end(token: &Token, scope_depth: &mut usize) -> bool {
+    match token {
+        Token::For(_) => {
+            *scope_depth += 1;
+        }
+        Token::End => {
+            if *scope_depth == 0 {
+                return true;
+            } else {
+                *scope_depth -= 1;
+            }
+        }
+        _ => {}
+    }
+    false
 }
 
 fn write_file(content: &str, filename: &str) -> Result<(), Box<dyn Error>> {

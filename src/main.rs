@@ -3,6 +3,7 @@ use webserv_rs::http_server::HttpServer;
 use webserv_rs::request::Request;
 use webserv_rs::response::Response;
 
+pub mod apps;
 pub mod router;
 
 fn handle_client(request: Request) -> Response {

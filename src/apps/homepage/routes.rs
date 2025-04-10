@@ -1,21 +1,41 @@
-use career_manager::website_builder::WebsiteBuilder;
-use webserv_rs::{content_type::ContentType, request::Request};
+use webserv_rs::{request::Request, response::Response};
 
-pub fn route(request: Request) -> Option<(Vec<u8>, ContentType)> {
+use super::controllers::build;
+
+pub fn route(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
-    match request.uri.as_str() {
-        "/action/homepage/build" => Some((build().as_bytes().to_vec(), ContentType::Json)),
+    let action = get_action(&request.uri)?;
+    match action {
+        "action" => build(),
         _ => None,
     }
 }
 
-fn build() -> String {
-    let config =
-        std::fs::read_to_string("config.txt").expect("Error: impossible to read config file");
-    let mut cm = WebsiteBuilder::new(config);
-    if let Err(e) = cm.build() {
-        eprintln!("Error: action building failed: {e}");
-        return "{\"result\": \"failed\"".to_string();
+fn get_action(uri: &str) -> Option<&str> {
+    let mut splits = uri.split("/");
+    splits.next();
+    splits.next();
+    splits.next();
+    if let Some(action) = splits.next() {
+        if action.chars().last().unwrap() == '/' {
+            let before_last = action.len() - 1;
+            return Some(&action[..before_last]);
+        }
+        return Some(action);
     }
-    return "{\"result\": \"success\"".to_string();
+    None
+}
+
+#[cfg(test)]
+
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_should_return_action_case_1() {
+        let uri = "/api/homepage/build";
+        let result = get_action(uri).unwrap();
+
+        assert_eq!(result, "build")
+    }
 }

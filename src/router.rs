@@ -1,11 +1,11 @@
-use crate::router::api_ressource::route_api;
-use crate::router::static_ressource::route_static;
+use crate::router::api_routes::route_api;
+use crate::router::static_routes::route_static;
 use webserv_rs::content_type::ContentType;
 use webserv_rs::request::Request;
 use webserv_rs::response::Response;
 
-mod api_ressource;
-mod static_ressource;
+mod api_routes;
+mod static_routes;
 
 #[derive(PartialEq, Debug)]
 enum RessourceType {
@@ -14,14 +14,24 @@ enum RessourceType {
     None,
 }
 
+/// There are two types of routing: Static and Api
+/// # Static Routing
+/// Static routing will return ressources for index.html, bundle.js and images.
+///
+/// # Api Routing
+/// Api routing will route the request toward the right apps. Apis are divided in
+/// apps in the folder Apps. Each apps has its own routing function.
+/// To add a route api, you need to add an arm in the api_routes::route_api() function.
+/// the action_Route has to match with the name of your app.
+/// Then you need to add the route app function that will route the action to the right controllers
 pub fn route(request: Request) -> Response {
     let retval = match get_ressource_type_uri(&request.uri) {
         RessourceType::Static => route_static(request.uri.as_str()),
         RessourceType::Api => route_api(request),
         RessourceType::None => None,
     };
-    if let Some((body, content_type)) = retval {
-        Response::new(200, body.to_vec(), vec![], content_type)
+    if let Some(response) = retval {
+        response
     } else {
         Response::new(400, vec![], vec![], ContentType::TextHtml)
     }

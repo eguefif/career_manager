@@ -1,14 +1,20 @@
 use webserv_rs::content_type::ContentType;
+use webserv_rs::response::Response;
 
 const BASE_PATH: &str = "./html/admin/dev/";
 
-pub fn route_static(uri: &str) -> Option<(Vec<u8>, ContentType)> {
-    match uri {
+pub fn route_static(uri: &str) -> Option<Response> {
+    let static_ressource = match uri {
         "/" => Some(get_index()),
         "/portfolio" => Some(get_index()),
         "/blog" => Some(get_index()),
         "/bundle.js" => Some(get_bundle()),
         _ => get_asset(uri),
+    };
+    if let Some((body, content_type)) = static_ressource {
+        Some(Response::new(200, body, vec![], content_type))
+    } else {
+        None
     }
 }
 

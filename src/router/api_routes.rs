@@ -1,7 +1,7 @@
 use crate::apps::homepage;
-use webserv_rs::{content_type::ContentType, request::Request};
+use webserv_rs::{request::Request, response::Response};
 
-pub fn route_api(request: Request) -> Option<(Vec<u8>, ContentType)> {
+pub fn route_api(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
     let action_route = get_action_route(&request.uri)?;
     match action_route {

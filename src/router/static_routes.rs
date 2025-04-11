@@ -1,7 +1,7 @@
 use webserv_rs::content_type::ContentType;
 use webserv_rs::response::Response;
 
-const BASE_PATH: &str = "./html/admin/dev/";
+const BASE_PATH: &str = "./html/admin/";
 
 pub fn route_static(uri: &str) -> Option<Response> {
     let static_ressource = match uri {

@@ -1,5 +1,7 @@
 use crate::connector::{SqlEngine, SqlType};
 
+pub const BASE_PICTURE_PATH: &str = "/images/";
+
 pub struct Profile {
     pub display_name: String,
     pub description: String,
@@ -32,5 +34,15 @@ impl Profile {
             description,
             picture,
         })
+    }
+
+    pub fn to_json(&self) -> Vec<u8> {
+        let picture = format!("{}{}", BASE_PICTURE_PATH, self.picture);
+        let string = format!(
+            "{{\"displayName\": \"{}\", \"description\": \"{}\", \"picture\": \"{}\"}}",
+            self.display_name, self.description, picture
+        );
+
+        string.as_bytes().to_vec()
     }
 }

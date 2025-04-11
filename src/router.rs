@@ -4,8 +4,8 @@ use webserv_rs::content_type::ContentType;
 use webserv_rs::request::Request;
 use webserv_rs::response::Response;
 
-mod api_routes;
-mod static_routes;
+pub mod api_routes;
+pub mod static_routes;
 
 #[derive(PartialEq, Debug)]
 enum ResourceType {

@@ -1,3 +1,4 @@
 /target
-/html/dist/
-html/interface/
+/html/website/dist/
+
+/html/admin/node_modules

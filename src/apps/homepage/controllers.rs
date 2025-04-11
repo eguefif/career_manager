@@ -1,4 +1,6 @@
-use career_manager::website_builder::WebsiteBuilder;
+use career_manager::{
+    connector::SqlEngine, models::profile::Profile, website_builder::WebsiteBuilder,
+};
 use webserv_rs::{content_type::ContentType, response::Response};
 
 pub fn build() -> Option<Response> {
@@ -18,4 +20,18 @@ pub fn build() -> Option<Response> {
         vec![],
         ContentType::Json,
     ))
+}
+
+pub fn profile() -> Option<Response> {
+    let mut engine = SqlEngine::new("./cm.db");
+    if let Some(profile) = Profile::take_first(&mut engine) {
+        Some(Response::new(
+            200,
+            profile.to_json(),
+            vec![],
+            ContentType::Json,
+        ))
+    } else {
+        None
+    }
 }

@@ -1,12 +1,13 @@
 use webserv_rs::{request::Request, response::Response};
 
-use super::controllers::build;
+use super::controllers::{build, profile};
 
 pub fn route(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
     let action = get_controller_action(&request.uri)?;
     match action {
         "build" => build(),
+        "profile" => profile(),
         _ => None,
     }
 }

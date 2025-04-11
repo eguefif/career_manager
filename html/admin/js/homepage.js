@@ -1,7 +1,8 @@
 export async function loadHomePage() {
     document.getElementById("content").innerHTML = getHomePageContent();
     await populateHomePageContent();
-    addBuildButton();
+    setBuildButton();
+    setEditButton();
 }
 
 async function populateHomePageContent() {
@@ -16,7 +17,8 @@ async function populateHomePageContent() {
 function getHomePageContent() {
     return `
     <section id="who-i-am-section">
-    <button id="buildButton" type="submit" href="" class="button">Build website</button>
+        <button id="buildButton" type="submit" href="" class="button">Build website</button>
+        <button id="editProfileButton" type="submit" href="" class="button">Edit Profile</button>
         <h1>I am <span id="displayName"></span></h1>
         <div class="who-i-am-container">
             <img id="profilePicture" src="" alt="Your Picture" class="who-i-am-img">
@@ -29,7 +31,24 @@ function getHomePageContent() {
     `;
 }
 
-function addBuildButton() {
+function loadEditProfileContent() {
+    document.getElementById("content").innerHTML = getEditProfileContent();
+    const buildButton = document.getElementById("seeProfileButton");
+    buildButton.addEventListener("click", async (_) => {
+        loadHomePage();
+    });
+}
+
+function getEditProfileContent() {
+    return `
+    <section id="who-i-am-section">
+        <button id="seeProfileButton" type="submit" href="" class="button">See Profile</button>
+        <h1> Edit Profile</h1>
+    </section>
+    `;
+}
+
+function setBuildButton() {
     const buildButton = document.getElementById("buildButton");
     buildButton.addEventListener("click", async (e) => {
         e.preventDefault();
@@ -43,5 +62,13 @@ function addBuildButton() {
         } else {
             alert("failure");
         }
+    });
+}
+
+function setEditButton() {
+    const buildButton = document.getElementById("editProfileButton");
+    buildButton.addEventListener("click", async (e) => {
+        e.preventDefault();
+        loadEditProfileContent();
     });
 }

@@ -7,6 +7,10 @@ pub mod apps;
 pub mod router;
 
 fn handle_client(request: Request) -> Response {
+    println!(
+        "New request: {} {} {}",
+        request.method, request.uri, request.version
+    );
     route(request)
 }
 

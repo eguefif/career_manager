@@ -45,9 +45,27 @@ fn get_asset(uri: &str) -> Option<(Vec<u8>, ContentType)> {
             }
         }
         None
+    } else if is_javascript(uri) {
+        if let Ok(image) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
+            return Some((image, ContentType::JS));
+        } else {
+            eprintln!("Error: Could not find {}", uri);
+        }
+        None
     } else {
         None
     }
+}
+
+fn is_javascript(uri: &str) -> bool {
+    if let Some((_, file)) = uri.rsplit_once("/") {
+        if let Some((_, ext)) = file.rsplit_once(".") {
+            if ext.to_lowercase() == "js" {
+                return true;
+            }
+        }
+    }
+    false
 }
 
 fn get_image_extension(uri: &str) -> Option<&str> {
@@ -55,4 +73,18 @@ fn get_image_extension(uri: &str) -> Option<&str> {
         return Some(extension);
     }
     None
+}
+
+#[cfg(test)]
+
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_should_return_true_if_js() {
+        let uri = "/js/hello.js";
+        let result = is_javascript(uri);
+
+        assert!(result);
+    }
 }

@@ -39,7 +39,6 @@ pub fn profile() -> Option<Response> {
 
 pub fn edit_profile(body: Vec<u8>) -> Option<Response> {
     let body = String::from_utf8_lossy(&body);
-    println!("{}", body);
     if let Ok(updated_profile) = serde_json::from_str::<Profile>(&body) {
         let mut engine = SqlEngine::new("./cm.db");
         let mut profile = Profile::take_first(&mut engine)?;

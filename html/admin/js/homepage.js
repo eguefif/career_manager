@@ -39,7 +39,7 @@ function getHomePageContent() {
     return `
     <div class="homepage-content-container">
         <img id="profilePicture" src="" alt="Your Picture" class="profile-picture"/>
-        <div clas="text">
+        <div class="text">
             <h1>I am <span id="displayName"></span></h1>
             <p id="profileDescription"></p>
             </div>

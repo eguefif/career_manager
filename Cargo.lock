@@ -363,7 +363,7 @@ dependencies = [
 [[package]]
 name = "webserv-rs"
 version = "0.1.0"
-source = "git+https://github.com/eguefif/webserv-rs.git?rev=0155a1fb128bbeb862817cfaa62dcaecf6342dbf#0155a1fb128bbeb862817cfaa62dcaecf6342dbf"
+source = "git+https://github.com/eguefif/webserv-rs.git?rev=748ce98a9904a0588eb0cbd5a009326b5081bc6a#748ce98a9904a0588eb0cbd5a009326b5081bc6a"
 dependencies = [
  "chrono",
  "flate2",

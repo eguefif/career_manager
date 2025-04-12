@@ -77,9 +77,8 @@ function getPortfolioContent() {
 </section>
             <div class="project-box">
         <a href="https://github.com/PelletierM/miniRT" class="github-link" target="_blank">
-        <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-    </a>
-
+            <img src="images/github.svg" alt="GitHub" class="github-icon">
+        </a>
         <img src="images/spheres.png" alt="Project 1" class="project-img">
         <div class="project-info">
             <h2 class="project-title">Ray tracer</h2>

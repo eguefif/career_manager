@@ -8,6 +8,7 @@ pub fn route_static(uri: &str) -> Option<Response> {
         "/" => Some(get_index()),
         "/portfolio" => Some(get_index()),
         "/portfolio/index" => Some(get_index()),
+        "/portfolio/bundle.js" => Some(get_bundle()),
         "/portfolio/new" => Some(get_index()),
         "/blog" => Some(get_index()),
         "/error" => Some(get_index()),
@@ -86,7 +87,8 @@ fn get_image_extension(uri: &str) -> Option<&str> {
 }
 
 fn get_base_uri(uri: &str, split_value: &str) -> String {
-    let (_, base_uri) = uri.split_once(split_value).unwrap();
+    let (_, base_uri) = uri.split_once(split_value).unwrap(); //Can never crash, we check if the
+                                                              //delimiter is in the uri
     return format!("{}{}", split_value, base_uri);
 }
 

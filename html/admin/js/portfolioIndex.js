@@ -1,15 +1,16 @@
 export async function loadIndex() {
     const response = await fetch("/api/portfolio/index");
     const data = await response.json();
-    console.log(data["projects"]);
+    console.log(data);
     document.getElementById("content").innerHTML = getPortfolioContent(data);
 }
 
 function getPortfolioContent(data) {
-    const projects = "";
-    data.forEach((project) => {
-        projects.concat(makeProject(project));
-    });
+    const projects = data.reduce((acc, project) => {
+        return acc.concat(makeProject(project));
+    },
+        ""
+    );
     return `
 <h1>My Portfolio</h1>
 <section id="portfolio">
@@ -37,7 +38,6 @@ function makeProject(project) {
 }
 
 function makeSkills(skills) {
-    const skillsHtml = "";
-    skills.forEach((skill) => skills.concat(`<li>${skill}</li>`));
+    const skillsHtml = skills.reduce((acc, skill) => { return acc.concat(`<li>${skill}</li>`); }, "");
     return skillsHtml;
 }

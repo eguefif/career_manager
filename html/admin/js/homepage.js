@@ -51,7 +51,32 @@ function populateEditHomePage() {
 
 function getEditProfileContent() {
     return `
-    <h1> Edit Profile</h1>
+    <form id="profileForm" action="/submit" method="POST" enctype="multipart/form-data" class="form-container">
+      <h1 class="form-heading">Update Profile</h1>
+
+      <!-- Display Name -->
+      <div class="form-group">
+        <label for="displayName" class="form-label">Display Name:</label>
+        <input type="text" id="displayName" name="displayName" class="form-input" placeholder="Enter your display name" required>
+      </div>
+
+      <!-- Profile Picture -->
+      <div class="form-group">
+        <label for="profilePicture" class="form-label">Profile Picture:</label>
+        <input type="file" id="profilePicture" name="profilePicture" class="form-file" accept="image/*" required>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="profileDescription" class="form-label">Profile Description:</label>
+        <textarea id="profileDescription" name="profileDescription" class="form-textarea" placeholder="Tell us about yourself" rows="4" required></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-group button-group">
+        <button type="submit" class="form-button">Update Profile</button>
+      </div>
+    </form>
     `;
 }
 

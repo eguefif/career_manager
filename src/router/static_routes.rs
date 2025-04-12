@@ -42,6 +42,7 @@ fn get_asset(uri: &str) -> Option<(Vec<u8>, ContentType)> {
     } else if uri.contains("images") {
         if let Some(ext) = get_image_extension(uri) {
             if let Ok(image) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
+                println!("Extension: {}", ext);
                 match ext {
                     "svg" => return Some((image, ContentType::SVG)),
                     _ => return Some((image, ContentType::Image(ext.to_string()))),

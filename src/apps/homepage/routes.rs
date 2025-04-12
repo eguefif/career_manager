@@ -1,6 +1,6 @@
 use webserv_rs::{request::Request, response::Response};
 
-use super::controllers::{build, profile};
+use super::controllers::{build, edit_profile, profile};
 
 pub fn route(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
@@ -8,6 +8,7 @@ pub fn route(request: Request) -> Option<Response> {
     match action {
         "build" => build(),
         "profile" => profile(),
+        "edit" => edit_profile(request.body),
         _ => None,
     }
 }

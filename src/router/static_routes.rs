@@ -8,6 +8,7 @@ pub fn route_static(uri: &str) -> Option<Response> {
         "/" => Some(get_index()),
         "/portfolio" => Some(get_index()),
         "/blog" => Some(get_index()),
+        "/error" => Some(get_index()),
         "/bundle.js" => Some(get_bundle()),
         _ => get_asset(uri),
     };
@@ -41,7 +42,10 @@ fn get_asset(uri: &str) -> Option<(Vec<u8>, ContentType)> {
     } else if uri.contains("images") {
         if let Some(ext) = get_image_extension(uri) {
             if let Ok(image) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
-                return Some((image, ContentType::Image(ext.to_string())));
+                match ext {
+                    "svg" => return Some((image, ContentType::SVG)),
+                    _ => return Some((image, ContentType::Image(ext.to_string()))),
+                }
             }
         }
         None

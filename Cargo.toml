@@ -20,5 +20,7 @@ name = "build_ws"
 path = "./src/tasks/build.rs"
 
 [dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 sqlite = "0.32.0"
-webserv-rs = { git = "https://github.com/eguefif/webserv-rs.git", rev = "0155a1fb128bbeb862817cfaa62dcaecf6342dbf"}
+webserv-rs = { git = "https://github.com/eguefif/webserv-rs.git", rev = "748ce98a9904a0588eb0cbd5a009326b5081bc6a"}

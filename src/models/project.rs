@@ -55,4 +55,32 @@ impl Project {
         }
         retval
     }
+
+    pub fn save(&mut self, engine: &mut SqlEngine) -> String {
+        self.sanitize();
+        let skills = self
+            .skills
+            .iter()
+            .fold(String::new(), |acc, skill| format!("{},{}", acc, skill));
+        engine.execute(
+            format!(
+                "
+        INSERT INTO project (name, description, picture, github, skills)
+                VALUES ({}, {}, {}, {}, {});",
+                self.name, self.description, self.picture, self.github, skills,
+            )
+            .as_str(),
+        );
+        String::from("{\"success\": true}")
+    }
+
+    fn sanitize(&mut self) {
+        self.name = self.name.replace("\'", "\'\'");
+        self.description = self.description.replace("\'", "\'\'");
+        self.skills = self
+            .skills
+            .iter()
+            .map(|skill| skill.replace("\'", "\'\'"))
+            .collect::<_>();
+    }
 }

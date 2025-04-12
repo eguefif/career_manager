@@ -15,3 +15,18 @@ pub fn index() -> Option<Response> {
     }
     None
 }
+
+pub fn add_project(body: Vec<u8>) -> Option<Response> {
+    let body = String::from_utf8_lossy(&body);
+    if let Ok(mut project) = serde_json::from_str::<Project>(&body) {
+        let mut engine = SqlEngine::new("cm.db");
+        let result = project.save(&mut engine);
+        Some(Response::new(
+            200,
+            result.as_bytes().to_vec(),
+            vec![],
+            ContentType::Json,
+        ));
+    }
+    None
+}

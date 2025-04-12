@@ -1,8 +1,10 @@
+import { navigate } from "../bundle.js";
+
 export async function loadIndex() {
     const response = await fetch("/api/portfolio/index");
     const data = await response.json();
-    console.log(data);
     document.getElementById("content").innerHTML = getPortfolioContent(data);
+    setAddProjectButton();
 }
 
 function getPortfolioContent(data) {
@@ -14,6 +16,9 @@ function getPortfolioContent(data) {
     return `
 <h1>My Portfolio</h1>
 <section id="portfolio">
+<div>
+<div id="addProjectButton" class="button">Add project</div>
+</div>
 ${projects}
 </section>
     `;
@@ -40,4 +45,14 @@ function makeProject(project) {
 function makeSkills(skills) {
     const skillsHtml = skills.reduce((acc, skill) => { return acc.concat(`<li>${skill}</li>`); }, "");
     return skillsHtml;
+}
+
+function setAddProjectButton() {
+    document
+        .getElementById("addProjectButton")
+        .addEventListener("click", (e) => {
+            e.preventDefault();
+            navigate("/portfolio/new");
+        });
+
 }

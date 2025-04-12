@@ -1,4 +1,5 @@
 import { loadIndex } from './portfolioIndex.js';
+import { loadNewProject } from './portfolioNewProject.js';
 
 export async function loadPortfolioPage(mode = "index") {
     switch (mode) {
@@ -8,6 +9,7 @@ export async function loadPortfolioPage(mode = "index") {
         case "edit":
             break;
         case "new":
+            await loadNewProject();
             break;
     }
 }

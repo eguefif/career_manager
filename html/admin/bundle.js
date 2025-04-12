@@ -60,10 +60,6 @@ async function handleRoute() {
     }
 }
 
-function loadPortfolio() {
-    document.getElementById("content").innerHTML = getPortfolioContent();
-}
-
 function loadBlog() {
     document.getElementById("content").innerHTML = getBlogContent();
 }

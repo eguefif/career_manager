@@ -31,8 +31,10 @@ pub fn route(request: Request) -> Response {
         ResourceType::None => None,
     };
     if let Some(response) = retval {
+        println!("Response: {} \n{:?}\n", response.status, response.headers);
         response
     } else {
+        eprintln!("Response: 400\n");
         Response::new(400, vec![], vec![], ContentType::TextHtml)
     }
 }

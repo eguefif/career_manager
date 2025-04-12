@@ -7,6 +7,9 @@ pub fn route_static(uri: &str) -> Option<Response> {
     let static_ressource = match uri {
         "/" => Some(get_index()),
         "/portfolio" => Some(get_index()),
+        "/portfolio/index" => Some(get_index()),
+        "/portfolio/bundle.js" => Some(get_bundle()),
+        "/portfolio/new" => Some(get_index()),
         "/blog" => Some(get_index()),
         "/error" => Some(get_index()),
         "/bundle.js" => Some(get_bundle()),
@@ -31,16 +34,19 @@ fn get_bundle() -> (Vec<u8>, ContentType) {
 
 fn get_asset(uri: &str) -> Option<(Vec<u8>, ContentType)> {
     if uri.contains("css") {
+        let uri = get_base_uri(uri, "css");
         let css = std::fs::read_to_string(format!("{}/{}", BASE_PATH, uri)).unwrap();
         Some((css.as_bytes().to_vec(), ContentType::CSS))
     } else if uri.contains("favicon") {
+        let uri = get_base_uri(uri, "favicon");
         if let Ok(favicon) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
             Some((favicon, ContentType::Icon))
         } else {
             None
         }
     } else if uri.contains("images") {
-        if let Some(ext) = get_image_extension(uri) {
+        let uri = get_base_uri(uri, "images");
+        if let Some(ext) = get_image_extension(&uri) {
             if let Ok(image) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
                 match ext {
                     "svg" => return Some((image, ContentType::SVG)),
@@ -50,6 +56,7 @@ fn get_asset(uri: &str) -> Option<(Vec<u8>, ContentType)> {
         }
         None
     } else if is_javascript(uri) {
+        let uri = get_base_uri(uri, "js");
         if let Ok(image) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
             return Some((image, ContentType::JS));
         } else {
@@ -79,6 +86,12 @@ fn get_image_extension(uri: &str) -> Option<&str> {
     None
 }
 
+fn get_base_uri(uri: &str, split_value: &str) -> String {
+    let (_, base_uri) = uri.split_once(split_value).unwrap(); //Can never crash, we check if the
+                                                              //delimiter is in the uri
+    return format!("{}{}", split_value, base_uri);
+}
+
 #[cfg(test)]
 
 mod tests {
@@ -90,5 +103,13 @@ mod tests {
         let result = is_javascript(uri);
 
         assert!(result);
+    }
+
+    #[test]
+    fn it_should_return_base_uri() {
+        let uri = "/portfolio/images/test.png";
+        let result = get_base_uri(uri, "images");
+
+        assert_eq!(result, "images/test.png");
     }
 }

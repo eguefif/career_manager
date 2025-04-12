@@ -77,7 +77,7 @@ function getHomeContent() {
         <img src="./images/emmanuel.jpeg" alt="Your Picture" class="who-i-am-img">
         <div class="who-i-am-text">
             <p>
-                Lifelong learner, I made my first program when I was sixteen. It was a GCD calculator implementing an algorithm I had learned at school. In the first part of my adult life, I studied sociology and then became a teacher to share my passion for learning and nurture my student's curiosity. After meeting one of my student's father, I realized that talking about computers made me feel very good, and I decided to turn what was a passion into a profession. I now work as a full stack developper and learn everything I can about architecture.
+                Lifelong learner, I made my first program when I was sixteen. It was a GCD calculator implementing an algorithm I had learned at school. In the first part of my adult life, I studied sociology and became a teacher to share my passion for learning and nurture my students' curiosity. After meeting one of my students' fathers, I realized that talking about computers made me feel very good, and I decided to turn what was a passion into a profession. I now work as a full-stack developer and learn everything I can about architecture.
         </p>
         </div>
     </div>

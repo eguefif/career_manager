@@ -3,7 +3,6 @@ import { navigate } from '../bundle.js';
 export async function loadHomePage(edit = false, editBody = {}) {
     const response = await fetch("/api/homepage/profile");
     const data = await response.json();
-    console.log(data);
     document.getElementById("content").innerHTML = getHomePageLayout();
     if (edit) {
         populateEditHomePage(data, editBody);

@@ -24,7 +24,8 @@ function initRouter() {
 export function navigate(route) {
     const routes = [
         { title: "Home", path: "/" },
-        { title: "Portfolio", path: "/portfolio" },
+        { title: "Portfolio", path: "/portfolio/index" },
+        { title: "Portfolio", path: "/portfolio/new" },
         { title: "Blog", path: "/blog" },
         { title: "Error", path: "/error" },
     ];
@@ -40,14 +41,22 @@ export function navigate(route) {
 
 async function handleRoute() {
     const route = window.location.pathname;
-    if (route == "/portfolio") {
-        loadPortfolio();
-    } else if (route == "/blog") {
-        loadBlog();
-    } else if (route == "/error") {
-        loadErrorPage();
-    } else {
-        await loadHomePage();
+    switch (route) {
+        case "/portfolio/index":
+            loadPortfolioPage();
+            break;
+        case "/portfolio/new":
+            loadPortfolioPage("new");
+            break;
+        case "/blog":
+            loadBlog();
+            break;
+        case "/error":
+            loadErrorPage();
+            break;
+        default:
+            await loadHomePage();
+            break;
     }
 }
 

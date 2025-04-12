@@ -1,7 +1,7 @@
 export async function loadIndex() {
-    const response = await fetch("/api/porfolio/index");
+    const response = await fetch("/api/portfolio/index");
     const data = await response.json();
-    console.log(data);
+    console.log(data["projects"]);
     document.getElementById("content").innerHTML = getPortfolioContent(data);
 }
 

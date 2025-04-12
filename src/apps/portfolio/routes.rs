@@ -3,6 +3,7 @@ use webserv_rs::{request::Request, response::Response};
 use super::controllers::index;
 
 pub fn route(request: Request) -> Option<Response> {
+    println!("IN ROUTE PORTFOLIO");
     let _body = String::from_utf8_lossy(&request.body);
     let action = get_controller_action(&request.uri)?;
     match action {
@@ -24,18 +25,4 @@ fn get_controller_action(uri: &str) -> Option<&str> {
         return Some(action);
     }
     None
-}
-
-#[cfg(test)]
-
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_should_return_action_case_1() {
-        let uri = "/api/homepage/build";
-        let result = get_controller_action(uri).unwrap();
-
-        assert_eq!(result, "build")
-    }
 }

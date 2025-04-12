@@ -261,7 +261,7 @@ a:focus {
 }
 
 
-.buttonn.switchable:active {
+.button.switchable:active {
   transform: translateY(2px);
   box-shadow: 0 2px #2d7a38;
 }

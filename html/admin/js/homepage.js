@@ -8,8 +8,8 @@ export async function loadHomePage(edit = false) {
         await populateHomePageContent(data);
     }
     setBuildButton();
-    setEditButton();
-    setProfileButton();
+    setEditButton(edit);
+    setProfileButton(edit);
 }
 
 function getHomePageLayout() {
@@ -72,19 +72,33 @@ function setBuildButton() {
         });
 }
 
-function setEditButton() {
-    document.getElementById("editProfileButton")
-        .addEventListener("click", async (e) => {
-            e.preventDefault();
-            loadHomePage(true);
-        });
+function setEditButton(edit) {
+    if (!edit) {
+        document.getElementById("editProfileButton")
+            .addEventListener("click", async (e) => {
+                e.target.removeAttribute('disabled');
+                e.preventDefault();
+                loadHomePage(true);
+            });
+    } else {
+        document
+            .getElementById("editProfileButton")
+            .setAttribute('disabled', '');
+    }
 }
 
-function setProfileButton() {
-    document
-        .getElementById("seeProfileButton")
-        .addEventListener("click", async (e) => {
-            e.preventDefault();
-            loadHomePage(false);
-        });
+function setProfileButton(edit) {
+    if (edit) {
+        document
+            .getElementById("seeProfileButton")
+            .addEventListener("click", async (e) => {
+                e.target.removeAttribute('disabled');
+                e.preventDefault();
+                loadHomePage(false);
+            });
+    } else {
+        document
+            .getElementById("seeProfileButton")
+            .setAttribute('disabled', '');
+    }
 }

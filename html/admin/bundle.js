@@ -1,4 +1,5 @@
 import { loadHomePage } from "./js/homepage.js";
+import { loadErrorPage } from "./js/errorpage.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("popstate", handleRoute);
@@ -15,16 +16,16 @@ function initRouter() {
             e.preventDefault();
             const url = new URL(e.target.href);
             navigate(url.pathname);
-            handleRoute();
         });
     });
 }
 
-function navigate(route) {
+export function navigate(route) {
     const routes = [
         { title: "Home", path: "/" },
         { title: "Portfolio", path: "/portfolio" },
         { title: "Blog", path: "/blog" },
+        { title: "Error", path: "/error" },
     ];
 
     const routeData = routes.find((data) => data.path == route);
@@ -33,6 +34,7 @@ function navigate(route) {
     } else {
         history.pushState({}, "Home", "/");
     }
+    handleRoute();
 }
 
 async function handleRoute() {
@@ -41,6 +43,8 @@ async function handleRoute() {
         loadPortfolio();
     } else if (route == "/blog") {
         loadBlog();
+    } else if (route == "/error") {
+        loadErrorPage();
     } else {
         await loadHomePage();
     }

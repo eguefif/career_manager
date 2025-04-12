@@ -35,3 +35,14 @@ pub fn profile() -> Option<Response> {
         None
     }
 }
+
+pub fn edit_profile(body: Vec<u8>) -> Option<Response> {
+    println!("{}", String::from_utf8_lossy(&body));
+    // TODO: how do we update the profile. Several possibilities:
+    // * do we retrieve value first
+    // * when do we validate
+    // * when do we save
+    // * how do we deserialise
+    // * do we have one function for all?
+    None
+}

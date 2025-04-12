@@ -8,6 +8,7 @@ pub fn route_static(uri: &str) -> Option<Response> {
         "/" => Some(get_index()),
         "/portfolio" => Some(get_index()),
         "/blog" => Some(get_index()),
+        "/error" => Some(get_index()),
         "/bundle.js" => Some(get_bundle()),
         _ => get_asset(uri),
     };

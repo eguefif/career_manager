@@ -3,6 +3,7 @@ import { navigate } from '../bundle.js';
 export async function loadHomePage(edit = false, editBody = {}) {
     const response = await fetch("/api/homepage/profile");
     const data = await response.json();
+    console.log(data);
     document.getElementById("content").innerHTML = getHomePageLayout();
     if (edit) {
         populateEditHomePage(data, editBody);
@@ -29,8 +30,8 @@ function getHomePageLayout() {
 
 async function populateHomePageContent(data) {
     document.getElementById("homePageContent").innerHTML = getHomePageContent();
-    document.getElementById("displayName").innerHTML = data["displayName"];
-    document.getElementById("profilePicture").src = data["picture"];
+    document.getElementById("profilePicture").src = `./images/${data["picture"]}`;
+    document.getElementById("displayName").innerHTML = data["display_name"];
     document.getElementById("profileDescription").innerHTML = data["description"];
 }
 
@@ -50,10 +51,10 @@ function getHomePageContent() {
 function populateEditHomePage(data, editBody = {}) {
     document.getElementById("homePageContent").innerHTML = getEditProfileContent();
     if (editBody["displayName"]) {
-        document.getElementById("displayName").value = editBody["displayName"];
+        document.getElementById("displayName").value = editBody["display_name"];
         document.getElementById("displayName").style.border = "2px solid red";
     } else {
-        document.getElementById("displayName").value = data["displayName"];
+        document.getElementById("displayName").value = data["display_name"];
     }
 
     if (editBody["description"]) {
@@ -62,7 +63,7 @@ function populateEditHomePage(data, editBody = {}) {
     } else {
         document.getElementById("profileDescription").value = data["description"];
     }
-    setSubmitButton();
+    setSubmitButton(data);
 }
 
 function getEditProfileContent() {
@@ -144,12 +145,12 @@ function setProfileButton(edit) {
     }
 }
 
-function setSubmitButton() {
+function setSubmitButton(data) {
     document
         .getElementById("formSubmit")
         .addEventListener("click", async (e) => {
             e.preventDefault();
-            const body = makeFormBody();
+            const body = makeFormBody(data);
             const response = await fetch("/api/homepage/edit", {
                 method: "POST",
                 body: body
@@ -167,13 +168,17 @@ function setSubmitButton() {
         });
 }
 
-function makeFormBody() {
+function makeFormBody(data) {
     const displayName = document.getElementById("displayName").value;
     const description = document.getElementById("profileDescription").value;
-    const picture = document.getElementById("profilePicture").value;
+    let picture = document.getElementById("profilePicture").value;
+    if (!picture) {
+        picture = data["picture"];
+    }
     return JSON.stringify({
-        displayName: displayName,
+        display_name: displayName,
         description: description,
         picture: picture,
+        id: data["id"]
     });
 }

@@ -9,16 +9,46 @@ export async function loadHomePage(edit = false, editBody = {}) {
     } else {
         await populateHomePageContent(data);
     }
-    setBuildButton();
+    if (await isPreviewRunning()) {
+        document.getElementById("stopPreviewButton").disabled = false;
+        document.getElementById("previewButton").style.display = 'none';
+        document.getElementById("seePreviewButton").style.display = 'block';
+        setSeePreviewButton();
+    } else {
+        document.getElementById("stopPreviewButton").disabled = true;
+        document.getElementById("previewButton").style.display = 'block';
+        document.getElementById("seePreviewButton").style.display = 'none';
+        setPreviewButton();
+    }
+    setStopPreviewButton();
     setEditButton(edit);
     setProfileButton(edit);
+}
+
+async function isPreviewRunning() {
+    try {
+        const response = await fetch("http://127.0.0.1:8000", { mode: "no-cors" });
+        if (response.status >= 400) {
+            console.log("response false");
+            return false;
+        } else {
+            console.log("response true");
+            return true;
+        }
+    }
+    catch (_) {
+        console.log("catch error");
+        return false;
+    }
 }
 
 function getHomePageLayout() {
     return `
     <section id="homepage">
         <div id="homePageButtons">
-            <button id="buildButton" type="submit" href="" class="button">Build website</button>
+            <button id="previewButton" type="submit" href="" class="button">Start Preview</button>
+            <button id="seePreviewButton" type="submit" href="http://127.0.0.1:8000" target="_blank" class="button">See Preview</button>
+            <button id="stopPreviewButton" type="submit" href="" class="button">Stop Preview</button>
             <button id="editProfileButton" type="submit" href="" class="button switchable">Edit Profile</button>
             <button id="seeProfileButton" type="submit" href="" class="button switchable">See Profile</button>
         </div>
@@ -96,19 +126,45 @@ function getEditProfileContent() {
     `;
 }
 
-function setBuildButton() {
-    document.getElementById("buildButton")
+function setPreviewButton() {
+    document.getElementById("previewButton")
         .addEventListener("click", async (e) => {
             e.preventDefault();
-            const response = await fetch("/api/homepage/build", {
-                method: "POST",
-                body: "build",
+            const response = await fetch("/api/homepage/preview", {
+                method: "GET",
             });
             const body = await response.json();
-            if (body["result"] == "success") {
+            if (body["success"] == true) {
                 alert("Success");
+                navigate("/");
             } else {
                 alert("failure");
+            }
+        });
+}
+
+function setSeePreviewButton() {
+    document.getElementById("seePreviewButton")
+        .addEventListener("click", async (e) => {
+            e.preventDefault();
+            window.open("http://127.0.0.1:8000", "_blank");
+        });
+}
+
+function setStopPreviewButton() {
+    document.getElementById("stopPreviewButton")
+        .addEventListener("click", async (e) => {
+            e.preventDefault();
+            const response = await fetch("/api/homepage/stop", {
+                method: "GET",
+            });
+            const body = await response.json();
+            if (body["success"] == true) {
+                alert("Success");
+                navigate("/");
+            } else {
+                alert("failure");
+                navigate("/error");
             }
         });
 }

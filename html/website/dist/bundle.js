@@ -182,8 +182,8 @@ function getPortfolioContent() {
 
         <img src="images/image.jpg" alt="Project 1" class="project-img">
             <div class="project-info">
-            <h2 class="project-title">a</h2>
-            <p class="project-description">f</p>
+            <h2 class="project-title">Hello World 2</h2>
+            <p class="project-description">Hello world description</p>
             <ul class="skills-list">
             
                     <li>f</li>

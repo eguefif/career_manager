@@ -1,3 +1,4 @@
+use career_manager::log_error;
 use webserv_rs::content_type::ContentType;
 use webserv_rs::response::Response;
 
@@ -60,7 +61,7 @@ fn get_asset(uri: &str) -> Option<(Vec<u8>, ContentType)> {
         if let Ok(image) = std::fs::read(format!("{}/{}", BASE_PATH, uri)) {
             return Some((image, ContentType::JS));
         } else {
-            eprintln!("Error: Could not find {}", uri);
+            log_error(&format!("Error: could not find uri: {}", uri));
         }
         None
     } else {

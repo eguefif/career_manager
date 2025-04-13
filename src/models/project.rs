@@ -58,17 +58,19 @@ impl Project {
 
     pub fn save(&mut self, engine: &mut SqlEngine) -> String {
         self.sanitize();
-        let skills = self
-            .skills
-            .iter()
-            .fold(String::new(), |acc, skill| format!("{}{},", acc, skill));
+        let skills = self.skills.iter().fold(String::new(), |acc, skill| {
+            if skill.len() > 0 {
+                format!("{}{},", acc, skill)
+            } else {
+                acc
+            }
+        });
         let query = format!(
             "
         INSERT INTO project (name, description, picture, github, skills)
                 VALUES (\"{}\", \"{}\", \"{}\", \"{}\", \"{}\");",
             self.name, self.description, self.picture, self.github, skills,
         );
-        println!("QUERY: \n{}", query);
         engine.execute(&query);
         String::from("{\"success\": true}")
     }

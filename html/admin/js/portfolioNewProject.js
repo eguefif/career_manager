@@ -65,10 +65,14 @@ function setAddButton() {
         .addEventListener("click", async (e) => {
             e.preventDefault();
             const body = makeProjectBody();
-            console.log(body);
+            const payload = await getPayload(body);
+            console.log(payload);
             const response = await fetch("/api/portfolio/new", {
                 method: "POST",
-                body: body,
+                headers: {
+                    "Content-Type": "application/octet-stream"
+                },
+                body: payload,
             });
             console.log("HEY:", response);
 
@@ -83,13 +87,13 @@ function setAddButton() {
 function makeProjectBody() {
     const name = document.getElementById("projectName").value;
     const description = document.getElementById("projectDescription").value;
-    //const picture = document.getElementById("projectPicture").src;
+    const picture = document.getElementById("projectPicture").files[0];
     const github = document.getElementById("github").value;
     const skills = document.getElementById("skills").value;
     return JSON.stringify({
         name: name,
         description: description,
-        picture: "test",
+        picture: picture.name,
         github: github,
         skills: processSkills(skills),
     });
@@ -98,5 +102,23 @@ function makeProjectBody() {
 function processSkills(skills) {
     const splits = skills.split(",");
     return splits.map((skill) => skill.trim());
+
+}
+
+async function getPayload(body) {
+    const picture = document.getElementById("projectPicture").files[0];
+    const jsonBytes = new TextEncoder().encode(body);
+    const sepBytes = new TextEncoder().encode("###");
+    const fileBytes = await picture.arrayBuffer();
+
+    const buffer = new Uint8Array(jsonBytes.length + sepBytes.length + fileBytes.byteLength);
+
+    // Then JSON data
+    buffer.set(jsonBytes);
+    buffer.set(sepBytes, jsonBytes.length);
+
+    // Then binary image data
+    buffer.set(new Uint8Array(fileBytes), sepBytes.length + jsonBytes.length);
+    return buffer;
 
 }

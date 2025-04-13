@@ -175,6 +175,120 @@ function getPortfolioContent() {
             </div>
         </div>
     
+        <div class="project-box">
+        <a href="fdsfasd" class="github-link" target="_blank">
+            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+        </a>
+
+        <img src="images/test" alt="Project 1" class="project-img">
+            <div class="project-info">
+            <h2 class="project-title">fsdfas</h2>
+            <p class="project-description">fsdafasd</p>
+            <ul class="skills-list">
+            
+                    <li></li>
+            
+                    <li>fsdf</li>
+            
+            </ul>
+            </div>
+        </div>
+    
+        <div class="project-box">
+        <a href="fsdfsdaf" class="github-link" target="_blank">
+            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+        </a>
+
+        <img src="images/test" alt="Project 1" class="project-img">
+            <div class="project-info">
+            <h2 class="project-title">fsdfs</h2>
+            <p class="project-description">fsdfa</p>
+            <ul class="skills-list">
+            
+                    <li>sdfsadf</li>
+            
+                    <li></li>
+            
+            </ul>
+            </div>
+        </div>
+    
+        <div class="project-box">
+        <a href="fasdfsadf" class="github-link" target="_blank">
+            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+        </a>
+
+        <img src="images/test" alt="Project 1" class="project-img">
+            <div class="project-info">
+            <h2 class="project-title">fsadfasdf</h2>
+            <p class="project-description">fsdafasdf</p>
+            <ul class="skills-list">
+            
+                    <li>sdfsdaf</li>
+            
+                    <li></li>
+            
+            </ul>
+            </div>
+        </div>
+    
+        <div class="project-box">
+        <a href="fsdafdsa" class="github-link" target="_blank">
+            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+        </a>
+
+        <img src="images/image.jpg" alt="Project 1" class="project-img">
+            <div class="project-info">
+            <h2 class="project-title">fsdaf</h2>
+            <p class="project-description">fsdafasd</p>
+            <ul class="skills-list">
+            
+                    <li>fsdf</li>
+            
+                    <li></li>
+            
+            </ul>
+            </div>
+        </div>
+    
+        <div class="project-box">
+        <a href="sdfaf" class="github-link" target="_blank">
+            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+        </a>
+
+        <img src="images/image.jpg" alt="Project 1" class="project-img">
+            <div class="project-info">
+            <h2 class="project-title">fdsaf</h2>
+            <p class="project-description">fsdaf</p>
+            <ul class="skills-list">
+            
+                    <li>sfdasdf</li>
+            
+                    <li></li>
+            
+            </ul>
+            </div>
+        </div>
+    
+        <div class="project-box">
+        <a href="fsdafsadf" class="github-link" target="_blank">
+            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+        </a>
+
+        <img src="images/image.jpg" alt="Project 1" class="project-img">
+            <div class="project-info">
+            <h2 class="project-title">fsadf</h2>
+            <p class="project-description">fdsafa</p>
+            <ul class="skills-list">
+            
+                    <li>sfsdf</li>
+            
+                    <li></li>
+            
+            </ul>
+            </div>
+        </div>
+    
     </section>
 
     `

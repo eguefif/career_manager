@@ -1,8 +1,8 @@
 import { navigate } from '../bundle.js';
 import { makeProjectBody, getPayload, getProjectForm } from './portfolioNewProject.js';
 
-export function editProject(id) {
-    const data = fetchProject(id);
+export async function loadEditProject(id) {
+    const data = await fetchProject(id);
     if (data) {
         document
             .getElementById("content")

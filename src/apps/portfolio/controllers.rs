@@ -18,7 +18,9 @@ pub fn index() -> Option<Response> {
 
 pub fn add_project(body: Vec<u8>) -> Option<Response> {
     let body = String::from_utf8_lossy(&body);
+    println!("In route new: {}", body);
     if let Ok(mut project) = serde_json::from_str::<Project>(&body) {
+        println!("After");
         let mut engine = SqlEngine::new("cm.db");
         let result = project.save(&mut engine);
         Some(Response::new(

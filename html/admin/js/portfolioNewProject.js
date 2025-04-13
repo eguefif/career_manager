@@ -35,7 +35,7 @@ function getProjectForm(title, data) {
       <!-- Description -->
       <div class="form-group">
         <label for="projectDescription" class="form-label">Project Description:</label>
-        <textarea id="projectDescription" name="projectDescription" class="form-textarea" placeholder="Tell us about yourself" rows="4" value="${description}" required></textarea>
+        <textarea id="projectDescription" name="projectDescription" class="form-textarea" placeholder="Describe the project" rows="4" value="${description}" required></textarea>
       </div>
 
       <!-- Github url-->

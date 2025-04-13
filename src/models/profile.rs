@@ -8,12 +8,12 @@ pub struct Profile {
     pub display_name: String,
     pub description: String,
     pub picture: String,
-    pub id: String,
+    pub id: Option<i64>,
 }
 
 impl Profile {
     pub fn take_first(engine: &mut SqlEngine) -> Option<Self> {
-        let result = engine.execute("SELECT * FROM profile LIMIT 1");
+        let result = engine.execute("SELECT * FROM profile WHERE id=0");
         if result.len() != 1 {
             return None;
         }
@@ -33,15 +33,15 @@ impl Profile {
             "".to_string()
         };
         let id = if let SqlType::Text(value) = result[0].get("id").unwrap() {
-            value.to_string()
+            value.parse::<i64>().unwrap()
         } else {
-            "".to_string()
+            0
         };
         Some(Self {
             display_name,
             description,
             picture,
-            id,
+            id: Some(id),
         })
     }
 
@@ -58,16 +58,19 @@ impl Profile {
     }
 
     pub fn save(&mut self, engine: &mut SqlEngine) -> String {
-        let query = format!(
-            "UPDATE profile
+        if let Some(id) = self.id {
+            let query = format!(
+                "UPDATE profile
 SET display_name='{}', picture='{}', description='{}'
-WHERE id = '{}';",
-            self.display_name, self.picture, self.description, self.id
-        );
-        println!("{}", query);
-        engine.execute(query.as_str());
-
-        "{\"success\": true}".to_string()
+WHERE id = {};",
+                self.display_name, self.picture, self.description, id
+            );
+            println!("{}", query);
+            engine.execute(query.as_str());
+            "{\"success\": true}".to_string()
+        } else {
+            "{\"success\": false}".to_string()
+        }
     }
 
     pub fn to_json(&self) -> Vec<u8> {

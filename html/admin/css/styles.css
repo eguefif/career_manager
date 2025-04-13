@@ -173,6 +173,36 @@ a:focus {
     transition: color 0.3s ease;
 }
 
+.project-box .delete-project-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    text-decoration: none; 
+    color: #e76f51; 
+    font-size: 1.2em; 
+    font-weight: bold;
+    transition: color 0.3s ease;
+
+  background-color: #2563eb; /* Tailwind's blue-600 */
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  border: none;
+  border-radius: 0.5rem; /* rounded */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.project-box .delete-project-button:hover {
+  background-color: #1d4ed8; /* Tailwind's blue-700 */
+}
+
+.project-box .delete-button:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5); /* blue ring */
+}
+
 .project-box .github-link {
     position: absolute;
     top: 10px;

@@ -77,7 +77,7 @@ function getHomeContent() {
         <img src="./images/emmanuel.jpeg" alt="Your Picture" class="who-i-am-img">
         <div class="who-i-am-text">
             <p>
-                Lifelong learner, I made my first program when I was sixteen. It was a GCD calculator implementing an algorithm I had learned at school. In the first part of my adult life, I studied sociology and became a teacher to share my passion for learning and nurture my students' curiosity. After meeting one of my students' fathers, I realized that talking about computers made me feel very good, and I decided to turn what was a passion into a profession. I now work as a full-stack developer and learn everything I can about architecture.
+                Lifelong learner, I made my first program when I was sixteen. It was a GCD calculator implementing an algorithm I had learned at school. In the first part of my adult life, I studied sociology and then became a teacher to share my passion for learning and nurture my student's curiosity. After meeting one of my student's father, I realized that talking about computers made me feel very good, and I decided to turn what was a passion into a profession. I now work as a full stack developper and learn everything I can about architecture.
         </p>
         </div>
     </div>
@@ -176,131 +176,17 @@ function getPortfolioContent() {
         </div>
     
         <div class="project-box">
-        <a href="fdsfasd" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/test" alt="Project 1" class="project-img">
-            <div class="project-info">
-            <h2 class="project-title">fsdfas</h2>
-            <p class="project-description">fsdafasd</p>
-            <ul class="skills-list">
-            
-                    <li></li>
-            
-                    <li>fsdf</li>
-            
-            </ul>
-            </div>
-        </div>
-    
-        <div class="project-box">
-        <a href="fsdfsdaf" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/test" alt="Project 1" class="project-img">
-            <div class="project-info">
-            <h2 class="project-title">fsdfs</h2>
-            <p class="project-description">fsdfa</p>
-            <ul class="skills-list">
-            
-                    <li>sdfsadf</li>
-            
-                    <li></li>
-            
-            </ul>
-            </div>
-        </div>
-    
-        <div class="project-box">
-        <a href="fasdfsadf" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/test" alt="Project 1" class="project-img">
-            <div class="project-info">
-            <h2 class="project-title">fsadfasdf</h2>
-            <p class="project-description">fsdafasdf</p>
-            <ul class="skills-list">
-            
-                    <li>sdfsdaf</li>
-            
-                    <li></li>
-            
-            </ul>
-            </div>
-        </div>
-    
-        <div class="project-box">
-        <a href="fsdafdsa" class="github-link" target="_blank">
+        <a href="f" class="github-link" target="_blank">
             <img src="./images/github.svg" alt="GitHub" class="github-icon" />
         </a>
 
         <img src="images/image.jpg" alt="Project 1" class="project-img">
             <div class="project-info">
-            <h2 class="project-title">fsdaf</h2>
-            <p class="project-description">fsdafasd</p>
+            <h2 class="project-title">a</h2>
+            <p class="project-description">f</p>
             <ul class="skills-list">
             
-                    <li>fsdf</li>
-            
-                    <li></li>
-            
-            </ul>
-            </div>
-        </div>
-    
-        <div class="project-box">
-        <a href="sdfaf" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/image.jpg" alt="Project 1" class="project-img">
-            <div class="project-info">
-            <h2 class="project-title">fdsaf</h2>
-            <p class="project-description">fsdaf</p>
-            <ul class="skills-list">
-            
-                    <li>sfdasdf</li>
-            
-                    <li></li>
-            
-            </ul>
-            </div>
-        </div>
-    
-        <div class="project-box">
-        <a href="fsdafsadf" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/image.jpg" alt="Project 1" class="project-img">
-            <div class="project-info">
-            <h2 class="project-title">fsadf</h2>
-            <p class="project-description">fdsafa</p>
-            <ul class="skills-list">
-            
-                    <li>sfsdf</li>
-            
-                    <li></li>
-            
-            </ul>
-            </div>
-        </div>
-    
-        <div class="project-box">
-        <a href="fsdfasdf" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/image.jpg" alt="Project 1" class="project-img">
-            <div class="project-info">
-            <h2 class="project-title">fdsafsad</h2>
-            <p class="project-description">fsdfsad</p>
-            <ul class="skills-list">
-            
-                    <li>fsdfa</li>
+                    <li>f</li>
             
                     <li></li>
             

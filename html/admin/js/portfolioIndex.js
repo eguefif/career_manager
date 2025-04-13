@@ -3,8 +3,10 @@ import { navigate } from "../bundle.js";
 export async function loadIndex() {
     const response = await fetch("/api/portfolio/index");
     const data = await response.json();
+    console.log(data);
     document.getElementById("content").innerHTML = getPortfolioContent(data);
     setAddProjectButton();
+    setDeleteProjectButton();
 }
 
 function getPortfolioContent(data) {
@@ -27,6 +29,7 @@ ${projects}
 function makeProject(project) {
     return `
     <div class="project-box">
+        <div id="deleteProjectButton" data-id="${project.id}" type="submit" class="delete-project-button">delete</div>
         <a href="${project.github}" class="github-link" target="_blank">
             <img src="images/github.svg" alt="GitHub" class="github-icon">
         </a>
@@ -54,5 +57,23 @@ function setAddProjectButton() {
             e.preventDefault();
             navigate("/portfolio/new");
         });
+
+}
+
+function setDeleteProjectButton() {
+    document
+        .querySelectorAll(".delete-project-button")
+        .forEach((btn) => btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const id = e.target.dataset.id;
+            const url = `/api/portfolio/delete/${id}`;
+            console.log("HEY: ", url);
+            const response = await fetch(url);
+            if (response.status < 400) {
+                navigate("/portfolio/index");
+            } else {
+                navigate("/error");
+            }
+        }));
 
 }

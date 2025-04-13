@@ -1,6 +1,6 @@
 use webserv_rs::{request::Request, response::Response};
 
-use super::controllers::{add_project, index};
+use super::controllers::{add_project, delete_project, index};
 
 pub fn route(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
@@ -8,6 +8,7 @@ pub fn route(request: Request) -> Option<Response> {
     match action {
         "index" => index(),
         "new" => add_project(request.body),
+        "delete" => delete_project(get_id(&request.uri)),
         _ => None,
     }
 }
@@ -25,4 +26,23 @@ fn get_controller_action(uri: &str) -> Option<&str> {
         return Some(action);
     }
     None
+}
+
+fn get_id(uri: &str) -> String {
+    let (_, id) = uri.rsplit_once("/").unwrap();
+    id.to_string()
+}
+
+#[cfg(test)]
+
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_should_get_id() {
+        let uri = "/api/portfolio/delete/11";
+        let result = get_id(&uri);
+
+        assert_eq!(result, "11")
+    }
 }

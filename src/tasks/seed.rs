@@ -17,8 +17,8 @@ fn main() -> std::io::Result<()> {
 }
 
 fn get_create_tables_query() -> String {
-    "CREATE TABLE project (name TEXT, description TEXT, picture TEXT, skills TEXT, github TEXT);
-    CREATE TABLE profile(display_name TEXT, picture TEXT, description TEXT);
+    "CREATE TABLE project (id INTEGER PRIMARY KEY, name TEXT, description TEXT, picture TEXT, skills TEXT, github TEXT);
+    CREATE TABLE profile(id INTEGER, display_name TEXT, picture TEXT, description TEXT);
     "
     .to_string()
 }
@@ -40,8 +40,8 @@ fn get_profile_query() -> String {
     let profile_description = "\
 Lifelong learner, I made my first program when I was sixteen. It was a GCD calculator implementing an algorithm I had learned at school. In the first part of my adult life, I studied sociology and then became a teacher to share my passion for learning and nurture my student's curiosity. After meeting one of my student's father, I realized that talking about computers made me feel very good, and I decided to turn what was a passion into a profession. I now work as a full stack developper and learn everything I can about architecture.";
     format!(
-        "INSERT INTO profile (display_name, picture, description)
-        VALUES(\"Emmanuel Guefif\", \"emmanuel.jpeg\", \"{}\");
+        "INSERT INTO profile (display_name, picture, description, id)
+        VALUES(\"Emmanuel Guefif\", \"emmanuel.jpeg\", \"{}\", 0);
             ",
         profile_description
     )

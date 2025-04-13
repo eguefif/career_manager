@@ -6,7 +6,7 @@ use webserv_rs::{content_type::ContentType, response::Response};
 
 pub fn index() -> Option<Response> {
     let mut engine = SqlEngine::new("cm.db");
-    let projects = Project::all(&mut engine);
+    let projects = Project::all(&mut engine, None);
     if let Ok(projects) = serde_json::to_string(&projects) {
         return Some(Response::new(
             200,
@@ -18,19 +18,14 @@ pub fn index() -> Option<Response> {
     None
 }
 
-pub fn add_project(body: Vec<u8>) -> Option<Response> {
-    let (body, image) = get_image(&body);
-    println!("In add project: {}", body);
-    if let Ok(mut project) = serde_json::from_str::<Project>(&body) {
-        println!("After");
-        if project.picture.len() > 0 {
-            write_image(image, &project.picture);
-        }
-        let mut engine = SqlEngine::new("cm.db");
-        let result = project.save(&mut engine);
+pub fn delete_project(id: String) -> Option<Response> {
+    let id = id.parse::<i64>().unwrap();
+    let mut engine = SqlEngine::new("cm.db");
+    if let Some(mut project) = Project::find(&mut engine, id) {
+        project.delete(&mut engine);
         return Some(Response::new(
             200,
-            result.as_bytes().to_vec(),
+            "{\"sucess\": true}".as_bytes().to_vec(),
             vec![],
             ContentType::Json,
         ));
@@ -38,8 +33,29 @@ pub fn add_project(body: Vec<u8>) -> Option<Response> {
     None
 }
 
+pub fn add_project(body: Vec<u8>) -> Option<Response> {
+    let (body, image) = get_image(&body);
+    match serde_json::from_str::<Project>(&body) {
+        Ok(mut project) => {
+            if project.picture.len() > 0 {
+                write_image(image, &project.picture);
+            }
+            let mut engine = SqlEngine::new("cm.db");
+            let result = project.save(&mut engine);
+            return Some(Response::new(
+                200,
+                result.as_bytes().to_vec(),
+                vec![],
+                ContentType::Json,
+            ));
+        }
+        Err(e) => eprintln!("Error serder: {e}"),
+    }
+
+    None
+}
+
 fn get_image(body: &[u8]) -> (String, &[u8]) {
-    println!("{:?}", body);
     let iter = body.iter();
     let mut idx = 0;
     for (i, _) in iter.enumerate() {
@@ -81,7 +97,6 @@ mod tests {
         for (i, value) in image.iter().enumerate() {
             assert_eq!(*value, expected_image[i]);
         }
-        assert!(false);
     }
 
     #[test]

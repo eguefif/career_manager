@@ -1,19 +1,33 @@
 use crate::connector::{SqlEngine, SqlType};
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Project {
     pub name: String,
     pub description: String,
     pub picture: String,
     pub skills: Vec<String>,
     pub github: String,
+    pub id: Option<i64>,
 }
 
 impl Project {
-    pub fn all(engine: &mut SqlEngine) -> Vec<Self> {
+    pub fn find(engine: &mut SqlEngine, id: i64) -> Option<Self> {
+        let results = Self::all(engine, Some(id));
+        if results.len() == 0 {
+            return None;
+        }
+        let project: &Project = &results[0];
+        Some(project.clone())
+    }
+
+    pub fn all(engine: &mut SqlEngine, id: Option<i64>) -> Vec<Self> {
         let mut retval = Vec::new();
-        let results = engine.execute("SELECT * FROM project");
+        let results = if let Some(id) = id {
+            engine.execute(&format!("SELECT * FROM project WHERE id = {}", id))
+        } else {
+            engine.execute("SELECT * FROM project")
+        };
         for result in results {
             let name = if let SqlType::Text(value) = result.get("name").unwrap() {
                 value.to_string()
@@ -35,6 +49,11 @@ impl Project {
             } else {
                 "".to_string()
             };
+            let id = if let SqlType::Int(value) = result.get("id").unwrap() {
+                *value
+            } else {
+                0
+            };
             let skills = if let SqlType::Text(value) = result.get("skills").unwrap() {
                 let mut skills = Vec::new();
                 let splits = value.split(",");
@@ -51,6 +70,7 @@ impl Project {
                 picture,
                 skills,
                 github,
+                id: Some(id),
             });
         }
         retval
@@ -73,6 +93,14 @@ impl Project {
         );
         engine.execute(&query);
         String::from("{\"success\": true}")
+    }
+
+    pub fn delete(&mut self, engine: &mut SqlEngine) {
+        if let Some(id) = self.id {
+            let query = format!("DELETE FROM project WHERE id = {}", id);
+            println!("{}", query);
+            engine.execute(&query);
+        }
     }
 
     fn sanitize(&mut self) {

@@ -15,6 +15,7 @@ function getProjectForm(title, data) {
     const name = data ? data.name : "";
     const description = data ? data.description : "";
     const github = data ? data.github : "";
+    const skills = data ? data.skills.joins(", ") : "";
     return `
     <form id="profileForm" action="/submit" method="POST" enctype="multipart/form-data" class="form-container">
       <h1 class="form-heading">${title}</h1>
@@ -43,6 +44,13 @@ function getProjectForm(title, data) {
         <input type="text" id="github" name="githubUrl" class="form-input" placeholder="Enter the project's github url" value="${github}" required>
       </div>
 
+      <!-- skills -->
+      <div class="form-group">
+        <label for="skills" class="form-label">List of skills seperated by a comma</label>
+        <input type="text" id="skills" name="skills" class="form-input" placeholder="Enter skills" value="${skills}" required>
+      </div>
+
+
       <!-- Submit Button -->
       <div class="form-group button-group">
         <button id="formSubmit" type="submit" class="form-button">Submit</button>
@@ -57,6 +65,7 @@ function setAddButton() {
         .addEventListener("click", async (e) => {
             e.preventDefault();
             const body = makeProjectBody();
+            console.log(body);
             const response = await fetch("/api/portfolio/new", {
                 method: "POST",
                 body: body,
@@ -76,10 +85,18 @@ function makeProjectBody() {
     const description = document.getElementById("projectDescription").value;
     const picture = document.getElementById("projectPicture").value;
     const github = document.getElementById("github").value;
-    return {
+    const skills = document.getElementById("skills").value;
+    return JSON.stringify({
         name: name,
         description: description,
         picture: picture,
         github: github,
-    };
+        skills: processSkills(skills),
+    });
+}
+
+function processSkills(skills) {
+    const splits = skills.split(",");
+    return splits.map((skill) => skill.trim());
+
 }

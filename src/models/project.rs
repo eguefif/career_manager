@@ -12,10 +12,13 @@ pub struct Project {
 }
 
 impl Project {
-    pub fn find(engine: &mut SqlEngine, id: i64) -> Self {
+    pub fn find(engine: &mut SqlEngine, id: i64) -> Option<Self> {
         let results = Self::all(engine, Some(id));
+        if results.len() == 0 {
+            return None;
+        }
         let project: &Project = &results[0];
-        project.clone()
+        Some(project.clone())
     }
 
     pub fn all(engine: &mut SqlEngine, id: Option<i64>) -> Vec<Self> {

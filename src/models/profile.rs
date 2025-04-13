@@ -54,8 +54,7 @@ impl Profile {
     }
 
     fn sanitize(&mut self) {
-        self.description = self.description.replace("\'", "\'\'");
-        println!("Description: \n{}", self.description);
+        self.description = self.description.replace("\'", "\'\'")
     }
 
     pub fn save(&mut self, engine: &mut SqlEngine) -> String {

@@ -345,3 +345,9 @@ a:focus {
 .form-button:hover {
   background-color: #1d4ed8; /* Tailwind's blue-700 */
 }
+
+/* Portfolio page */
+.button.add-button {
+    text-align: center;
+    width: 50px;
+}

@@ -23,4 +23,4 @@ path = "./src/tasks/build.rs"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 sqlite = "0.32.0"
-webserv-rs = { git = "https://github.com/eguefif/webserv-rs.git", rev = "d6160a34b64bbb46bb675d96912d3090b7ae2575"}
+webserv-rs = { git = "https://github.com/eguefif/webserv-rs.git", rev = "92bb242359f2e5b46e616e256d617097c229e3e2"}

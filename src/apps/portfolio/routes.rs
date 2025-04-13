@@ -1,13 +1,13 @@
 use webserv_rs::{request::Request, response::Response};
 
-use super::controllers::index;
+use super::controllers::{add_project, index};
 
 pub fn route(request: Request) -> Option<Response> {
-    println!("IN ROUTE PORTFOLIO");
     let _body = String::from_utf8_lossy(&request.body);
     let action = get_controller_action(&request.uri)?;
     match action {
         "index" => index(),
+        "new" => add_project(request.body),
         _ => None,
     }
 }

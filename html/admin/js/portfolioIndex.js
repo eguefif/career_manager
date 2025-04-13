@@ -3,7 +3,6 @@ import { navigate } from "../bundle.js";
 export async function loadIndex() {
     const response = await fetch("/api/portfolio/index");
     const data = await response.json();
-    console.log(data);
     document.getElementById("content").innerHTML = getPortfolioContent(data);
     setAddProjectButton();
     setDeleteProjectButton();
@@ -30,7 +29,7 @@ ${projects}
 function makeProject(project) {
     return `
     <div class="project-box">
-        <div id="deleteProjectButton" data-id="${project.id}" type="submit" class="delete-project-button" aria-lable="Delete">&times;</div>
+        <div id="deleteProjectButton" data-id="${project.id}" type="submit" class="delete-project-button" aria-label="Delete">&times;</div>
     <div class="edit-project-button" data-id="${project.id}" aria-label="Edit">
         <div class="svg-edit">
             ${getEditSvg()}
@@ -73,7 +72,6 @@ function setDeleteProjectButton() {
             e.preventDefault();
             const id = e.target.dataset.id;
             const url = `/api/portfolio/delete/${id}`;
-            console.log("HEY: ", url);
             const response = await fetch(url);
             if (response.status < 400) {
                 navigate("/portfolio/index");

@@ -31,8 +31,6 @@ export function navigate(route) {
         { title: "Error", path: "/error" },
     ];
 
-    console.log(route);
-    console.log(route.includes("/portfolio/index"));
     const routeData = routes.find((data) => route.includes(data.path));
     if (routeData) {
         history.pushState({}, routeData.title, route);
@@ -45,11 +43,9 @@ export function navigate(route) {
 async function handleRoute() {
     const route = window.location.pathname;
     const firstLevelRoute = extractRoute(route, 0);
-    console.log(route);
     switch (firstLevelRoute) {
         case "portfolio":
             const secondLevelRoute = extractRoute(route, 1);
-            console.log(secondLevelRoute);
             switch (secondLevelRoute) {
                 case "index":
                     loadPortfolioPage();
@@ -59,7 +55,6 @@ async function handleRoute() {
                     break;
                 case "edit":
                     const id = extractRoute(route, 2);
-                    console.log(id);
                     loadPortfolioPage("edit", id);
                     break;
             }

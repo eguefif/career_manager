@@ -6,8 +6,8 @@ export async function loadEditProject(id) {
     if (data) {
         document
             .getElementById("content")
-            .innerHTML = getEditProjectView(id);
-        setUpdateButton();
+            .innerHTML = getEditProjectView(data);
+        setUpdateButton(data.id);
     } else {
         navigate("/error");
     }
@@ -24,15 +24,15 @@ async function fetchProject(id) {
     }
 }
 
-function setUpdateButton() {
+function setUpdateButton(id) {
     document
         .getElementById("formSubmit")
         .addEventListener("click", async (e) => {
             e.preventDefault();
             const body = makeProjectBody();
             const payload = await getPayload(body);
-            console.log(payload);
-            const response = await fetch("/api/portfolio/update", {
+            const url = `/api/portfolio/update/${id}`;
+            const response = await fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/octet-stream"

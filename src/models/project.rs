@@ -85,12 +85,22 @@ impl Project {
                 acc
             }
         });
-        let query = format!(
-            "
-        INSERT INTO project (name, description, picture, github, skills)
-                VALUES (\"{}\", \"{}\", \"{}\", \"{}\", \"{}\");",
-            self.name, self.description, self.picture, self.github, skills,
-        );
+        let query = if let Some(id) = self.id {
+            format!(
+                "
+                UPDATE project
+                SET name='{}', description='{}', picture='{}', github='{}', skills='{}'
+                WHERE id = {} ;",
+                self.name, self.description, self.picture, self.github, skills, id
+            )
+        } else {
+            format!(
+                "
+                INSERT INTO project (name, description, picture, github, skills)
+                VALUES ('{}', '{}', '{}', '{}', '{}') ;",
+                self.name, self.description, self.picture, self.github, skills,
+            )
+        };
         engine.execute(&query);
         String::from("{\"success\": true}")
     }
@@ -98,8 +108,25 @@ impl Project {
     pub fn delete(&mut self, engine: &mut SqlEngine) {
         if let Some(id) = self.id {
             let query = format!("DELETE FROM project WHERE id = {}", id);
-            println!("{}", query);
             engine.execute(&query);
+        }
+    }
+
+    pub fn update(&mut self, new_project: Project) {
+        if new_project.name.len() > 0 {
+            self.name = new_project.name;
+        }
+        if new_project.description.len() > 0 {
+            self.description = new_project.description;
+        }
+        if new_project.picture.len() > 0 {
+            self.picture = new_project.picture;
+        }
+        if new_project.skills.len() > 0 {
+            self.skills = new_project.skills;
+        }
+        if new_project.github.len() > 0 {
+            self.github = new_project.github;
         }
     }
 

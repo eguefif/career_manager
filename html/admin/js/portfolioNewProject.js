@@ -3,7 +3,7 @@ import { navigate } from '../bundle.js';
 export function loadNewProject() {
     document
         .getElementById("content")
-        .innerHTML = getNewProjectContent();
+    .innerHTML = getNewProjectContent();
     setAddButton();
 }
 
@@ -35,7 +35,7 @@ export function getProjectForm(title, submitButton, data) {
       <!-- Description -->
       <div class="form-group">
         <label for="projectDescription" class="form-label">Project Description:</label>
-        <textarea id="projectDescription" name="projectDescription" class="form-textarea" placeholder="Describe the project" rows="4" value="${description}" required></textarea>
+        <textarea id="projectDescription" name="projectDescription" class="form-textarea" placeholder="Describe the project" rows="4" required>${description}</textarea>
       </div>
 
       <!-- Github url-->

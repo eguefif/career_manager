@@ -32,6 +32,7 @@ impl WebsiteBuilder {
     pub fn build(&mut self) -> Result<(), Box<dyn Error>> {
         let mut engine = SqlEngine::new("./cm.db");
         copy_website_to_dist("./html/website/dev", "./html/website/dist")?;
+        copy_website_to_dist("./html/admin/images/", "./html/website/dist/images")?;
         let mut context: Context = Vec::new();
 
         if let Some(home_context) = add_home_page(&mut engine) {

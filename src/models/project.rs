@@ -85,6 +85,7 @@ impl Project {
                 acc
             }
         });
+        let skills = skills.trim().trim_end_matches(",").to_string();
         let query = if let Some(id) = self.id {
             format!(
                 "

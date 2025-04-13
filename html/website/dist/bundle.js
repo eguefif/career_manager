@@ -188,8 +188,6 @@ function getPortfolioContent() {
             
                     <li>f</li>
             
-                    <li></li>
-            
             </ul>
             </div>
         </div>

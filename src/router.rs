@@ -26,6 +26,10 @@ enum ResourceType {
 /// the action_Route has to match with the name of your app.
 /// Then you need to add the route app function that will route the action to the right controllers
 pub fn route(request: Request) -> Response {
+    println!(
+        "\x1b[32mRequest: {} {} {}\n",
+        request.method, request.uri, request.version
+    );
     let retval = match get_ressource_type_uri(&request.uri) {
         ResourceType::Static => route_static(request.uri.as_str()),
         ResourceType::Api => route_api(request),

@@ -1,4 +1,5 @@
 use crate::connector::SqlEngine;
+use crate::log_error;
 use crate::models::profile::Profile;
 use crate::models::project::Project;
 use crate::rendering::{render, ValueType};
@@ -32,6 +33,10 @@ impl WebsiteBuilder {
     pub fn build(&mut self) -> Result<(), Box<dyn Error>> {
         let mut engine = SqlEngine::new("./cm.db");
         copy_website_to_dist("./html/website/dev", "./html/website/dist")?;
+        if let Err(e) = copy_website_to_dist("./html/admin/images/", "./html/website/dist/images/")
+        {
+            log_error(&format!("Error: copying images failed: {e}"));
+        }
         let mut context: Context = Vec::new();
 
         if let Some(home_context) = add_home_page(&mut engine) {

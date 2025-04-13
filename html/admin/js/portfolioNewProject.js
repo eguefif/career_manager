@@ -15,7 +15,7 @@ function getProjectForm(title, data) {
     const name = data ? data.name : "";
     const description = data ? data.description : "";
     const github = data ? data.github : "";
-    const skills = data ? data.skills.joins(", ") : "";
+    const skills = data ? data.skills.join(", ") : "";
     return `
     <form id="profileForm" action="/submit" method="POST" enctype="multipart/form-data" class="form-container">
       <h1 class="form-heading">${title}</h1>
@@ -34,7 +34,7 @@ function getProjectForm(title, data) {
 
       <!-- Description -->
       <div class="form-group">
-        <label for="projectDescription" class="form-label">Profile Description:</label>
+        <label for="projectDescription" class="form-label">Project Description:</label>
         <textarea id="projectDescription" name="projectDescription" class="form-textarea" placeholder="Tell us about yourself" rows="4" value="${description}" required></textarea>
       </div>
 
@@ -87,13 +87,13 @@ function setAddButton() {
 function makeProjectBody() {
     const name = document.getElementById("projectName").value;
     const description = document.getElementById("projectDescription").value;
-    const picture = document.getElementById("projectPicture").files[0];
+    const picture = document.getElementById("projectPicture")?.files[0]?.name;
     const github = document.getElementById("github").value;
     const skills = document.getElementById("skills").value;
     return JSON.stringify({
         name: name,
         description: description,
-        picture: picture.name,
+        picture: picture ? picture : "",
         github: github,
         skills: processSkills(skills),
     });
@@ -107,18 +107,26 @@ function processSkills(skills) {
 
 async function getPayload(body) {
     const picture = document.getElementById("projectPicture").files[0];
-    const jsonBytes = new TextEncoder().encode(body);
-    const sepBytes = new TextEncoder().encode("###");
-    const fileBytes = await picture.arrayBuffer();
+    if (picture) {
+        const jsonBytes = new TextEncoder().encode(body);
+        const sepBytes = new TextEncoder().encode("###");
+        const fileBytes = await picture.arrayBuffer();
 
-    const buffer = new Uint8Array(jsonBytes.length + sepBytes.length + fileBytes.byteLength);
+        const buffer = new Uint8Array(jsonBytes.length + sepBytes.length + fileBytes.byteLength);
 
-    // Then JSON data
-    buffer.set(jsonBytes);
-    buffer.set(sepBytes, jsonBytes.length);
+        buffer.set(jsonBytes);
+        buffer.set(sepBytes, jsonBytes.length);
 
-    // Then binary image data
-    buffer.set(new Uint8Array(fileBytes), sepBytes.length + jsonBytes.length);
-    return buffer;
+        buffer.set(new Uint8Array(fileBytes), sepBytes.length + jsonBytes.length);
+        return buffer;
+    } else {
+        const jsonBytes = new TextEncoder().encode(body);
+        const sepBytes = new TextEncoder().encode("###");
+        const buffer = new Uint8Array(jsonBytes.length + sepBytes.length);
+
+        buffer.set(jsonBytes);
+        buffer.set(sepBytes, jsonBytes.length);
+        return buffer;
+    }
 
 }

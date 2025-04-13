@@ -22,7 +22,10 @@ pub fn add_project(body: Vec<u8>) -> Option<Response> {
     let (body, image) = get_image(&body);
     println!("In add project: {}", body);
     if let Ok(mut project) = serde_json::from_str::<Project>(&body) {
-        write_image(image, &project.picture);
+        println!("After");
+        if project.picture.len() > 0 {
+            write_image(image, &project.picture);
+        }
         let mut engine = SqlEngine::new("cm.db");
         let result = project.save(&mut engine);
         return Some(Response::new(
@@ -36,28 +39,33 @@ pub fn add_project(body: Vec<u8>) -> Option<Response> {
 }
 
 fn get_image(body: &[u8]) -> (String, &[u8]) {
+    println!("{:?}", body);
     let iter = body.iter();
     let mut idx = 0;
     for (i, _) in iter.enumerate() {
-        if i > 3 {
-            println!("{}", String::from_utf8_lossy(&body[i - 3..i]));
-            if String::from_utf8_lossy(&body[i - 3..i]) == "###" {
+        if i >= 2 {
+            if String::from_utf8_lossy(&body[i - 2..=i]) == "###" {
                 idx = i;
                 break;
             }
         }
     }
-    println!("index: {}", idx);
-    (
-        String::from_utf8_lossy(&body[..idx - 3]).to_string(),
-        &body[idx..],
-    )
+    if idx + 1 == body.len() {
+        (String::from_utf8_lossy(&body[..idx - 2]).to_string(), &[])
+    } else {
+        (
+            String::from_utf8_lossy(&body[..idx - 2]).to_string(),
+            &body[idx + 1..],
+        )
+    }
 }
 
 fn write_image(image: &[u8], filename: &str) {
-    let file = format!("{}/images/{}", BASE_PATH, filename);
-    let mut file = std::fs::File::create(file).unwrap();
-    file.write_all(image).unwrap();
+    if image.len() > 0 {
+        let file = format!("{}/images/{}", BASE_PATH, filename);
+        let mut file = std::fs::File::create(file).unwrap();
+        file.write_all(image).unwrap();
+    }
 }
 
 #[cfg(test)]
@@ -73,5 +81,13 @@ mod tests {
         for (i, value) in image.iter().enumerate() {
             assert_eq!(*value, expected_image[i]);
         }
+        assert!(false);
+    }
+
+    #[test]
+    fn it_should_find_seperator_no_picture() {
+        let payload = [97, 98, 99, 98, 97, 35, 35, 35];
+        let (body, _) = get_image(&payload);
+        assert_eq!(body.as_str(), "abcba");
     }
 }

@@ -88,7 +88,7 @@ impl Project {
                 VALUES (\"{}\", \"{}\", \"{}\", \"{}\", \"{}\");",
             self.name, self.description, self.picture, self.github, skills,
         );
-        println!("{:?}", engine.execute(&query));
+        engine.execute(&query);
         String::from("{\"success\": true}")
     }
 

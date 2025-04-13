@@ -63,13 +63,17 @@ function setAddProjectButton() {
 function setDeleteProjectButton() {
     document
         .querySelectorAll(".delete-project-button")
-        .forEach((btn) => btn.addEventListener("click", (e) => {
+        .forEach((btn) => btn.addEventListener("click", async (e) => {
             e.preventDefault();
             const id = e.target.dataset.id;
             const url = `/api/portfolio/delete/${id}`;
             console.log("HEY: ", url);
-            fetch(url);
-            navigate("/portfolio/index");
+            const response = await fetch(url);
+            if (response.status < 400) {
+                navigate("/portfolio/index");
+            } else {
+                navigate("/error");
+            }
         }));
 
 }

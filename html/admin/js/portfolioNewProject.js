@@ -8,10 +8,10 @@ export function loadNewProject() {
 }
 
 function getNewProjectContent() {
-    return getProjectForm("Add Project");
+    return getProjectForm("Add Project", "Add project");
 }
 
-function getProjectForm(title, data) {
+export function getProjectForm(title, submitButton, data) {
     const name = data ? data.name : "";
     const description = data ? data.description : "";
     const github = data ? data.github : "";
@@ -53,7 +53,7 @@ function getProjectForm(title, data) {
 
       <!-- Submit Button -->
       <div class="form-group button-group">
-        <button id="formSubmit" type="submit" class="form-button">Submit</button>
+        <button id="formSubmit" type="submit" class="form-button">${submitButton}</button>
       </div>
     </form>
     `;
@@ -66,7 +66,6 @@ function setAddButton() {
             e.preventDefault();
             const body = makeProjectBody();
             const payload = await getPayload(body);
-            console.log(payload);
             const response = await fetch("/api/portfolio/new", {
                 method: "POST",
                 headers: {
@@ -74,7 +73,6 @@ function setAddButton() {
                 },
                 body: payload,
             });
-            console.log("HEY:", response);
 
             if (response.status >= 400) {
                 navigate("/error");
@@ -84,7 +82,7 @@ function setAddButton() {
         });
 }
 
-function makeProjectBody() {
+export function makeProjectBody() {
     const name = document.getElementById("projectName").value;
     const description = document.getElementById("projectDescription").value;
     const picture = document.getElementById("projectPicture")?.files[0]?.name;
@@ -105,7 +103,7 @@ function processSkills(skills) {
 
 }
 
-async function getPayload(body) {
+export async function getPayload(body) {
     const picture = document.getElementById("projectPicture").files[0];
     if (picture) {
         const jsonBytes = new TextEncoder().encode(body);

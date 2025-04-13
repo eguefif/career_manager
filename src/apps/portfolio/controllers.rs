@@ -1,5 +1,5 @@
 use crate::router::static_routes::BASE_PATH;
-use career_manager::{connector::SqlEngine, models::project::Project};
+use career_manager::{connector::SqlEngine, log_error, models::project::Project};
 use serde_json;
 use std::io::Write;
 use webserv_rs::{content_type::ContentType, response::Response};
@@ -45,7 +45,7 @@ pub fn update_project(body: Vec<u8>, id: String) -> Option<Response> {
                         ContentType::Json,
                     ));
                 }
-                Err(e) => eprintln!("Json error: {e}"),
+                Err(e) => log_error(&format!("Error: json error: {e}")),
             }
         }
     }
@@ -106,7 +106,7 @@ pub fn add_project(body: Vec<u8>) -> Option<Response> {
                 ContentType::Json,
             ));
         }
-        Err(e) => eprintln!("Error serder: {e}"),
+        Err(e) => log_error(&format!("Error: serde: {e}")),
     }
 
     None

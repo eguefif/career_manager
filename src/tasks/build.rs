@@ -1,3 +1,4 @@
+use career_manager::log_error;
 use career_manager::website_builder::WebsiteBuilder;
 
 fn main() {
@@ -5,6 +6,6 @@ fn main() {
         std::fs::read_to_string("config.txt").expect("Error: impossible to read config file");
     let mut cm = WebsiteBuilder::new(config);
     if let Err(e) = cm.build() {
-        eprintln!("Error: building failed: {e}");
+        log_error(&format!("Error: building failed: {e}"));
     }
 }

@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [[bin]]
+name = "docker"
+path = "./src/docker.rs"
+
+[[bin]]
 name = "explore"
 path = "./src/explore.rs"
 

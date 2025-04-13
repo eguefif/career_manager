@@ -1,5 +1,6 @@
 use crate::router::api_routes::route_api;
 use crate::router::static_routes::route_static;
+use career_manager::log_error;
 use webserv_rs::content_type::ContentType;
 use webserv_rs::request::Request;
 use webserv_rs::response::Response;
@@ -37,7 +38,7 @@ pub fn route(request: Request) -> Response {
         );
         response
     } else {
-        eprintln!("Response: 400\n");
+        log_error(&format!("Error: error Bad Request400"));
         Response::new(400, vec![], vec![], ContentType::TextHtml)
     }
 }

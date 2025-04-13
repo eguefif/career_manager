@@ -1,12 +1,13 @@
 use webserv_rs::{request::Request, response::Response};
 
-use super::controllers::{build, edit_profile, profile};
+use super::controllers::{edit_profile, preview, profile, stop_preview};
 
 pub fn route(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
     let action = get_controller_action(&request.uri)?;
     match action {
-        "build" => build(),
+        "preview" => preview(),
+        "stop" => stop_preview(),
         "profile" => profile(),
         "edit" => edit_profile(request.body),
         _ => None,

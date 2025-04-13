@@ -1,6 +1,6 @@
 use webserv_rs::{request::Request, response::Response};
 
-use super::controllers::{add_project, delete_project, index};
+use super::controllers::{add_project, delete_project, index, show_project, update_project};
 
 pub fn route(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
@@ -9,6 +9,8 @@ pub fn route(request: Request) -> Option<Response> {
         "index" => index(),
         "new" => add_project(request.body),
         "delete" => delete_project(get_id(&request.uri)),
+        "show" => show_project(get_id(&request.uri)),
+        "update" => update_project(request.body, get_id(&request.uri)),
         _ => None,
     }
 }

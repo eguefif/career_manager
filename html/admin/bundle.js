@@ -24,15 +24,16 @@ function initRouter() {
 export function navigate(route) {
     const routes = [
         { title: "Home", path: "/" },
-        { title: "Portfolio", path: "/portfolio/index" },
-        { title: "Portfolio", path: "/portfolio/new" },
+        { title: "Portfolio index", path: "/portfolio/index" },
+        { title: "Portfolio new", path: "/portfolio/new" },
+        { title: "Portfolio list", path: "/portfolio/edit" },
         { title: "Blog", path: "/blog" },
         { title: "Error", path: "/error" },
     ];
 
-    const routeData = routes.find((data) => data.path == route);
+    const routeData = routes.find((data) => route.includes(data.path));
     if (routeData) {
-        history.pushState({}, routeData.title, routeData.path);
+        history.pushState({}, routeData.title, route);
     } else {
         history.pushState({}, "Home", "/");
     }
@@ -41,23 +42,41 @@ export function navigate(route) {
 
 async function handleRoute() {
     const route = window.location.pathname;
-    switch (route) {
-        case "/portfolio/index":
-            loadPortfolioPage();
+    const firstLevelRoute = extractRoute(route, 0);
+    switch (firstLevelRoute) {
+        case "portfolio":
+            const secondLevelRoute = extractRoute(route, 1);
+            switch (secondLevelRoute) {
+                case "index":
+                    loadPortfolioPage();
+                    break;
+                case "new":
+                    loadPortfolioPage("new");
+                    break;
+                case "edit":
+                    const id = extractRoute(route, 2);
+                    loadPortfolioPage("edit", id);
+                    break;
+            }
             break;
-        case "/portfolio/new":
-            loadPortfolioPage("new");
-            break;
-        case "/blog":
+        case "blog":
             loadBlog();
             break;
-        case "/error":
+        case "error":
             loadErrorPage();
             break;
         default:
             await loadHomePage();
             break;
     }
+}
+
+export function extractRoute(uri, level) {
+    if (uri[0] == "/") {
+        uri = uri.substring(1);
+    }
+    const splits = uri.split("/");
+    return splits[level];
 }
 
 function loadBlog() {

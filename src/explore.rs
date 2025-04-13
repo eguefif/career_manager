@@ -14,7 +14,6 @@ fn copy_dir(path: &Path) {
             if file.is_dir() {
                 if let Some(new_file) = file.to_str() {
                     let new_path = new_file.replace("website", "dist_test");
-                    println!("DIR: {:?}", new_path);
                     let _ = fs::create_dir(new_path);
                 }
                 copy_dir(&file);
@@ -22,7 +21,6 @@ fn copy_dir(path: &Path) {
                 if let Some(file) = file.to_str() {
                     let new_path = file.replace("website", "dist_test");
                     let _ = fs::copy(file, new_path.clone());
-                    println!("{:?}", new_path);
                 }
             }
         }

@@ -18,6 +18,63 @@ pub fn index() -> Option<Response> {
     None
 }
 
+pub fn update_project(body: Vec<u8>, id: String) -> Option<Response> {
+    if id.len() > 0 && is_valid_id(&id) {
+        let id = id.parse::<i64>().unwrap();
+        let mut engine = SqlEngine::new("cm.db");
+        if let Some(mut project) = Project::find(&mut engine, id) {
+            let (body, image) = get_image(&body);
+            match serde_json::from_str::<Project>(&body) {
+                Ok(new_project) => {
+                    let old_picture = project.picture.clone();
+                    if new_project.picture.len() > 0 {
+                        write_image(image, &new_project.picture);
+                        if old_picture.len() > 0 {
+                            let _ = std::fs::remove_file(format!(
+                                "{}/images/{}",
+                                BASE_PATH, old_picture
+                            ));
+                        }
+                    }
+                    project.update(new_project);
+                    let ret = project.save(&mut engine);
+                    return Some(Response::new(
+                        200,
+                        ret.as_bytes().to_vec(),
+                        vec![],
+                        ContentType::Json,
+                    ));
+                }
+                Err(e) => eprintln!("Json error: {e}"),
+            }
+        }
+    }
+    None
+}
+
+fn is_valid_id(id: &str) -> bool {
+    for c in id.chars().into_iter() {
+        if !c.is_ascii_digit() {
+            return false;
+        }
+    }
+    true
+}
+
+pub fn show_project(id: String) -> Option<Response> {
+    let id = id.parse::<i64>().unwrap();
+    let mut engine = SqlEngine::new("cm.db");
+    if let Some(project) = Project::find(&mut engine, id) {
+        return Some(Response::new(
+            200,
+            serde_json::to_string(&project).unwrap().as_bytes().to_vec(),
+            vec![],
+            ContentType::Json,
+        ));
+    }
+    None
+}
+
 pub fn delete_project(id: String) -> Option<Response> {
     let id = id.parse::<i64>().unwrap();
     let mut engine = SqlEngine::new("cm.db");

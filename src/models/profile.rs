@@ -65,7 +65,6 @@ SET display_name='{}', picture='{}', description='{}'
 WHERE id = {};",
                 self.display_name, self.picture, self.description, id
             );
-            println!("{}", query);
             engine.execute(query.as_str());
             "{\"success\": true}".to_string()
         } else {

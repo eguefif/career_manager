@@ -1,7 +1,7 @@
 use crate::connector::{SqlEngine, SqlType};
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Project {
     pub name: String,
     pub description: String,
@@ -12,9 +12,19 @@ pub struct Project {
 }
 
 impl Project {
-    pub fn all(engine: &mut SqlEngine) -> Vec<Self> {
+    pub fn find(engine: &mut SqlEngine, id: i64) -> Self {
+        let results = Self::all(engine, Some(id));
+        let project: &Project = &results[0];
+        project.clone()
+    }
+
+    pub fn all(engine: &mut SqlEngine, id: Option<i64>) -> Vec<Self> {
         let mut retval = Vec::new();
-        let results = engine.execute("SELECT * FROM project");
+        let results = if let Some(id) = id {
+            engine.execute(&format!("SELECT * FROM project WHERE id = {}", id))
+        } else {
+            engine.execute("SELECT * FROM project")
+        };
         for result in results {
             let name = if let SqlType::Text(value) = result.get("name").unwrap() {
                 value.to_string()

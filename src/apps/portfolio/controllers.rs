@@ -6,7 +6,7 @@ use webserv_rs::{content_type::ContentType, response::Response};
 
 pub fn index() -> Option<Response> {
     let mut engine = SqlEngine::new("cm.db");
-    let projects = Project::all(&mut engine);
+    let projects = Project::all(&mut engine, None);
     if let Ok(projects) = serde_json::to_string(&projects) {
         return Some(Response::new(
             200,
@@ -19,6 +19,10 @@ pub fn index() -> Option<Response> {
 }
 
 pub fn delete_project(id: String) -> Option<Response> {
+    let id = id.parse::<i64>().unwrap();
+    let mut engine = SqlEngine::new("cm.db");
+    let mut project = Project::find(&mut engine, id);
+    project.delete(&mut engine);
     None
 }
 

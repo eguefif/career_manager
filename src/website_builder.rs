@@ -102,7 +102,7 @@ fn add_home_page(engine: &mut SqlEngine) -> Option<Context> {
 }
 
 fn add_project_page(engine: &mut SqlEngine) -> Option<Context> {
-    let projects_data = Project::all(engine);
+    let projects_data = Project::all(engine, None);
 
     let mut context: Context = vec![];
     let mut projects: Vec<ValueType> = Vec::new();

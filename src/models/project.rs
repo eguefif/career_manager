@@ -61,22 +61,24 @@ impl Project {
         let skills = self
             .skills
             .iter()
-            .fold(String::new(), |acc, skill| format!("{},{}", acc, skill));
-        engine.execute(
-            format!(
-                "
+            .fold(String::new(), |acc, skill| format!("{}{},", acc, skill));
+        let query = format!(
+            "
         INSERT INTO project (name, description, picture, github, skills)
-                VALUES ({}, {}, {}, {}, {});",
-                self.name, self.description, self.picture, self.github, skills,
-            )
-            .as_str(),
+                VALUES (\"{}\", \"{}\", \"{}\", \"{}\", \"{}\");",
+            self.name, self.description, self.picture, self.github, skills,
         );
+        println!("QUERY: \n{}", query);
+        engine.execute(&query);
         String::from("{\"success\": true}")
     }
 
     fn sanitize(&mut self) {
         self.name = self.name.replace("\'", "\'\'");
         self.description = self.description.replace("\'", "\'\'");
+        self.picture = self.picture.replace("\'", "\'\'");
+        self.picture = self.picture.replace("\'", "\'\'");
+        self.picture = self.picture.replace("\'", "\'\'");
         self.skills = self
             .skills
             .iter()

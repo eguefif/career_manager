@@ -83,13 +83,13 @@ function setAddButton() {
 function makeProjectBody() {
     const name = document.getElementById("projectName").value;
     const description = document.getElementById("projectDescription").value;
-    const picture = document.getElementById("projectPicture").value;
+    //const picture = document.getElementById("projectPicture").src;
     const github = document.getElementById("github").value;
     const skills = document.getElementById("skills").value;
     return JSON.stringify({
         name: name,
         description: description,
-        picture: picture,
+        picture: "test",
         github: github,
         skills: processSkills(skills),
     });

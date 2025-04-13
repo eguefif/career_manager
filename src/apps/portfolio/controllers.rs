@@ -23,7 +23,7 @@ pub fn add_project(body: Vec<u8>) -> Option<Response> {
         println!("After");
         let mut engine = SqlEngine::new("cm.db");
         let result = project.save(&mut engine);
-        Some(Response::new(
+        return Some(Response::new(
             200,
             result.as_bytes().to_vec(),
             vec![],

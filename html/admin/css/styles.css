@@ -173,7 +173,7 @@ a:focus {
     transition: color 0.3s ease;
 }
 
-.project-box .delete-button {
+.project-box .delete-project-button {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -193,7 +193,7 @@ a:focus {
   transition: background-color 0.2s ease;
 }
 
-.project-box .delete-button:hover {
+.project-box .delete-project-button:hover {
   background-color: #1d4ed8; /* Tailwind's blue-700 */
 }
 

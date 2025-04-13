@@ -46,8 +46,8 @@ impl Project {
             } else {
                 "".to_string()
             };
-            let id = if let SqlType::Text(value) = result.get("id").unwrap() {
-                value.parse::<i64>().unwrap()
+            let id = if let SqlType::Int(value) = result.get("id").unwrap() {
+                *value
             } else {
                 0
             };
@@ -95,6 +95,7 @@ impl Project {
     pub fn delete(&mut self, engine: &mut SqlEngine) {
         if let Some(id) = self.id {
             let query = format!("DELETE FROM project WHERE id = {}", id);
+            println!("{}", query);
             engine.execute(&query);
         }
     }

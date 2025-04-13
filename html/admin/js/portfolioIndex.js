@@ -3,6 +3,7 @@ import { navigate } from "../bundle.js";
 export async function loadIndex() {
     const response = await fetch("/api/portfolio/index");
     const data = await response.json();
+    console.log(data);
     document.getElementById("content").innerHTML = getPortfolioContent(data);
     setAddProjectButton();
     setDeleteProjectButton();
@@ -28,7 +29,7 @@ ${projects}
 function makeProject(project) {
     return `
     <div class="project-box">
-        <button id="deleteProjectButton" value="${project.id}" type="submit" class="delete-button">delete</button>
+        <div id="deleteProjectButton" data-id="${project.id}" type="submit" class="delete-project-button">delete</div>
         <a href="${project.github}" class="github-link" target="_blank">
             <img src="images/github.svg" alt="GitHub" class="github-icon">
         </a>
@@ -61,11 +62,14 @@ function setAddProjectButton() {
 
 function setDeleteProjectButton() {
     document
-        .getElementById("deleteProjectButton")
-        .addEventListener("click", (e) => {
+        .querySelectorAll(".delete-project-button")
+        .forEach((btn) => btn.addEventListener("click", (e) => {
             e.preventDefault();
-            const id = e.target.value;
-            fetch(`/api/portfolio/delete/${id}`);
-        });
+            const id = e.target.dataset.id;
+            const url = `/api/portfolio/delete/${id}`;
+            console.log("HEY: ", url);
+            fetch(url);
+            navigate("/portfolio/index");
+        }));
 
 }

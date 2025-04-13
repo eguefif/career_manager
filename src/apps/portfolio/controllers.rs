@@ -23,15 +23,18 @@ pub fn delete_project(id: String) -> Option<Response> {
     let mut engine = SqlEngine::new("cm.db");
     let mut project = Project::find(&mut engine, id);
     project.delete(&mut engine);
-    None
+    Some(Response::new(
+        200,
+        "{\"sucess\": true}".as_bytes().to_vec(),
+        vec![],
+        ContentType::Json,
+    ))
 }
 
 pub fn add_project(body: Vec<u8>) -> Option<Response> {
     let (body, image) = get_image(&body);
-    println!("In add project: {}", body);
     match serde_json::from_str::<Project>(&body) {
         Ok(mut project) => {
-            println!("After");
             if project.picture.len() > 0 {
                 write_image(image, &project.picture);
             }

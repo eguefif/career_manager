@@ -175,6 +175,25 @@ function getPortfolioContent() {
             </div>
         </div>
     
+        <div class="project-box">
+        <a href="f" class="github-link" target="_blank">
+            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+        </a>
+
+        <img src="images/image.jpg" alt="Project 1" class="project-img">
+            <div class="project-info">
+            <h2 class="project-title">a</h2>
+            <p class="project-description">f</p>
+            <ul class="skills-list">
+            
+                    <li>f</li>
+            
+                    <li></li>
+            
+            </ul>
+            </div>
+        </div>
+    
     </section>
 
     `

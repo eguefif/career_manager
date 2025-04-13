@@ -25,6 +25,7 @@ impl SqlEngine {
     }
 
     pub fn execute(&mut self, query: &str) -> SqlResult {
+        println!("\x1b[94mDB query: {query}\x1b[0m\n");
         let mut retval: SqlResult = Vec::new();
         let mut statement = self.conn.prepare(query).unwrap();
         while let Ok(State::Row) = statement.next() {

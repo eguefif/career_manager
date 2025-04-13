@@ -4,9 +4,10 @@ use std::collections::HashMap;
 
 pub type SqlResult = Vec<HashMap<String, SqlType>>;
 
+#[derive(Debug)]
 pub enum SqlType {
     Text(String),
-    Num(f64),
+    Int(i64),
     Bool(bool),
     Binary(Vec<u8>),
     Null,
@@ -32,6 +33,7 @@ impl SqlEngine {
                 let col_type = statement.column_type(i).unwrap();
                 let value = match col_type {
                     Type::String => SqlType::Text(statement.read::<String, usize>(i).unwrap()),
+                    Type::Integer => SqlType::Int(statement.read::<i64, usize>(i).unwrap()),
                     _ => panic!("Not handled"),
                 };
                 row.insert(col.to_string(), value);

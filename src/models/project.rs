@@ -8,6 +8,7 @@ pub struct Project {
     pub picture: String,
     pub skills: Vec<String>,
     pub github: String,
+    pub id: Option<i64>,
 }
 
 impl Project {
@@ -35,6 +36,11 @@ impl Project {
             } else {
                 "".to_string()
             };
+            let id = if let SqlType::Text(value) = result.get("id").unwrap() {
+                value.parse::<i64>().unwrap()
+            } else {
+                0
+            };
             let skills = if let SqlType::Text(value) = result.get("skills").unwrap() {
                 let mut skills = Vec::new();
                 let splits = value.split(",");
@@ -51,6 +57,7 @@ impl Project {
                 picture,
                 skills,
                 github,
+                id: Some(id),
             });
         }
         retval
@@ -71,8 +78,15 @@ impl Project {
                 VALUES (\"{}\", \"{}\", \"{}\", \"{}\", \"{}\");",
             self.name, self.description, self.picture, self.github, skills,
         );
-        engine.execute(&query);
+        println!("{:?}", engine.execute(&query));
         String::from("{\"success\": true}")
+    }
+
+    pub fn delete(&mut self, engine: &mut SqlEngine) {
+        if let Some(id) = self.id {
+            let query = format!("DELETE FROM project WHERE id = {}", id);
+            engine.execute(&query);
+        }
     }
 
     fn sanitize(&mut self) {

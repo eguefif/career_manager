@@ -1,9 +1,39 @@
 use std::process::Command;
 
 use career_manager::{
-    connector::SqlEngine, log_error, models::profile::Profile, website_builder::WebsiteBuilder,
+    connector::SqlEngine,
+    log_error,
+    models::profile::Profile,
+    website_builder::{copy_website_to_dist, WebsiteBuilder},
 };
 use webserv_rs::{content_type::ContentType, response::Response};
+
+pub fn publish() -> Option<Response> {
+    let config =
+        std::fs::read_to_string("config.txt").expect("Error: impossible to read config file");
+    let mut cm = WebsiteBuilder::new(config);
+    let body = if let Err(e) = cm.build() {
+        log_error(&format!("Error: action building failed: {e}"));
+        "{\"success\": false}".to_string()
+    } else {
+        if let Err(e) = copy_website_to_dist("./html/website/dist", "/home/eguefif/lab/website") {
+            log_error(&format!("Error: copy to website failed: {e}"));
+            return None;
+        }
+        push_git();
+        "{\"success\": true}".to_string()
+    };
+    Some(Response::new(
+        200,
+        body.as_bytes().to_vec(),
+        vec![],
+        ContentType::Json,
+    ))
+}
+
+fn push_git() {
+    let _ = Command::new("sh").arg("run_git.sh").status();
+}
 
 pub fn stop_preview() -> Option<Response> {
     let body = if let Ok(()) = run_stop_preview() {

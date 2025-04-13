@@ -50,7 +50,7 @@ impl WebsiteBuilder {
     }
 }
 
-fn copy_website_to_dist(src: &str, dest: &str) -> Result<(), Box<dyn Error>> {
+pub fn copy_website_to_dist(src: &str, dest: &str) -> Result<(), Box<dyn Error>> {
     let src_path = Path::new(src);
     let dest_path = Path::new(dest);
     if !dest_path.exists() {

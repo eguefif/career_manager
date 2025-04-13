@@ -99,7 +99,7 @@ function getPortfolioContent() {
         <img src="images/spheres.png" alt="Project 1" class="project-img">
             <div class="project-info">
             <h2 class="project-title">Ray tracer</h2>
-            <p class="project-description">This 42 project is all about Ray Tracing. I worked especially on the implementation of different figure: sphere, place, cylinder, triangle. We optimized rendering by implementing a sample accumulator. We also take advantage of multithreading to render ray by batch.</p>
+            <p class="project-description">This 42 project is all about Ray Tracing. I worked mainly on implementing different figures: sphere, plane, cylinder, and triangle. We optimized rendering by implementing a sample accumulator. We also took advantage of multithreading to render rays in batches.</p>
             <ul class="skills-list">
             
                     <li>language C</li>
@@ -120,14 +120,14 @@ function getPortfolioContent() {
         <img src="images/marc21.jpg" alt="Project 1" class="project-img">
             <div class="project-info">
             <h2 class="project-title">Marc-record-ex</h2>
-            <p class="project-description">I made this project for my work at Demarque. This project bind a marc record library with an elixir package. When I used this project in the parser, I had to optimize memory usage.</p>
+            <p class="project-description">I made this project for my work at Demarque. It binds a Marc record library written in Rust with an Elixir package. When I used this project in the parser, I had to optimize memory usage to avoid upgrading our pod. I use streaming techniques and find a way to make it work between the Rust bindings and Elixir code.</p>
             <ul class="skills-list">
             
                     <li>Rust</li>
             
                     <li>Rustler</li>
             
-                    <li>memory</li>
+                    <li>Elixir</li>
             
             </ul>
             </div>
@@ -141,7 +141,7 @@ function getPortfolioContent() {
         <img src="images/monkey.gif" alt="Project 1" class="project-img">
             <div class="project-info">
             <h2 class="project-title">Monkey Interpreter</h2>
-            <p class="project-description">This project was made when I was reading the book, 'Make a Monkey interpreter in Go. I did in Rust. I've learned a lot about parsing and recursion.</p>
+            <p class="project-description">This project was made when I was reading the book 'Make a Monkey interpreter in Go. ' I did it in Rust. I've learned a lot about parsing and recursion. It was also an opportunity to learn about Rust smart pointers.</p>
             <ul class="skills-list">
             
                     <li>Rust</li>
@@ -160,7 +160,7 @@ function getPortfolioContent() {
         <img src="images/tetris.jpg" alt="Project 1" class="project-img">
             <div class="project-info">
             <h2 class="project-title">GameBoy Emulator</h2>
-            <p class="project-description">This GameBoy emulator is able make Tetris works. This was not an easy project. There is no official documentation but there is a lot of resource you have to gather yourself. It was the occasion to learn by looking at other people code and understand the logic.</p>
+            <p class="project-description">This Game Boy emulator can run Tetris. This was not an easy project. There is no official documentation, but you have to gather a lot of resources yourself. It was an opportunity to learn by looking at other people's code and understanding the logic.</p>
             <ul class="skills-list">
             
                     <li>Rust</li>
@@ -170,23 +170,6 @@ function getPortfolioContent() {
                     <li>System Interrupt</li>
             
                     <li>Low-level Rendering</li>
-            
-            </ul>
-            </div>
-        </div>
-    
-        <div class="project-box">
-        <a href="f" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/image.jpg" alt="Project 1" class="project-img">
-            <div class="project-info">
-            <h2 class="project-title">Hello World 2</h2>
-            <p class="project-description">Hello world description</p>
-            <ul class="skills-list">
-            
-                    <li>f</li>
             
             </ul>
             </div>

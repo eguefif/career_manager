@@ -5,22 +5,36 @@ use webserv_rs::response::Response;
 pub const BASE_PATH: &str = "./html/admin/";
 
 pub fn route_static(uri: &str) -> Option<Response> {
-    let static_ressource = match uri {
-        "/" => Some(get_index()),
-        "/portfolio" => Some(get_index()),
-        "/portfolio/index" => Some(get_index()),
-        "/portfolio/bundle.js" => Some(get_bundle()),
-        "/portfolio/new" => Some(get_index()),
-        "/blog" => Some(get_index()),
-        "/error" => Some(get_index()),
-        "/bundle.js" => Some(get_bundle()),
-        _ => get_asset(uri),
+    println!("URI: {}", uri);
+    let static_ressource = if is_asset_request(uri) {
+        println!("ASSET");
+        get_asset(uri)
+    } else {
+        println!("route");
+        if uri.contains("bundle.js") {
+            Some(get_bundle())
+        } else {
+            Some(get_index())
+        }
     };
     if let Some((body, content_type)) = static_ressource {
         Some(Response::new(200, body, vec![], content_type))
     } else {
         None
     }
+}
+
+fn is_asset_request(uri: &str) -> bool {
+    if uri.contains("bundle.js") {
+        return false;
+    }
+    let asset_word = ["css", "images", "js"];
+    for word in asset_word {
+        if uri.split(word).collect::<Vec<&str>>().len() > 1 {
+            return true;
+        }
+    }
+    false
 }
 
 fn get_index() -> (Vec<u8>, ContentType) {

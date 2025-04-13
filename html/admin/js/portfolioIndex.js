@@ -5,6 +5,7 @@ export async function loadIndex() {
     const data = await response.json();
     document.getElementById("content").innerHTML = getPortfolioContent(data);
     setAddProjectButton();
+    setDeleteProjectButton();
 }
 
 function getPortfolioContent(data) {
@@ -27,6 +28,7 @@ ${projects}
 function makeProject(project) {
     return `
     <div class="project-box">
+        <button id="deleteProjectButton" value="${project.id}" type="submit" class="delete-button">delete</button>
         <a href="${project.github}" class="github-link" target="_blank">
             <img src="images/github.svg" alt="GitHub" class="github-icon">
         </a>
@@ -53,6 +55,17 @@ function setAddProjectButton() {
         .addEventListener("click", (e) => {
             e.preventDefault();
             navigate("/portfolio/new");
+        });
+
+}
+
+function setDeleteProjectButton() {
+    document
+        .getElementById("deleteProjectButton")
+        .addEventListener("click", (e) => {
+            e.preventDefault();
+            const id = e.target.value;
+            fetch(`/api/portfolio/delete/${id}`);
         });
 
 }

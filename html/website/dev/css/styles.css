@@ -1,5 +1,6 @@
 @import "./homepage.css";
 @import "./portfolio.css";
+@import "./footer.css";
 
 body {
     background-color: #252627;
@@ -18,6 +19,7 @@ h1 {
 h2 {
     color: #A1683A;
     font-size: 1.75em;
+    text-align: center;
 }
 
 p {

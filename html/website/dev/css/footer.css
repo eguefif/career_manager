@@ -1,0 +1,28 @@
+footer {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.footer-icons a {
+  color: white;
+  text-decoration: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.footer-icons a:hover {
+  transform: scale(1.1);
+}
+
+.footer-icons svg {
+    width: 32px;
+    height: 32px;
+  fill: white;
+  display: block;
+overflow: visible;
+}

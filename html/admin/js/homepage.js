@@ -23,21 +23,19 @@ export async function loadHomePage(edit = false, editBody = {}) {
     setStopPreviewButton();
     setEditButton(edit);
     setProfileButton(edit);
+    setPublishButton(edit);
 }
 
 async function isPreviewRunning() {
     try {
         const response = await fetch("http://127.0.0.1:8000", { mode: "no-cors" });
         if (response.status >= 400) {
-            console.log("response false");
             return false;
         } else {
-            console.log("response true");
             return true;
         }
     }
     catch (_) {
-        console.log("catch error");
         return false;
     }
 }
@@ -51,6 +49,7 @@ function getHomePageLayout() {
             <button id="stopPreviewButton" type="submit" href="" class="button">Stop Preview</button>
             <button id="editProfileButton" type="submit" href="" class="button switchable">Edit Profile</button>
             <button id="seeProfileButton" type="submit" href="" class="button switchable">See Profile</button>
+            <button id="publishButton" type="submit" href="" class="button switchable">Publish</button>
         </div>
         <div id="homePageContent">
     </section>
@@ -236,4 +235,26 @@ function makeFormBody(data) {
         picture: picture,
         id: data["id"]
     });
+}
+
+function setPublishButton() {
+    document
+        .getElementById("publishButton")
+        .addEventListener("click", async (e) => {
+            e.preventDefault();
+            const response = await fetch("/api/homepage/publish");
+            if (response.status >= 400) {
+                navigate("/error");
+            }
+            else {
+                const data = await response.json();
+                if (data.success == true) {
+                    alert("The website was successfully pushed on GitHub");
+                    navigate("/");
+                } else {
+                    alert("Failed to push on GitHub");
+                    navigate("/error");
+                }
+            }
+        });
 }

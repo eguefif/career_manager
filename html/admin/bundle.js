@@ -1,6 +1,7 @@
 import { loadHomePage } from "./js/homepage.js";
 import { loadPortfolioPage } from "./js/portfolio.js";
 import { loadErrorPage } from "./js/errorpage.js";
+import { loadBlog } from "./js/blog.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("popstate", handleRoute);
@@ -27,7 +28,8 @@ export function navigate(route) {
         { title: "Portfolio index", path: "/portfolio/index" },
         { title: "Portfolio new", path: "/portfolio/new" },
         { title: "Portfolio list", path: "/portfolio/edit" },
-        { title: "Blog", path: "/blog" },
+        { title: "Blog", path: "/blog/index" },
+        { title: "Blog new", path: "/blog/new" },
         { title: "Error", path: "/error" },
     ];
 
@@ -43,9 +45,9 @@ export function navigate(route) {
 async function handleRoute() {
     const route = window.location.pathname;
     const firstLevelRoute = extractRoute(route, 0);
+    const secondLevelRoute = extractRoute(route, 1);
     switch (firstLevelRoute) {
         case "portfolio":
-            const secondLevelRoute = extractRoute(route, 1);
             switch (secondLevelRoute) {
                 case "index":
                     loadPortfolioPage();
@@ -57,10 +59,23 @@ async function handleRoute() {
                     const id = extractRoute(route, 2);
                     loadPortfolioPage("edit", id);
                     break;
+                default:
+                    loadBlog();
+                    break;
             }
             break;
         case "blog":
-            loadBlog();
+            switch (secondLevelRoute) {
+                case "index":
+                    await loadBlog("index");
+                    break;
+                case "new":
+                    await loadBlog("new");
+                    break;
+                default:
+                    await loadBlog("index");
+                    break;
+            }
             break;
         case "error":
             loadErrorPage();
@@ -79,17 +94,3 @@ export function extractRoute(uri, level) {
     return splits[level];
 }
 
-function loadBlog() {
-    document.getElementById("content").innerHTML = getBlogContent();
-}
-
-function getBlogContent() {
-    return `
-        <section id="blog-section">
-            <h1>Blog</h1>
-            <p>This section is under work. You can read my articles on 
-            <a href="https://medium.com/@eguefif"> medium</a>.
-            </p>
-        </section>
-        `;
-}

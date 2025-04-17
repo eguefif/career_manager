@@ -19,6 +19,7 @@ fn main() -> std::io::Result<()> {
 fn get_create_tables_query() -> String {
     "CREATE TABLE project (id INTEGER PRIMARY KEY, name TEXT, description TEXT, picture TEXT, skills TEXT, github TEXT);
     CREATE TABLE profile(id INTEGER, display_name TEXT, picture TEXT, description TEXT);
+    CREATE TABLE article(id INTEGER, title TEXT, content TEXT, date TEXT);
     "
     .to_string()
 }

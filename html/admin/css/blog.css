@@ -3,3 +3,8 @@
     padding: 40px;
 }
 
+.button.new-article {
+    margin-inline: auto;
+    text-align: center;
+}
+

@@ -1,11 +1,12 @@
 use crate::connector::{SqlEngine, SqlType};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Article {
     pub title: String,
     pub content: String,
-    pub date: String,
+    pub date: Option<String>,
 }
 
 impl Article {
@@ -44,9 +45,30 @@ impl Article {
             retval.push(Self {
                 title,
                 content,
-                date,
+                date: Some(date),
             });
         }
         retval
+    }
+
+    pub fn save(&mut self, engine: &mut SqlEngine) -> String {
+        self.sanitize();
+        let now: DateTime<Utc> = Utc::now();
+        let date = format!("{}", now.format("%A, %d %m %Y %H:%M:%S GMT"));
+        let query = format!(
+            "
+INSERT INTO article (title, content, date), VALUE(\'{}\', \'{}\', \'{}\'
+            ",
+            self.title, self.content, date
+        );
+        engine.execute(&query);
+        String::from("{\"success\": true}")
+    }
+
+    fn sanitize(&mut self) {
+        self.title = self.title.replace("\'", "\'\'");
+        if let Some(date) = &self.date {
+            self.date = Some(date.replace("\'", "\'\'"));
+        }
     }
 }

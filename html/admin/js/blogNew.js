@@ -21,7 +21,7 @@ function getNewArticleForm() {
       </div>
 
       <div class="form-group">
-        <textarea id="content" name="content" class="form-textarea" rows="40" cols="80" required></textarea>
+        <textarea id="content-form" name="content" class="form-textarea" rows="40" cols="80" required></textarea>
       </div>
 
     </form>
@@ -33,9 +33,11 @@ function setSaveArticleButton() {
         .getElementById("formSubmit")
         .addEventListener("click", (e) => {
             e.preventDefault();
-            const body = makeFormBody();
+            const body = JSON.stringify(makeFormBody());
+            console.log(body);
             const response = fetch("/api/blog/new", {
-                body: JSON.stringify(body),
+                method: "POST",
+                body: body,
             });
             if (response.status >= 400) {
                 navigate("/error");
@@ -48,6 +50,6 @@ function setSaveArticleButton() {
 function makeFormBody() {
     return {
         title: document.getElementById("title").value,
-        content: document.getElementById("content").value,
+        content: document.getElementById("content-form").value,
     };
 }

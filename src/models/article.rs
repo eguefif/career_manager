@@ -7,6 +7,7 @@ pub struct Article {
     pub title: String,
     pub content: String,
     pub date: Option<String>,
+    pub id: Option<i64>,
 }
 
 impl Article {
@@ -42,10 +43,16 @@ impl Article {
             } else {
                 "".to_string()
             };
+            let id = if let SqlType::Int(value) = result.get("id").unwrap() {
+                *value
+            } else {
+                0
+            };
             retval.push(Self {
                 title,
                 content,
                 date: Some(date),
+                id: Some(id),
             });
         }
         retval
@@ -57,7 +64,8 @@ impl Article {
         let date = format!("{}", now.format("%A, %d %m %Y %H:%M:%S GMT"));
         let query = format!(
             "
-INSERT INTO article (title, content, date), VALUE(\'{}\', \'{}\', \'{}\'
+INSERT INTO article (title, content, date)
+VALUES('{}', '{}', '{}');
             ",
             self.title, self.content, date
         );

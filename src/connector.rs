@@ -2,6 +2,8 @@ use sqlite;
 use sqlite::{State, Type};
 use std::collections::HashMap;
 
+use crate::log_error;
+
 pub type SqlResult = Vec<HashMap<String, SqlType>>;
 
 #[derive(Debug)]
@@ -35,7 +37,11 @@ impl SqlEngine {
                 let value = match col_type {
                     Type::String => SqlType::Text(statement.read::<String, usize>(i).unwrap()),
                     Type::Integer => SqlType::Int(statement.read::<i64, usize>(i).unwrap()),
-                    _ => panic!("Not handled"),
+                    Type::Null => SqlType::Null,
+                    _ => {
+                        log_error(&format!("Error with SQL response: {:?}", col_type));
+                        panic!();
+                    }
                 };
                 row.insert(col.to_string(), value);
             }

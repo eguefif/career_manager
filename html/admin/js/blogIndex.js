@@ -11,7 +11,6 @@ export async function loadBlogIndex() {
 
 function getBlogContent(articles) {
     const articlesHtml = getArticleTitles(articles);
-    console.log(articlesHtml);
     return `
         <section id="blog-section">
             <h1>Blog</h1>
@@ -24,7 +23,7 @@ function getBlogContent(articles) {
 }
 
 function getArticleTitles(articles) {
-    if (articles && articles.len > 0) {
+    if (articles && articles.length > 0) {
         return articles.reduce((acc, article) => {
             return `${acc}
         <div class="article-box">
@@ -47,8 +46,7 @@ function setNewArticleButton() {
     document
         .getElementById("newArticleButton")
         .addEventListener("click", (e) => {
-            console.log("HEY");
-            e.preventDefault;
+            e.preventDefault();
             navigate("/blog/new");
         });
 }

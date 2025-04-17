@@ -67,13 +67,13 @@ async function handleRoute() {
         case "blog":
             switch (secondLevelRoute) {
                 case "index":
-                    loadBlog("index");
+                    await loadBlog("index");
                     break;
                 case "new":
-                    loadBlog("new");
+                    await loadBlog("new");
                     break;
                 default:
-                    loadBlog("index");
+                    await loadBlog("index");
                     break;
             }
             break;

@@ -16,7 +16,7 @@ pub fn route_api(request: Request) -> Option<Response> {
     match action_route {
         "homepage" => homepage::routes::route(request),
         "portfolio" => portfolio::routes::route(request),
-        "article" => article::routes::route(request),
+        "blog" => article::routes::route(request),
         _ => None,
     }
 }

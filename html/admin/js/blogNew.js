@@ -1,7 +1,10 @@
+import { navigate } from "../bundle.js";
+
 export function loadNewArticle() {
     document
         .getElementById("content")
         .innerHTML = getNewArticleForm();
+    setSaveArticleButton();
 }
 
 function getNewArticleForm() {
@@ -23,4 +26,28 @@ function getNewArticleForm() {
 
     </form>
     `;
+}
+
+function setSaveArticleButton() {
+    document
+        .getElementById("formSubmit")
+        .addEventListener("click", (e) => {
+            e.preventDefault();
+            const body = makeFormBody();
+            const response = fetch("/api/blog/new", {
+                body: JSON.stringify(body),
+            });
+            if (response.status >= 400) {
+                navigate("/error");
+            } else {
+                navigate("/blog/index");
+            }
+        });
+}
+
+function makeFormBody() {
+    return {
+        title: document.getElementById("title").value,
+        content: document.getElementById("content").value,
+    };
 }

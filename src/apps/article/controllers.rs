@@ -5,6 +5,7 @@ pub fn index() -> Option<Response> {
     let mut engine = SqlEngine::new("cm.db");
     let articles = Article::all(&mut engine, None);
     if let Ok(articles) = serde_json::to_string(&articles) {
+        println!("{:?}", articles);
         return Some(Response::new(
             200,
             articles.as_bytes().to_vec(),

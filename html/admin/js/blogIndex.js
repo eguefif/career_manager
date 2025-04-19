@@ -9,6 +9,7 @@ export async function loadBlogIndex() {
 
     setNewArticleButton();
     setDeleteButton();
+    setEditButton();
 }
 
 function getBlogContent(articles) {
@@ -78,9 +79,24 @@ function setDeleteButton() {
         .querySelectorAll(".delete-article-button")
         .forEach((btn) => btn.addEventListener("click", async (e) => {
             e.preventDefault();
-            console.log("Deleting");
             const id = e.target.dataset.id;
             const url = `/api/blog/delete/${id}`;
+            const response = await fetch(url);
+            if (response.status < 400) {
+                navigate("/blog/index");
+            } else {
+                navigate("/error");
+            }
+        }));
+}
+
+function setEditButton() {
+    document
+        .querySelectorAll(".edit-article-button")
+        .forEach((btn) => btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const id = e.target.dataset.id;
+            const url = `/api/blog/edit/${id}`;
             const response = await fetch(url);
             if (response.status < 400) {
                 navigate("/blog/index");

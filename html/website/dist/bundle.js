@@ -200,8 +200,8 @@ function getBlogContent() {
     <h1>Blog</h1>
     
         <div class="article-box">
-            <h3>test</h3>
-            <span class="date">Saturday, 19 04 2025 13:32:09 GMT</span>
+            <h3>Hello, World!</h3>
+            <span class="date">Saturday, 19 04 2025 18:40:28 GMT</span>
         </div>
     
         <div class="article-box">

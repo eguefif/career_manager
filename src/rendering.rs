@@ -20,7 +20,7 @@ mod token;
 
 const BUNDLE_DEV: &str = "./html/website/dev/bundle.js";
 const BASE_PATH: &str = "./html/website/dist/templates/";
-const BUNDLE_DIST: &str = "./html/website/dist/bundle.js";
+pub const BUNDLE_DIST: &str = "./html/website/dist/bundle.js";
 
 pub fn render(context: Context) -> Result<(), Box<dyn Error>> {
     let template = std::fs::read_to_string(BUNDLE_DEV)?;
@@ -29,7 +29,7 @@ pub fn render(context: Context) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn render_template(template: &str, context: Context) -> Result<String, Box<dyn Error>> {
+pub fn render_template(template: &str, context: Context) -> Result<String, Box<dyn Error>> {
     let mut filled_template = String::new();
     let mut iter = template.chars().peekable();
     while let Some(next) = iter.next() {
@@ -190,7 +190,7 @@ fn is_nested_template_end(token: &Token, scope_depth: &mut usize) -> bool {
     false
 }
 
-fn write_file(content: &str, filename: &str) -> Result<(), Box<dyn Error>> {
+pub fn write_file(content: &str, filename: &str) -> Result<(), Box<dyn Error>> {
     let mut file = std::fs::File::create(filename)?;
     file.write_all(content.as_bytes())?;
     Ok(())

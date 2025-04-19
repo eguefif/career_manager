@@ -1,3 +1,5 @@
+use articles_builder::build_articles;
+
 use crate::connector::SqlEngine;
 use crate::log_error;
 use crate::models::article::Article;
@@ -7,6 +9,8 @@ use crate::rendering::{render, ValueType};
 use std::error::Error;
 use std::fs;
 use std::path::Path;
+
+mod articles_builder;
 
 pub type Context = Vec<(String, ValueType)>;
 
@@ -34,6 +38,7 @@ impl WebsiteBuilder {
     pub fn build(&mut self) -> Result<(), Box<dyn Error>> {
         let mut engine = SqlEngine::new("./cm.db");
         copy_website_to_dist("./html/website/dev", "./html/website/dist")?;
+        build_articles(&mut engine)?;
         if let Err(e) = copy_website_to_dist("./html/admin/images/", "./html/website/dist/images/")
         {
             log_error(&format!("Error: copying images failed: {e}"));

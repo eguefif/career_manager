@@ -1,44 +1,47 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
     window.addEventListener("popstate", handleRoute);
 
     initRouter();
-    handleRoute()
+    await handleRoute()
 });
 
 function initRouter() {
     const links = document.querySelectorAll(".nav a");
 
     links.forEach(link => {
-        link.addEventListener("click", (e) => {
+        link.addEventListener("click", async (e) => {
             e.preventDefault();
             const url = new URL(e.target.href)
             navigate(url.pathname);
-            handleRoute();
+            await handleRoute();
         });
     });
 }
 
 function navigate(route) {
+    console.log(route.includes("/blog"));
     const routes = [
-        { title: "Home", path: "/" },
-        { title: "Portfolio", path: "/portfolio" },
-        { title: "Blog", path: "/blog" }
+        { title: "Portfolio", path: "portfolio" },
+        { title: "Blog", path: "blog" },
+        { title: "Article", path: "articles" }
     ];
 
-    const routeData = routes.find(data => data.path == route);
+    const routeData = routes.find(data =>  route.includes(data.path) );
     if (routeData) {
-        history.pushState({}, routeData.title, routeData.path);
+        history.pushState({}, routeData.title, route);
     } else {
         history.pushState({}, "Home", "/");
     }
 }
 
-function handleRoute() {
+async function handleRoute() {
     const route = window.location.pathname;
     if (route == "/portfolio") {
         loadPortfolio();
     } else if (route == "/blog") {
         loadBlog();
+    } else if (route.includes("articles")) {
+        await loadArticle(route);
     } else {
         loadHome();
     }
@@ -56,6 +59,17 @@ function loadHome() {
 
 function loadBlog() {
     document.getElementById("content").innerHTML = getBlogContent();
+    const links = document.querySelectorAll(".article-box a");
+    console.log(links);
+
+    links.forEach(link => {
+        link.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const url = new URL(e.currentTarget.href)
+            navigate(url.pathname);
+            await handleRoute();
+        });
+    });
 }
 
 function getBlogContent() {
@@ -79,4 +93,37 @@ function getPortfolioContent() {
     return `
     {{use("projects.html")}}
     `
+}
+
+function getBlogContent() {
+    return `
+    {{use("blog.html")}}
+    `
+}
+
+async function loadArticle(route) {
+    console.log("in load route: ", route);
+    let id = extractId(route);
+    document.getElementById("content").innerHTML = await getArticleContent(id);
+}
+
+function extractId(route) {
+    let splits = route.split("/");
+    console.log("in extract id: ", splits);
+    console.log("in extract id: ", splits[splits.length - 1]);
+    return splits[splits.length - 1];
+}
+
+async function getArticleContent(id) {
+    let url = `../articles/${id}.html`;
+
+    console.log("in get content: ", url);
+    let response = await fetch(url);
+    if (response.status == 200) {
+        const body = await response.text();
+        return body;
+    } else {
+        console.log("ERROR Fetching article: ", response.status);
+        return `<center><h1>Article not found</center></h1>`
+    }
 }

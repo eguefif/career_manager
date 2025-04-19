@@ -2,8 +2,8 @@
     <h1>Blog</h1>
     {{for articles}}
         <div class="article-box">
-            <h3>{{title}}</h3>
-            <span class="date">{{icreated_at}}</span>
+            <a href="articles/{{id}}"> <h3>{{title}}</h3></a>
+            <span class="date">{{created_at}}</span>
         </div>
     {{end}}
 </section>

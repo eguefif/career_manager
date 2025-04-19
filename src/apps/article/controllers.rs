@@ -45,3 +45,35 @@ pub fn delete(id: String) -> Option<Response> {
         None
     }
 }
+
+pub fn update(id: String, body: Vec<u8>) -> Option<Response> {
+    let mut engine = SqlEngine::new("cm.db");
+    if let Some(mut article) = Article::find(&mut engine, id.parse::<i64>().unwrap()) {
+        if let Ok(updates) = serde_json::from_str(&String::from_utf8_lossy(&body)) {
+            let result = article.update(&mut engine, updates);
+
+            return Some(Response::new(
+                200,
+                result.as_bytes().to_vec(),
+                vec![],
+                ContentType::Json,
+            ));
+        }
+    }
+    None
+}
+
+pub fn show(id: String) -> Option<Response> {
+    let mut engine = SqlEngine::new("cm.db");
+    if let Some(article) = Article::find(&mut engine, id.parse::<i64>().unwrap()) {
+        if let Ok(article) = serde_json::to_string(&article) {
+            return Some(Response::new(
+                200,
+                article.as_bytes().to_vec(),
+                vec![],
+                ContentType::Json,
+            ));
+        }
+    }
+    None
+}

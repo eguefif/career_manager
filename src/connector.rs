@@ -72,9 +72,21 @@ impl SqlEngine {
         let query = build_insert_query(table, cols);
         self.execute_query(query, values)
     }
+    pub fn execute_update(
+        &mut self,
+        table: &str,
+        cols: &[&str],
+        values: &mut Vec<SqlType>,
+        id: String,
+    ) -> Result<(), String> {
+        let query = build_update_query(table, cols);
+        values.push(SqlType::Text(id));
+        self.execute_query(query, values)
+    }
 
     fn execute_query(&mut self, query: String, values: &[SqlType]) -> Result<(), String> {
         println!("\x1b[94mDB query: {query}\x1b[0m\n");
+        println!("\x1b[94mDB values: {:?}\x1b[0m\n", values);
         match self.conn.prepare(query) {
             Ok(mut stmt) => {
                 for (i, value) in values.iter().enumerate() {
@@ -122,6 +134,20 @@ fn build_insert_query(table: &str, cols: &[&str]) -> String {
     query
 }
 
+fn build_update_query(table: &str, cols: &[&str]) -> String {
+    let mut query = String::new();
+    query.push_str(&format!("UPDATE {} SET ", table));
+    for (i, col) in cols.iter().enumerate() {
+        query.push_str(&format!("{}=?", col));
+        if i < cols.len() - 1 {
+            query.push(',');
+        }
+    }
+    query.push_str(" WHERE id = ?");
+    query.push(';');
+    query
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -133,6 +159,16 @@ mod tests {
         assert_eq!(
             result,
             "INSERT INTO article (title,content,created_at)VALUES (?,?,?);"
+        );
+    }
+
+    #[test]
+    fn it_should_build_update_query() {
+        let result = build_update_query("article", &["title", "content", "created_at"]);
+
+        assert_eq!(
+            result,
+            "UPDATE article SET title=?,content=?,created_at=? WHERE id = ?;"
         );
     }
 }

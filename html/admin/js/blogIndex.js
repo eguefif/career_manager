@@ -3,12 +3,14 @@ import { getEditSvg } from "./portfolioIndex.js";
 
 export async function loadBlogIndex() {
     const articles = await fetchArticles();
+    console.log(articles);
     document
         .getElementById("content")
         .innerHTML = getBlogContent(articles);
 
     setNewArticleButton();
     setDeleteButton();
+    setEditButton();
 }
 
 function getBlogContent(articles) {
@@ -78,7 +80,6 @@ function setDeleteButton() {
         .querySelectorAll(".delete-article-button")
         .forEach((btn) => btn.addEventListener("click", async (e) => {
             e.preventDefault();
-            console.log("Deleting");
             const id = e.target.dataset.id;
             const url = `/api/blog/delete/${id}`;
             const response = await fetch(url);
@@ -87,5 +88,16 @@ function setDeleteButton() {
             } else {
                 navigate("/error");
             }
+        }));
+}
+
+function setEditButton() {
+    document
+        .querySelectorAll(".edit-article-button")
+        .forEach((btn) => btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const id = e.currentTarget.dataset.id;
+            const url = `/blog/edit/${id}`;
+            navigate(url);
         }));
 }

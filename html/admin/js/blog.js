@@ -8,7 +8,7 @@ export async function loadBlog(route = "index", id) {
             break;
         case "new": loadNewArticle();
             break;
-        case "edit": loadEditArticle(id);
+        case "edit": await loadEditArticle(id);
             break;
 
     }

@@ -43,8 +43,7 @@ function setSaveArticleButton() {
             if (response.status >= 400) {
                 navigate("/error");
             } else {
-                const body = await response.json();
-                console.log(body);
+                await response.json();
                 navigate("/blog/index");
             }
         });

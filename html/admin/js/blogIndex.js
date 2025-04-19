@@ -3,7 +3,6 @@ import { getEditSvg } from "./portfolioIndex.js";
 
 export async function loadBlogIndex() {
     const articles = await fetchArticles();
-    console.log(articles);
     document
         .getElementById("content")
         .innerHTML = getBlogContent(articles);

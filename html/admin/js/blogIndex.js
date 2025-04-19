@@ -1,4 +1,5 @@
 import { navigate } from "../bundle.js";
+import { getEditSvg } from "./portfolioIndex.js";
 
 export async function loadBlogIndex() {
     const articles = await fetchArticles();
@@ -7,6 +8,7 @@ export async function loadBlogIndex() {
         .innerHTML = getBlogContent(articles);
 
     setNewArticleButton();
+    setDeleteButton();
 }
 
 function getBlogContent(articles) {
@@ -26,9 +28,17 @@ function getArticleTitles(articles) {
     if (articles && articles.length > 0) {
         return articles.reduce((acc, article) => {
             return `${acc}
-        <div class="article-box">
-        ${getTitleHtml(article.title, article.date)}
+    <div class="article-box">
+        <div data-id="${article.id}" type="submit" class="delete-article-button" aria-label="Delete">
+            &times;
         </div>
+        <div class="edit-article-button" data-id="${article.id}" aria-label="Edit">
+            <div class="svg-edit">
+                ${getEditSvg()}
+            </div>
+        </div>
+        ${getTitleHtml(article.title, article.date)}
+    </div>
         `;
         }, "");
     }
@@ -37,8 +47,10 @@ function getArticleTitles(articles) {
 
 function getTitleHtml(title, date) {
     return `
-    <h3 class="index-title-article">${title}</h3>
-    <span class="index-article-date">${date}</span>
+    <div class="article-body">
+        <h3>${title}</h3>
+        <div class="date">${date}</div>
+    </div>
     `;
 }
 
@@ -59,4 +71,21 @@ async function fetchArticles() {
     } else {
         navigate("/error");
     }
+}
+
+function setDeleteButton() {
+    document
+        .querySelectorAll(".delete-article-button")
+        .forEach((btn) => btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            console.log("Deleting");
+            const id = e.target.dataset.id;
+            const url = `/api/blog/delete/${id}`;
+            const response = await fetch(url);
+            if (response.status < 400) {
+                navigate("/blog/index");
+            } else {
+                navigate("/error");
+            }
+        }));
 }

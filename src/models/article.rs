@@ -1,4 +1,5 @@
 use crate::connector::{SqlEngine, SqlType};
+use crate::log_error;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
@@ -6,7 +7,7 @@ use serde::{Deserialize, Serialize};
 pub struct Article {
     pub title: String,
     pub content: String,
-    pub date: Option<String>,
+    pub created_at: Option<String>,
     pub id: Option<i64>,
 }
 
@@ -38,7 +39,7 @@ impl Article {
             } else {
                 "".to_string()
             };
-            let date = if let SqlType::Text(value) = result.get("date").unwrap() {
+            let created_at = if let SqlType::Text(value) = result.get("created_at").unwrap() {
                 value.to_string()
             } else {
                 "".to_string()
@@ -51,7 +52,7 @@ impl Article {
             retval.push(Self {
                 title,
                 content,
-                date: Some(date),
+                created_at: Some(created_at),
                 id: Some(id),
             });
         }
@@ -59,24 +60,25 @@ impl Article {
     }
 
     pub fn save(&mut self, engine: &mut SqlEngine) -> String {
-        self.sanitize();
         let now: DateTime<Utc> = Utc::now();
-        let date = format!("{}", now.format("%A, %d %m %Y %H:%M:%S GMT"));
-        let query = format!(
-            "
-INSERT INTO article (title, content, date)
-VALUES('{}', '{}', '{}');
-            ",
-            self.title, self.content, date
-        );
-        engine.execute(&query);
-        String::from("{\"success\": true}")
+        let created_at = format!("{}", now.format("%A, %d %m %Y %H:%M:%S GMT"));
+        let mut params = self.make_params();
+        params.push(SqlType::Text(created_at.clone()));
+        match engine.execute_insert("article", &["title", "content", "created_at"], &params) {
+            Ok(_) => String::from("{\"success\": true}"),
+            Err(e) => {
+                log_error(&format!("Error while preparing query: {}", e));
+                String::from("{\"success\": false}")
+            }
+        }
     }
 
-    fn sanitize(&mut self) {
-        self.title = self.title.replace("\'", "\'\'");
-        if let Some(date) = &self.date {
-            self.date = Some(date.replace("\'", "\'\'"));
-        }
+    fn make_params(&mut self) -> Vec<SqlType> {
+        let mut retval = vec![];
+
+        retval.push(SqlType::Text(self.title.clone()));
+        retval.push(SqlType::Text(self.content.clone()));
+
+        retval
     }
 }

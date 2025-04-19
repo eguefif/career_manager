@@ -31,17 +31,18 @@ function getNewArticleForm() {
 function setSaveArticleButton() {
     document
         .getElementById("formSubmit")
-        .addEventListener("click", (e) => {
+        .addEventListener("click", async (e) => {
             e.preventDefault();
             const body = JSON.stringify(makeFormBody());
-            console.log(body);
-            const response = fetch("/api/blog/new", {
+            const response = await fetch("/api/blog/new", {
                 method: "POST",
                 body: body,
             });
             if (response.status >= 400) {
                 navigate("/error");
             } else {
+                const body = await response.json();
+                console.log(body);
                 navigate("/blog/index");
             }
         });

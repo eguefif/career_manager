@@ -1,4 +1,4 @@
-use career_manager::{connector::SqlEngine, log_error, models::article::Article};
+use career_manager::{connector::SqlEngine, models::article::Article};
 use webserv_rs::{content_type::ContentType, response::Response};
 
 pub fn index() -> Option<Response> {
@@ -20,10 +20,10 @@ pub fn new(body: Vec<u8>) -> Option<Response> {
     let mut engine = SqlEngine::new("cm.db");
     let body = String::from_utf8_lossy(&body);
     if let Ok(mut article) = serde_json::from_str::<Article>(&body) {
-        article.save(&mut engine);
+        let result = article.save(&mut engine);
         return Some(Response::new(
             200,
-            "{\"success\": true}".as_bytes().to_vec(),
+            result.as_bytes().to_vec(),
             vec![],
             ContentType::Json,
         ));

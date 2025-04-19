@@ -3,8 +3,77 @@
     padding: 40px;
 }
 
+.article-box{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin: 20px;
+}
 .button.new-article {
     margin-inline: auto;
     text-align: center;
 }
 
+.article-body {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-left: 20px;
+    justify-content: start;
+}
+
+.article-box h3 {
+    margin-top: 0px;
+    margin-bottom: 2px;
+}
+.article-box .date {
+    margin-top: 2px;
+    font-size: 12px;
+}
+
+.article-box .delete-article-button {
+    background-color: #252627; /* red-600 */
+    color: #dc2626;
+    font-size: 1.5rem; /* roughly text-xl */
+    font-weight: 600;
+    width: 2rem;
+    height: 2rem;
+    line-height: 1.4;
+    border: 2px solid #dc2626;
+    border-radius: 9999px; /* full circle */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-sm */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-align: center;
+}
+
+.article-box .delete-article-button:hover {
+    background-color: #b91c1c; /* red-700 */
+}
+
+.article-box .svg-edit {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.article-box .edit-article-button {
+    background-color: #252627;
+    color: #2563eb; /* blue-600 */
+    font-size: 1rem;
+    font-weight: 600;
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid #2563eb;
+    border-radius: 9999px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.article-box .edit-article-button:hover {
+    background-color: #1d4ed8; /* blue-700 */
+}

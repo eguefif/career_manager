@@ -157,6 +157,10 @@ fn add_article_index_context(engine: &mut SqlEngine) -> Option<Context> {
         let item: Context = vec![
             ("title".to_string(), ValueType::Text(article.title)),
             (
+                "id".to_string(),
+                ValueType::Text(format!("{}", article.id.unwrap())),
+            ),
+            (
                 "created_at".to_string(),
                 ValueType::Text(article.created_at.unwrap()),
             ),

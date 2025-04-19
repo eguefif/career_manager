@@ -52,7 +52,7 @@ function setSaveArticleButton() {
         });
 }
 
-function makeFormBody() {
+export function makeFormBody() {
     return {
         title: document.getElementById("title").value,
         content: document.getElementById("content-form").value,

@@ -74,10 +74,14 @@ impl Article {
     }
 
     fn make_params(&mut self) -> Vec<SqlType> {
+        let now: DateTime<Utc> = Utc::now();
         let mut retval = vec![];
+        let created_at = format!("{}", now.format("%A, %d %m %Y %H:%M:%S GMT"));
 
         retval.push(SqlType::Text(self.title.clone()));
         retval.push(SqlType::Text(self.content.clone()));
+        retval.push(SqlType::Text(created_at.clone()));
+        self.created_at = Some(created_at);
 
         retval
     }
@@ -85,6 +89,19 @@ impl Article {
     pub fn delete(&mut self, engine: &mut SqlEngine) -> String {
         let id = self.id.unwrap();
         match engine.execute_delete_id("article", SqlType::Int(id)) {
+            Ok(_) => String::from("{\"success\": true}"),
+            Err(e) => {
+                log_error(&format!("Error while preparing query: {}", e));
+                String::from("{\"success\": false}")
+            }
+        }
+    }
+
+    pub fn update(&mut self, engine: &mut SqlEngine, article: Article) -> String {
+        self.title = article.title;
+        self.content = article.content;
+        let params = self.make_params();
+        match engine.execute_update("article", &["title", "content", "created_at"], &params) {
             Ok(_) => String::from("{\"success\": true}"),
             Err(e) => {
                 log_error(&format!("Error while preparing query: {}", e));

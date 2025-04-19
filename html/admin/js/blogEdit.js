@@ -1,5 +1,5 @@
 import { navigate } from "../bundle.js";
-import { getNewArticleForm } from "./blogNew.js";
+import { makeFormBody, getNewArticleForm } from "./blogNew.js";
 
 export async function loadEditArticle(id) {
     const article = await fetchArticle(id);
@@ -19,18 +19,23 @@ function getEditForm(article) {
 
 function setUpdateButton() {
     document
-        .querySelectorAll(".edit-article-button")
-        .forEach((btn) => btn.addEventListener("click", async (e) => {
+        .getElementById("formSubmit")
+        .addEventListener("click", async (e) => {
             e.preventDefault();
             const id = e.target.dataset.id;
-            const url = `/api/blog/edit/${id}`;
-            const response = await fetch(url);
+            const body = JSON.stringify(makeFormBody());
+            console.log(body);
+            const url = `/api/blog/update/${id}`;
+            const response = await fetch(url, {
+                method: "POST",
+                body: body
+            });
             if (response.status < 400) {
                 navigate("/blog/index");
             } else {
                 navigate("/error");
             }
-        }));
+        });
 }
 
 async function fetchArticle(id) {

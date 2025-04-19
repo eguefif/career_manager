@@ -72,6 +72,15 @@ impl SqlEngine {
         let query = build_insert_query(table, cols);
         self.execute_query(query, values)
     }
+    pub fn execute_update(
+        &mut self,
+        table: &str,
+        cols: &[&str],
+        values: &[SqlType],
+    ) -> Result<(), String> {
+        let query = build_insert_query(table, cols);
+        self.execute_query(query, values)
+    }
 
     fn execute_query(&mut self, query: String, values: &[SqlType]) -> Result<(), String> {
         println!("\x1b[94mDB query: {query}\x1b[0m\n");

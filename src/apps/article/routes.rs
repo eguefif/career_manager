@@ -2,7 +2,7 @@ use webserv_rs::{request::Request, response::Response};
 
 use crate::apps::portfolio::routes::get_id;
 
-use super::controllers::{delete, edit, index, new, show};
+use super::controllers::{delete, index, new, show, update};
 
 pub fn route(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
@@ -11,7 +11,7 @@ pub fn route(request: Request) -> Option<Response> {
         "index" => index(),
         "new" => new(request.body),
         "delete" => delete(get_id(&request.uri)),
-        "edit" => edit(get_id(&request.uri), request.body),
+        "update" => update(get_id(&request.uri), request.body),
         "show" => show(get_id(&request.uri)),
         _ => None,
     }

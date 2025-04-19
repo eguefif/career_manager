@@ -51,6 +51,7 @@ impl SqlEngine {
                     Type::String => SqlType::Text(statement.read::<String, usize>(i).unwrap()),
                     Type::Integer => SqlType::Int(statement.read::<i64, usize>(i).unwrap()),
                     Type::Null => SqlType::Null,
+                    Type::Binary => SqlType::Binary(statement.read::<Vec<u8>, usize>(i).unwrap()),
                     _ => {
                         log_error(&format!("Error with SQL response: {:?}", col_type));
                         panic!("In execute Connector");
@@ -90,9 +91,20 @@ impl SqlEngine {
         match self.conn.prepare(query) {
             Ok(mut stmt) => {
                 for (i, value) in values.iter().enumerate() {
-                    let v = format!("{}", value);
-                    if let Err(_) = stmt.bind((i + 1, v.as_str())) {
-                        return Err("Impossible to bind variable".to_string());
+                    match value {
+                        SqlType::Text(value) => stmt.bind((i + 1, value.as_str())).unwrap(),
+                        SqlType::Int(value) => stmt.bind::<(usize, i64)>((i + 1, *value)).unwrap(),
+                        SqlType::Bool(value) => {
+                            if *value {
+                                stmt.bind::<(usize, i64)>((i + 1, 1)).unwrap()
+                            } else {
+                                stmt.bind::<(usize, i64)>((i + 1, 0)).unwrap()
+                            }
+                        }
+                        SqlType::Binary(value) => {
+                            stmt.bind::<(usize, &[u8])>((i + 1, value)).unwrap()
+                        }
+                        SqlType::Null => todo!(),
                     }
                 }
                 loop {

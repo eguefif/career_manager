@@ -34,8 +34,8 @@ impl Article {
             } else {
                 "".to_string()
             };
-            let content = if let SqlType::Text(value) = result.get("content").unwrap() {
-                value.to_string()
+            let content = if let SqlType::Binary(value) = result.get("content").unwrap() {
+                String::from_utf8_lossy(value).to_string()
             } else {
                 "".to_string()
             };
@@ -60,10 +60,7 @@ impl Article {
     }
 
     pub fn save(&mut self, engine: &mut SqlEngine) -> String {
-        let now: DateTime<Utc> = Utc::now();
-        let created_at = format!("{}", now.format("%A, %d %m %Y %H:%M:%S GMT"));
-        let mut params = self.make_params();
-        params.push(SqlType::Text(created_at.clone()));
+        let params = self.make_params();
         match engine.execute_insert("article", &["title", "content", "created_at"], &params) {
             Ok(_) => String::from("{\"success\": true}"),
             Err(e) => {
@@ -79,7 +76,7 @@ impl Article {
         let created_at = format!("{}", now.format("%A, %d %m %Y %H:%M:%S GMT"));
 
         retval.push(SqlType::Text(self.title.clone()));
-        retval.push(SqlType::Text(self.content.clone()));
+        retval.push(SqlType::Binary(self.content.as_bytes().to_vec()));
         retval.push(SqlType::Text(created_at.clone()));
         self.created_at = Some(created_at);
 

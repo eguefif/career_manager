@@ -8,8 +8,8 @@ export function loadNewArticle() {
 }
 
 export function getNewArticleForm(article) {
-    const title = article.title | "";
-    const content = article.content | "";
+    const title = article ? article.title : "";
+    const content = article ? article.content : "";
     return `
     <form id="articleForm" action="/submit" method="POST" enctype="multipart/form-data" class="form-container">
       <h1 class="form-heading">Write Article</h1>

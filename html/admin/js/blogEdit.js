@@ -34,7 +34,7 @@ function setUpdateButton() {
 }
 
 async function fetchArticle(id) {
-    const url = `/api/article/show/${id}`;
+    const url = `/api/blog/show/${id}`;
     const response = await fetch(url);
     if (response.status == 200) {
         const body = await response.json();

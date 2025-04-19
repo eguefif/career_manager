@@ -23,9 +23,7 @@ export function getNewArticleForm(article) {
       </div>
 
       <div class="form-group">
-        <textarea id="content-form" name="content" class="form-textarea" rows="40" cols="80" required>
-        ${content}
-        </textarea>
+        <textarea id="content-form" name="content" class="form-textarea" rows="40" cols="80" required>${content}</textarea>
       </div>
 
     </form>

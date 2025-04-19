@@ -76,14 +76,17 @@ impl SqlEngine {
         &mut self,
         table: &str,
         cols: &[&str],
-        values: &[SqlType],
+        values: &mut Vec<SqlType>,
+        id: String,
     ) -> Result<(), String> {
         let query = build_update_query(table, cols);
+        values.push(SqlType::Text(id));
         self.execute_query(query, values)
     }
 
     fn execute_query(&mut self, query: String, values: &[SqlType]) -> Result<(), String> {
         println!("\x1b[94mDB query: {query}\x1b[0m\n");
+        println!("\x1b[94mDB values: {:?}\x1b[0m\n", values);
         match self.conn.prepare(query) {
             Ok(mut stmt) => {
                 for (i, value) in values.iter().enumerate() {

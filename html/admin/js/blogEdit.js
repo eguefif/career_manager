@@ -7,7 +7,7 @@ export async function loadEditArticle(id) {
         .getElementById("content")
         .innerHTML = getEditForm(article);
 
-    setUpdateButton();
+    setUpdateButton(id);
 }
 
 function getEditForm(article) {
@@ -17,14 +17,12 @@ function getEditForm(article) {
     `;
 }
 
-function setUpdateButton() {
+function setUpdateButton(id) {
     document
         .getElementById("formSubmit")
         .addEventListener("click", async (e) => {
             e.preventDefault();
-            const id = e.target.dataset.id;
             const body = JSON.stringify(makeFormBody());
-            console.log(body);
             const url = `/api/blog/update/${id}`;
             const response = await fetch(url, {
                 method: "POST",

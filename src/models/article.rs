@@ -100,8 +100,14 @@ impl Article {
     pub fn update(&mut self, engine: &mut SqlEngine, article: Article) -> String {
         self.title = article.title;
         self.content = article.content;
-        let params = self.make_params();
-        match engine.execute_update("article", &["title", "content", "created_at"], &params) {
+        let mut params = self.make_params();
+        let id = format!("{}", self.id.unwrap());
+        match engine.execute_update(
+            "article",
+            &["title", "content", "created_at"],
+            &mut params,
+            id,
+        ) {
             Ok(_) => String::from("{\"success\": true}"),
             Err(e) => {
                 log_error(&format!("Error while preparing query: {}", e));

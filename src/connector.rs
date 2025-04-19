@@ -78,7 +78,7 @@ impl SqlEngine {
         cols: &[&str],
         values: &[SqlType],
     ) -> Result<(), String> {
-        let query = build_insert_query(table, cols);
+        let query = build_update_query(table, cols);
         self.execute_query(query, values)
     }
 
@@ -131,6 +131,20 @@ fn build_insert_query(table: &str, cols: &[&str]) -> String {
     query
 }
 
+fn build_update_query(table: &str, cols: &[&str]) -> String {
+    let mut query = String::new();
+    query.push_str(&format!("UPDATE {} SET ", table));
+    for (i, col) in cols.iter().enumerate() {
+        query.push_str(&format!("{}=?", col));
+        if i < cols.len() - 1 {
+            query.push(',');
+        }
+    }
+    query.push_str(" WHERE id = ?");
+    query.push(';');
+    query
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -142,6 +156,16 @@ mod tests {
         assert_eq!(
             result,
             "INSERT INTO article (title,content,created_at)VALUES (?,?,?);"
+        );
+    }
+
+    #[test]
+    fn it_should_build_update_query() {
+        let result = build_update_query("article", &["title", "content", "created_at"]);
+
+        assert_eq!(
+            result,
+            "UPDATE article SET title=?,content=?,created_at=? WHERE id = ?;"
         );
     }
 }

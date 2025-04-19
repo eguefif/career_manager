@@ -5,7 +5,6 @@ use super::controllers::{index, new};
 pub fn route(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
     let action = get_controller_action(&request.uri)?;
-    println!("ROUTING");
     match action {
         "index" => index(),
         "new" => new(request.body),

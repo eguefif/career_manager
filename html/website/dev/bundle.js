@@ -80,3 +80,9 @@ function getPortfolioContent() {
     {{use("projects.html")}}
     `
 }
+
+function getBlogContent() {
+    return `
+    {{use("blog.html")}}
+    `
+}

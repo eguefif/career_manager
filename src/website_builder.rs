@@ -1,5 +1,6 @@
 use crate::connector::SqlEngine;
 use crate::log_error;
+use crate::models::article::Article;
 use crate::models::profile::Profile;
 use crate::models::project::Project;
 use crate::rendering::{render, ValueType};
@@ -44,6 +45,9 @@ impl WebsiteBuilder {
         }
         if let Some(project_context) = add_project_page(&mut engine) {
             context.extend_from_slice(&project_context);
+        }
+        if let Some(article_index_context) = add_article_index_context(&mut engine) {
+            context.extend_from_slice(&article_index_context);
         }
         render(context)?;
         Ok(())
@@ -138,4 +142,23 @@ fn get_skills(skills: Vec<String>) -> ValueType {
         wrapped_skills.push(ValueType::Context(Box::new(skill_context)));
     }
     ValueType::List(wrapped_skills)
+}
+
+fn add_article_index_context(engine: &mut SqlEngine) -> Option<Context> {
+    let articles = Article::all(engine, None);
+    let mut context: Context = vec![];
+    let mut articles_context: Vec<ValueType> = Vec::new();
+    for article in articles {
+        let item: Context = vec![
+            ("title".to_string(), ValueType::Text(article.title)),
+            (
+                "created_at".to_string(),
+                ValueType::Text(article.created_at.unwrap()),
+            ),
+        ];
+        articles_context.push(ValueType::Context(Box::new(item)));
+    }
+    context.push(("articles".to_string(), ValueType::List(articles_context)));
+
+    Some(context)
 }

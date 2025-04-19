@@ -193,3 +193,23 @@ function getPortfolioContent() {
 
     `
 }
+
+function getBlogContent() {
+    return `
+    <section id="blog-section">
+    <h1>Blog</h1>
+    
+        <div class="article-box">
+            <h3>test</h3>
+            <span class="date">Saturday, 19 04 2025 13:32:09 GMT</span>
+        </div>
+    
+        <div class="article-box">
+            <h3>Writing a WebSocket echo server in Rust: the handshake</h3>
+            <span class="date">Saturday, 19 04 2025 18:03:17 GMT</span>
+        </div>
+    
+</section>
+
+    `
+}

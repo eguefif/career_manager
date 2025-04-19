@@ -28,7 +28,7 @@ function navigate(route) {
 
     const routeData = routes.find(data =>  route.includes(data.path) );
     if (routeData) {
-        history.pushState({}, routeData.title, routeData.path);
+        history.pushState({}, routeData.title, route);
     } else {
         history.pushState({}, "Home", "/");
     }
@@ -237,21 +237,20 @@ async function loadArticle(route) {
 function extractId(route) {
     let splits = route.split("/");
     console.log("in extract id: ", splits);
-    console.log("in extract id: ", splits[1]);
-    return splits[1];
+    console.log("in extract id: ", splits[splits.length - 1]);
+    return splits[splits.length - 1];
 }
 
 async function getArticleContent(id) {
     let url = `../articles/${id}.html`;
 
     console.log("in get content: ", url);
-    let response = fetch(url);
+    let response = await fetch(url);
     if (response.status == 200) {
-        const body = await response.body();
-        console.log("in get content: ", body);
+        const body = await response.text();
         return body;
     } else {
-        console.log("ERROR Fetching article");
+        console.log("ERROR Fetching article: ", response.status);
         return `<center><h1>Article not found</center></h1>`
     }
 }

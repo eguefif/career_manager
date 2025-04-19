@@ -3,6 +3,7 @@ import { getEditSvg } from "./portfolioIndex.js";
 
 export async function loadBlogIndex() {
     const articles = await fetchArticles();
+    console.log(articles);
     document
         .getElementById("content")
         .innerHTML = getBlogContent(articles);
@@ -95,13 +96,8 @@ function setEditButton() {
         .querySelectorAll(".edit-article-button")
         .forEach((btn) => btn.addEventListener("click", async (e) => {
             e.preventDefault();
-            const id = e.target.dataset.id;
-            const url = `/api/blog/edit/${id}`;
-            const response = await fetch(url);
-            if (response.status < 400) {
-                navigate("/blog/index");
-            } else {
-                navigate("/error");
-            }
+            const id = e.currentTarget.dataset.id;
+            const url = `/blog/edit/${id}`;
+            navigate(url);
         }));
 }

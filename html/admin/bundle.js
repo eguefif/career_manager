@@ -30,6 +30,7 @@ export function navigate(route) {
         { title: "Portfolio list", path: "/portfolio/edit" },
         { title: "Blog", path: "/blog/index" },
         { title: "Blog new", path: "/blog/new" },
+        { title: "Blog edit", path: "/blog/edit" },
         { title: "Error", path: "/error" },
     ];
 
@@ -71,6 +72,10 @@ async function handleRoute() {
                     break;
                 case "new":
                     await loadBlog("new");
+                    break;
+                case "edit":
+                    const id = extractRoute(route, 2);
+                    loadBlog("edit", id);
                     break;
                 default:
                     await loadBlog("index");

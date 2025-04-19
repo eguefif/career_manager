@@ -45,3 +45,19 @@ pub fn delete(id: String) -> Option<Response> {
         None
     }
 }
+
+pub fn edit(id: String, body: Vec<u8>) -> Option<Response> {
+    let mut engine = SqlEngine::new("cm.db");
+    if let Some(mut article) = Article::find(&mut engine, id.parse::<i64>().unwrap()) {
+        println!("FOUND ARTICLE: {}", id);
+
+        Some(Response::new(
+            200,
+            "{\"success\": true}".as_bytes().to_vec(),
+            vec![],
+            ContentType::Json,
+        ))
+    } else {
+        None
+    }
+}

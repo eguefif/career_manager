@@ -70,6 +70,10 @@ impl SqlEngine {
         values: &[SqlType],
     ) -> Result<(), String> {
         let query = build_insert_query(table, cols);
+        self.execute_query(query, values)
+    }
+
+    fn execute_query(&mut self, query: String, values: &[SqlType]) -> Result<(), String> {
         println!("\x1b[94mDB query: {query}\x1b[0m\n");
         match self.conn.prepare(query) {
             Ok(mut stmt) => {
@@ -80,9 +84,8 @@ impl SqlEngine {
                     }
                 }
                 loop {
-                    println!("Evaluating execute");
                     if let Ok(State::Done) = stmt.next() {
-                        break;
+                        return Ok(());
                     }
                 }
             }
@@ -90,8 +93,11 @@ impl SqlEngine {
                 return Err(format!("Impossible to prepare connection: {}", e));
             }
         }
-        println!("AFTER");
-        Ok(())
+    }
+
+    pub fn execute_delete_id(&mut self, table: &str, value: SqlType) -> Result<(), String> {
+        let query = format!("DELETE FROM {} WHERE id=?", table);
+        self.execute_query(query, &[value])
     }
 }
 
@@ -121,7 +127,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_shoul_build_insert_query() {
+    fn it_should_build_insert_query() {
         let result = build_insert_query("article", &["title", "content", "created_at"]);
 
         assert_eq!(

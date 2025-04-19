@@ -81,4 +81,15 @@ impl Article {
 
         retval
     }
+
+    pub fn delete(&mut self, engine: &mut SqlEngine) -> String {
+        let id = self.id.unwrap();
+        match engine.execute_delete_id("article", SqlType::Int(id)) {
+            Ok(_) => String::from("{\"success\": true}"),
+            Err(e) => {
+                log_error(&format!("Error while preparing query: {}", e));
+                String::from("{\"success\": false}")
+            }
+        }
+    }
 }

@@ -30,7 +30,7 @@ fn get_controller_action(uri: &str) -> Option<&str> {
     None
 }
 
-fn get_id(uri: &str) -> String {
+pub fn get_id(uri: &str) -> String {
     let (_, id) = uri.rsplit_once("/").unwrap();
     id.to_string()
 }

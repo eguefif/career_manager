@@ -8,6 +8,7 @@ export async function loadBlogIndex() {
         .innerHTML = getBlogContent(articles);
 
     setNewArticleButton();
+    setDeleteButton();
 }
 
 function getBlogContent(articles) {
@@ -70,4 +71,21 @@ async function fetchArticles() {
     } else {
         navigate("/error");
     }
+}
+
+function setDeleteButton() {
+    document
+        .querySelectorAll(".delete-article-button")
+        .forEach((btn) => btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            console.log("Deleting");
+            const id = e.target.dataset.id;
+            const url = `/api/blog/delete/${id}`;
+            const response = await fetch(url);
+            if (response.status < 400) {
+                navigate("/blog/index");
+            } else {
+                navigate("/error");
+            }
+        }));
 }

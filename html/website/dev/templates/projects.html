@@ -2,19 +2,23 @@
     <section id="portfolio">
     {{for projects}}
         <div class="project-box">
+            <h2 class="project-title">{{title}}</h2>
             <a href="{{github}}" class="github-link" target="_blank">
                 <img src="./images/github.svg" alt="GitHub" class="github-icon" />
             </a>
 
-            <img src="{{picture}}" alt="Project 1" class="project-img">
             <div class="project-info">
-                <h2 class="project-title">{{title}}</h2>
-                <p class="project-description">{{description}}</p>
-                <ul class="skills-list">
-                {{for skills}}
-                        <li>{{skill}}</li>
-                {{end}}
-                </ul>
+                <img src="{{picture}}" alt="Project 1" class="project-img">
+                <div class="project-text">
+                    <div class="project-description">
+                        {{description}}
+                    </div>
+                    <ul class="skills-list">
+                    {{for skills}}
+                            <li>{{skill}}</li>
+                    {{end}}
+                    </ul>
+                </div>
             </div>
         </div>
     {{end}}

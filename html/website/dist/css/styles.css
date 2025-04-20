@@ -12,6 +12,13 @@ body {
     justify-content: center;
 }
 
+.content {
+    max-width: 1200px; 
+    margin-inline: auto;
+    margin-top: 125px;
+}
+
+
 h1 {
     color: #A1683A;
     font-size: 2em;
@@ -50,13 +57,6 @@ a:hover {
 a:active {
     color: #A1683A; 
     transform: scale(1.02); 
-}
-
-.content {
-    width: 50%; 
-    max-width: 1200px; 
-    margin-inline: auto;
-    margin-top: 125px;
 }
 
 .nav {

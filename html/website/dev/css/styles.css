@@ -5,11 +5,17 @@
 
 body {
     background-color: #151617;
-    color: #3d3d3d;
+    color: #C9C5BA;
     font-family: Hack, "Courrier new", monospace;
     font-size: 1rem;
     display: flex;
     justify-content: center;
+}
+
+.content {
+    max-width: 1200px; 
+    margin-inline: auto;
+    margin-top: 125px;
 }
 
 h1 {
@@ -31,7 +37,6 @@ h3 {
 }
 
 p {
-    color: #C9C5BA;
     font-size: 1em;
 }
 
@@ -51,13 +56,6 @@ a:hover {
 a:active {
     color: #A1683A; 
     transform: scale(1.02); 
-}
-
-.content {
-    width: 50%; 
-    max-width: 1200px; 
-    margin-inline: auto;
-    margin-top: 125px;
 }
 
 .nav {

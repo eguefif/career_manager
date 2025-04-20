@@ -24,7 +24,6 @@
     right: 10px;
     text-decoration: none; 
     color: #e76f51; 
-    font-size: 1.2em; 
     font-weight: bold;
     transition: color 0.3s ease;
 }
@@ -63,13 +62,11 @@
 }
 
 .project-title {
-    font-size: 1.55em;
     color: #A1683A;
     margin-bottom: 10px;
 }
 
 .project-description {
-    font-size: 1em;
     color: #C9C5BA;
     margin-bottom: 10px;
 }
@@ -86,6 +83,5 @@
     padding: 6px 12px;
     background-color: #e76f51;
     color: white;
-    font-size: 0.9em;
     border-radius: 20px;
 }

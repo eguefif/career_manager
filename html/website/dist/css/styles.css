@@ -1,17 +1,20 @@
 @import "./homepage.css";
 @import "./portfolio.css";
 @import "./footer.css";
+@import "./blog.css";
 
 body {
-    background-color: #252627;
-    font-family: Arial;
+    background-color: #151617;
+    color: #C9C5BA;
+    font-family: Hack, "Courrier new", monospace;
+    font-size: 1rem;
     display: flex;
     justify-content: center;
 }
 
 h1 {
     color: #A1683A;
-    font-size: 2.3em;
+    font-size: 2em;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -22,8 +25,12 @@ h2 {
     text-align: center;
 }
 
+h3 {
+    color: #A1683A;
+    font-size: 1.5em;
+}
+
 p {
-    color: #C9C5BA;
     font-size: 1em;
 }
 
@@ -31,8 +38,6 @@ p {
 a {
     color: #C9C5BA; 
     text-decoration: none;
-    font-size: 1em;
-    font-family: Georgia, serif; 
     font-weight: normal; 
     transition: color 0.3s ease, transform 0.2s ease, text-decoration 0.2s ease; 
 }
@@ -45,22 +50,17 @@ a:hover {
 a:active {
     color: #A1683A; 
     transform: scale(1.02); 
-    outline: none; 
-}
-
-a:focus {
-    outline: none; 
 }
 
 .content {
     width: 50%; 
     max-width: 1200px; 
-    margin: 0 auto;
-    padding: 20px;
-    padding-top: 60px;
+    margin-inline: auto;
+    margin-top: 125px;
 }
 
 .nav {
+    background-color: #1a1a1c;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -69,7 +69,6 @@ a:focus {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #252627;
     opacity: 1;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
 }
@@ -79,7 +78,6 @@ a:focus {
     color: #C9C5BA;
     padding: 12px 18px;
     margin: 0 10px;
-    font-size: 18px;
     cursor: pointer;
 }
 
@@ -87,15 +85,59 @@ a:focus {
     transform: scale(1.15);
 }
 
-.nav a:focus {
-    outline: none;
+
+/* From Josh Comeau amazing Website */
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-.nav a:active {
-    outline: none;
+/* 2. Remove default margin */
+* {
+  margin: 0;
 }
 
-/* Blog section style*/
-#blog-section {
-    padding: 40px;
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  /* 4. Add accessible line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root, #__next {
+  isolation: isolate;
 }

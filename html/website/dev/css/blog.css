@@ -1,0 +1,31 @@
+/* Blog section style*/
+#blog-section {
+}
+
+.article-box{
+    display: flow;
+    align-items: center;
+    justify-content: left;
+    margin: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    border-bottom: 4px dashed #A1683A;
+}
+
+.article-body {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-left: 20px;
+    justify-content: start;
+}
+
+.article-box h3 {
+    margin-top: 0px;
+    margin-bottom: 2px;
+    text-align: left;
+}
+.article-date {
+    margin-top: 2px;
+    font-size: 14px;
+}

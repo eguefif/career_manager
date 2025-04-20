@@ -215,12 +215,12 @@ function getBlogContent() {
     
         <div class="article-box">
             <a href="articles/5"> <h3>Hello, World!</h3></a>
-            <span class="date">Saturday, 19 04 2025 18:40:28 GMT</span>
+            <span class="article-date">Saturday, 19 04 2025 18:40:28 GMT</span>
         </div>
     
         <div class="article-box">
             <a href="articles/6"> <h3>Writing a WebSocket echo server in Rust: the handshake</h3></a>
-            <span class="date">Saturday, 19 04 2025 18:03:17 GMT</span>
+            <span class="article-date">Saturday, 19 04 2025 18:03:17 GMT</span>
         </div>
     
 </section>

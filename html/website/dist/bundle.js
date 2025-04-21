@@ -19,7 +19,6 @@ function initRouter() {
 }
 
 function navigate(route) {
-    console.log(route.includes("/blog"));
     const routes = [
         { title: "Portfolio", path: "portfolio" },
         { title: "Blog", path: "blog" },
@@ -60,7 +59,6 @@ function loadHome() {
 function loadBlog() {
     document.getElementById("content").innerHTML = getBlogContent();
     const links = document.querySelectorAll(".article-box a");
-    console.log(links);
 
     links.forEach(link => {
         link.addEventListener("click", async (e) => {
@@ -240,28 +238,23 @@ function getBlogContent() {
 }
 
 async function loadArticle(route) {
-    console.log("in load route: ", route);
     let id = extractId(route);
     document.getElementById("content").innerHTML = await getArticleContent(id);
 }
 
 function extractId(route) {
     let splits = route.split("/");
-    console.log("in extract id: ", splits);
-    console.log("in extract id: ", splits[splits.length - 1]);
     return splits[splits.length - 1];
 }
 
 async function getArticleContent(id) {
     let url = `../articles/${id}.html`;
 
-    console.log("in get content: ", url);
     let response = await fetch(url);
     if (response.status == 200) {
         const body = await response.text();
         return body;
     } else {
-        console.log("ERROR Fetching article: ", response.status);
         return `<center><h1>Article not found</center></h1>`
     }
 }

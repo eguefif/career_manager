@@ -24,8 +24,10 @@ pub fn build_articles(engine: &mut SqlEngine) -> Result<(), Box<dyn Error>> {
 
 fn build_context(article: &Article) -> Context {
     let content = transform_md_to_html(article.content.clone());
+    let created_at = article.created_at.clone().unwrap();
     vec![
         ("title".to_string(), ValueType::Text(article.title.clone())),
+        ("created_at".to_string(), ValueType::Text(created_at)),
         ("content".to_string(), ValueType::Text(content)),
     ]
 }

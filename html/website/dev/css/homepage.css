@@ -1,40 +1,29 @@
-/* Container for the section who I am*/
+/* Style for the section homepage*/
 #homepage-section {
-    padding: 40px;
 }
 
 .homepage-container {
+    width: 100%;
     display: flex;
+    flex-wrap: wrap;
+    max-width: 900px;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 20px;
-}
-
-#homepage-section h1 {
-    color: #A1683A;
-    font-size: 2em;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.homepage-container {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
+    margin-inline: auto;
+    margin-top: 25px;
 }
 
 .homepage-img {
     width: 200px; 
     height: auto; 
+    margin-inline: auto;
     border-radius: 999px; 
-    margin-right: 20px;
 }
 
 .homepage-text {
-    flex: 1; 
+    max-width: 500px;
+    margin-inline:auto;
     padding-left: 20px; 
-    color: #3d3d3d;
-    font-size: 1.1em;
-    line-height: 1.6;
     justify-content: left;
+    text-align: justify;
 }

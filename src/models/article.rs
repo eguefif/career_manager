@@ -1,6 +1,6 @@
 use crate::connector::{SqlEngine, SqlType};
 use crate::log_error;
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, NaiveDateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -26,7 +26,7 @@ impl Article {
         let results = if let Some(id) = id {
             engine.execute(&format!("SELECT * FROM article WHERE id = {}", id))
         } else {
-            engine.execute("SELECT * FROM article")
+            engine.execute("SELECT * FROM article ORDER BY created_at")
         };
         for result in results {
             let title = if let SqlType::Text(value) = result.get("title").unwrap() {
@@ -40,7 +40,11 @@ impl Article {
                 "".to_string()
             };
             let created_at = if let SqlType::Text(value) = result.get("created_at").unwrap() {
-                value.to_string()
+                let date = NaiveDateTime::parse_from_str(value, "%D %T %f");
+                match date {
+                    Ok(date) => date.format("%Y %B %d").to_string(),
+                    Err(_) => "".to_string(),
+                }
             } else {
                 "".to_string()
             };
@@ -73,7 +77,7 @@ impl Article {
     fn make_params(&mut self) -> Vec<SqlType> {
         let now: DateTime<Utc> = Utc::now();
         let mut retval = vec![];
-        let created_at = format!("{}", now.format("%A, %d %m %Y %H:%M:%S GMT"));
+        let created_at = format!("{}", now.format("%D %T %f"));
 
         retval.push(SqlType::Text(self.title.clone()));
         retval.push(SqlType::Binary(self.content.as_bytes().to_vec()));

@@ -86,7 +86,7 @@ function getBlogContent() {
 function getHomeContent() {
     return `
     <section id="homepage">
-    <div class="homepage-text">
+    <div class="homepage-title">
         <h1>I am Emmanuel Guefif</h1>
         <h2>Junior full stack developer</h2>
     </div>
@@ -120,86 +120,102 @@ function getPortfolioContent() {
     <section id="portfolio">
     
         <div class="project-box">
-        <a href="https://github.com/PelletierM/miniRT" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/spheres.png" alt="Project 1" class="project-img">
-            <div class="project-info">
-            <h2 class="project-title">Ray tracer</h2>
-            <p class="project-description">This 42 project is all about Ray Tracing. I worked mainly on implementing different figures: sphere, plane, cylinder, and triangle. We optimized rendering by implementing a sample accumulator. We also took advantage of multithreading to render rays in batches.</p>
-            <ul class="skills-list">
-            
-                    <li>language C</li>
-            
-                    <li>multithreading</li>
-            
-                    <li>Ray Tracing</li>
-            
-            </ul>
-            </div>
-        </div>
-    
-        <div class="project-box">
-        <a href="https://github.com/demarque/marc-record-ex" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/marc21.jpg" alt="Project 1" class="project-img">
-            <div class="project-info">
-            <h2 class="project-title">Marc-record-ex</h2>
-            <p class="project-description">I made this project for my work at Demarque. It binds a Marc record library written in Rust with an Elixir package. When I used this project in the parser, I had to optimize memory usage to avoid upgrading our pod. I use streaming techniques and find a way to make it work between the Rust bindings and Elixir code.</p>
-            <ul class="skills-list">
-            
-                    <li>Rust</li>
-            
-                    <li>Rustler</li>
-            
-                    <li>Elixir</li>
-            
-            </ul>
-            </div>
-        </div>
-    
-        <div class="project-box">
-        <a href="https://github.com/eguefif/monkey_interpreter" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/monkey.gif" alt="Project 1" class="project-img">
-            <div class="project-info">
-            <h2 class="project-title">Monkey Interpreter</h2>
-            <p class="project-description">This project was made when I was reading the book 'Make a Monkey interpreter in Go. ' I did it in Rust. I've learned a lot about parsing and recursion. It was also an opportunity to learn about Rust smart pointers.</p>
-            <ul class="skills-list">
-            
-                    <li>Rust</li>
-            
-                    <li>parsing</li>
-            
-            </ul>
-            </div>
-        </div>
-    
-        <div class="project-box">
-        <a href="https://github.com/eguefif/game_boy_emulator" class="github-link" target="_blank">
-            <img src="./images/github.svg" alt="GitHub" class="github-icon" />
-        </a>
-
-        <img src="images/tetris.jpg" alt="Project 1" class="project-img">
-            <div class="project-info">
             <h2 class="project-title">GameBoy Emulator</h2>
-            <p class="project-description">This Game Boy emulator can run Tetris. This was not an easy project. There is no official documentation, but you have to gather a lot of resources yourself. It was an opportunity to learn by looking at other people's code and understanding the logic.</p>
-            <ul class="skills-list">
-            
-                    <li>Rust</li>
-            
-                    <li>CPU architecture</li>
-            
-                    <li>System Interrupt</li>
-            
-                    <li>Low-level Rendering</li>
-            
-            </ul>
+            <a href="https://github.com/eguefif/game_boy_emulator" class="github-link" target="_blank">
+                <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+            </a>
+
+            <div class="project-info">
+                <img src="images/tetris.jpg" alt="Project 1" class="project-img">
+                <div class="project-text">
+                    <div class="project-description">
+                        This Game Boy emulator can run Tetris. This was not an easy project. There is no official documentation, but you have to gather a lot of resources yourself. It was an opportunity to learn by looking at other people's code and understanding the logic.
+                    </div>
+                    <ul class="skills-list">
+                    
+                            <li>Rust</li>
+                    
+                            <li>CPU architecture</li>
+                    
+                            <li>System Interrupt</li>
+                    
+                            <li>Low-level Rendering</li>
+                    
+                    </ul>
+                </div>
+            </div>
+        </div>
+    
+        <div class="project-box">
+            <h2 class="project-title">Monkey Interpreter</h2>
+            <a href="https://github.com/eguefif/monkey_interpreter" class="github-link" target="_blank">
+                <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+            </a>
+
+            <div class="project-info">
+                <img src="images/monkey.gif" alt="Project 1" class="project-img">
+                <div class="project-text">
+                    <div class="project-description">
+                        This project was made when I was reading the book 'Make a Monkey interpreter in Go. ' I did it in Rust. I've learned a lot about parsing and recursion. It was also an opportunity to learn about Rust smart pointers.
+                    </div>
+                    <ul class="skills-list">
+                    
+                            <li>Rust</li>
+                    
+                            <li>parsing</li>
+                    
+                    </ul>
+                </div>
+            </div>
+        </div>
+    
+        <div class="project-box">
+            <h2 class="project-title">Marc-record-ex</h2>
+            <a href="https://github.com/demarque/marc-record-ex" class="github-link" target="_blank">
+                <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+            </a>
+
+            <div class="project-info">
+                <img src="images/marc21.jpg" alt="Project 1" class="project-img">
+                <div class="project-text">
+                    <div class="project-description">
+                        I made this project for my work at Demarque. It binds a Marc record library written in Rust with an Elixir package. When I used this project in the parser, I had to optimize memory usage to avoid upgrading our pod. I use streaming techniques and find a way to make it work between the Rust bindings and Elixir code.
+                    </div>
+                    <ul class="skills-list">
+                    
+                            <li>Rust</li>
+                    
+                            <li>Rustler</li>
+                    
+                            <li>Elixir</li>
+                    
+                    </ul>
+                </div>
+            </div>
+        </div>
+    
+        <div class="project-box">
+            <h2 class="project-title">Ray tracer</h2>
+            <a href="https://github.com/PelletierM/miniRT" class="github-link" target="_blank">
+                <img src="./images/github.svg" alt="GitHub" class="github-icon" />
+            </a>
+
+            <div class="project-info">
+                <img src="images/spheres.png" alt="Project 1" class="project-img">
+                <div class="project-text">
+                    <div class="project-description">
+                        This 42 project is all about Ray Tracing. I worked mainly on implementing different figures: sphere, plane, cylinder, and triangle. We optimized rendering by implementing a sample accumulator. We also took advantage of multithreading to render rays in batches.
+                    </div>
+                    <ul class="skills-list">
+                    
+                            <li>language C</li>
+                    
+                            <li>multithreading</li>
+                    
+                            <li>Ray Tracing</li>
+                    
+                    </ul>
+                </div>
             </div>
         </div>
     
@@ -214,13 +230,8 @@ function getBlogContent() {
     <h1>Blog</h1>
     
         <div class="article-box">
-            <a href="articles/5"> <h3>Hello, World!</h3></a>
-            <span class="date">Saturday, 19 04 2025 18:40:28 GMT</span>
-        </div>
-    
-        <div class="article-box">
-            <a href="articles/6"> <h3>Writing a WebSocket echo server in Rust: the handshake</h3></a>
-            <span class="date">Saturday, 19 04 2025 18:03:17 GMT</span>
+            <a href="articles/1"> <h3>Writing a WebSocket echo server in Rust: the handshake</h3></a>
+            <span class="article-date">2025 April 21</span>
         </div>
     
 </section>

@@ -14,7 +14,7 @@ export async function loadHomePage() {
         setPreviewButton();
     }
     setStopPreviewButton();
-    setPublishButton(edit);
+    setPublishButton();
 }
 
 async function isPreviewRunning() {

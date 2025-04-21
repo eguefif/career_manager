@@ -14,7 +14,7 @@ pub fn route_api(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
     let action_route = get_action_route(&request.uri)?;
     match action_route {
-        "homepage" => homepage::routes::route(request),
+        "profile" => homepage::routes::route(request),
         "portfolio" => portfolio::routes::route(request),
         "blog" => article::routes::route(request),
         _ => None,

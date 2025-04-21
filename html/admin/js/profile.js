@@ -1,39 +1,51 @@
 import { navigate } from '../bundle.js';
 
 export async function loadProfilePage(edit = false, editBody = {}) {
-    const response = await fetch("/api/homepage/profile");
+    const response = await fetch("/api/profile/profile");
     const data = await response.json();
-    document.getElementById("content").innerHTML = getHomePageLayout();
+    document.getElementById("content").innerHTML = getProfilePageLayout(edit);
     if (edit) {
-        populateEditHomePage(data, editBody);
+        populateEditProfilePage(data, editBody);
     } else {
-        await populateHomePageContent(data);
+        await populateProfilePageContent(data);
     }
-    setProfileButton(edit);
+    setEditButton(edit);
 }
 
-function getHomePageLayout() {
+function getProfilePageLayout(edit) {
+    let button = "";
+    if (!edit) {
+        button = getEditButton();
+    }
+
+
     return `
-    <section id="homepage">
-        <div id="homePageButtons">
-            <button id="editProfileButton" type="submit" href="" class="button switchable">Edit Profile</button>
+    <section id="profile">
+        ${button}
+        <div id="ProfilePageContent">
         </div>
-        <div id="homePageContent">
     </section>
     `;
 }
 
-async function populateHomePageContent(data) {
-    document.getElementById("homePageContent").innerHTML = getHomePageContent();
+function getEditButton() {
+    return `<div id="ProfilePageButtons">
+            <button id="editProfileButton" type="submit" href="" class="button">Edit Profile</button>
+        </div>
+        `;
+}
+
+async function populateProfilePageContent(data) {
+    document.getElementById("ProfilePageContent").innerHTML = getProfilePageContent();
     document.getElementById("profilePicture").src = `./images/${data["picture"]}`;
     document.getElementById("displayName").innerHTML = data["display_name"];
     document.getElementById("profileDescription").innerHTML = data["description"];
 }
 
-function getHomePageContent() {
+function getProfilePageContent() {
     return `
-    <div class="homepage-content-container">
-        <img id="profilePicture" src="" alt="Your Picture" class="profile-picture"/>
+    <div class="profile-container">
+        <img id="profilePicture" src="" alt="Your Picture" class="profile-img"/>
         <div class="text">
             <h1>I am <span id="displayName"></span></h1>
             <p id="profileDescription"></p>
@@ -43,8 +55,8 @@ function getHomePageContent() {
     `;
 }
 
-function populateEditHomePage(data, editBody = {}) {
-    document.getElementById("homePageContent").innerHTML = getEditProfileContent();
+function populateEditProfilePage(data, editBody = {}) {
+    document.getElementById("ProfilePageContent").innerHTML = getEditProfileContent();
     if (editBody["displayName"]) {
         document.getElementById("displayName").value = editBody["display_name"];
         document.getElementById("displayName").style.border = "2px solid red";
@@ -99,28 +111,8 @@ function setEditButton(edit) {
             .addEventListener("click", async (e) => {
                 e.target.removeAttribute('disabled');
                 e.preventDefault();
-                loadHomePage(true);
+                loadProfilePage(true);
             });
-    } else {
-        document
-            .getElementById("editProfileButton")
-            .setAttribute('disabled', '');
-    }
-}
-
-function setProfileButton(edit) {
-    if (edit) {
-        document
-            .getElementById("seeProfileButton")
-            .addEventListener("click", async (e) => {
-                e.target.removeAttribute('disabled');
-                e.preventDefault();
-                loadHomePage(false);
-            });
-    } else {
-        document
-            .getElementById("seeProfileButton")
-            .setAttribute('disabled', '');
     }
 }
 
@@ -130,7 +122,7 @@ function setSubmitButton(data) {
         .addEventListener("click", async (e) => {
             e.preventDefault();
             const body = makeFormBody(data);
-            const response = await fetch("/api/homepage/edit", {
+            const response = await fetch("/api/profile/edit", {
                 method: "POST",
                 body: body
             });
@@ -139,9 +131,9 @@ function setSubmitButton(data) {
             } else {
                 const body = await response.json();
                 if (body["success"] === true) {
-                    loadHomePage(false, body);
+                    loadProfilePage(false, body);
                 } else {
-                    loadHomePage(true, body);
+                    loadProfilePage(true, body);
                 }
             }
         });

@@ -26,7 +26,7 @@ impl Project {
         let results = if let Some(id) = id {
             engine.execute(&format!("SELECT * FROM project WHERE id = {}", id))
         } else {
-            engine.execute("SELECT * FROM project")
+            engine.execute("SELECT * FROM project ORDER BY id DESC")
         };
         for result in results {
             let name = if let SqlType::Text(value) = result.get("name").unwrap() {

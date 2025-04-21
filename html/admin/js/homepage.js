@@ -4,11 +4,13 @@ export async function loadHomePage() {
     document.getElementById("content").innerHTML = getHomePageLayout();
     if (await isPreviewRunning()) {
         document.getElementById("stopPreviewButton").disabled = false;
+        document.getElementById("stopPreviewButton").active = true;
         document.getElementById("previewButton").style.display = 'none';
         document.getElementById("seePreviewButton").style.display = 'block';
         setSeePreviewButton();
     } else {
         document.getElementById("stopPreviewButton").disabled = true;
+        document.getElementById("stopPreviewButton").active = false;
         document.getElementById("previewButton").style.display = 'block';
         document.getElementById("seePreviewButton").style.display = 'none';
         setPreviewButton();

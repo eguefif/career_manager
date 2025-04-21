@@ -2,3 +2,4 @@
 /html/website/dist/
 
 /html/admin/node_modules
+.env

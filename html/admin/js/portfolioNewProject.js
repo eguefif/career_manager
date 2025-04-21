@@ -3,7 +3,7 @@ import { navigate } from '../bundle.js';
 export function loadNewProject() {
     document
         .getElementById("content")
-    .innerHTML = getNewProjectContent();
+        .innerHTML = getNewProjectContent();
     setAddButton();
 }
 
@@ -50,10 +50,9 @@ export function getProjectForm(title, submitButton, data) {
         <input type="text" id="skills" name="skills" class="form-input" placeholder="Enter skills" value="${skills}" required>
       </div>
 
-
       <!-- Submit Button -->
       <div class="form-group button-group">
-        <button id="formSubmit" type="submit" class="form-button">${submitButton}</button>
+        <button id="formSubmit" type="submit" class="button">${submitButton}</button>
       </div>
     </form>
     `;

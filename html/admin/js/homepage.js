@@ -34,7 +34,7 @@ async function isPreviewRunning() {
 function getHomePageLayout() {
     return `
     <section id="homepage">
-        <div id="homePageButtons">
+        <div class="home-page-buttons">
             <button id="previewButton" type="submit" href="" class="button">Start Preview</button>
             <button id="seePreviewButton" type="submit" href="http://127.0.0.1:8000" target="_blank" class="button">See Preview</button>
             <button id="stopPreviewButton" type="submit" href="" class="button">Stop Preview</button>
@@ -44,80 +44,11 @@ function getHomePageLayout() {
     `;
 }
 
-async function populateHomePageContent(data) {
-    document.getElementById("homePageContent").innerHTML = getHomePageContent();
-    document.getElementById("profilePicture").src = `./images/${data["picture"]}`;
-    document.getElementById("displayName").innerHTML = data["display_name"];
-    document.getElementById("profileDescription").innerHTML = data["description"];
-}
-
-function getHomePageContent() {
-    return `
-    <div class="homepage-content-container">
-        <img id="profilePicture" src="" alt="Your Picture" class="profile-picture"/>
-        <div class="text">
-            <h1>I am <span id="displayName"></span></h1>
-            <p id="profileDescription"></p>
-            </div>
-        </div>
-    </div>
-    `;
-}
-
-function populateEditHomePage(data, editBody = {}) {
-    document.getElementById("homePageContent").innerHTML = getEditProfileContent();
-    if (editBody["displayName"]) {
-        document.getElementById("displayName").value = editBody["display_name"];
-        document.getElementById("displayName").style.border = "2px solid red";
-    } else {
-        document.getElementById("displayName").value = data["display_name"];
-    }
-
-    if (editBody["description"]) {
-        document.getElementById("profileDescription").value = editBody["description"];
-        document.getElementById("profileDescription").style.border = "2px solid red";
-    } else {
-        document.getElementById("profileDescription").value = data["description"];
-    }
-    setSubmitButton(data);
-}
-
-function getEditProfileContent() {
-    return `
-    <form id="profileForm" action="/submit" method="POST" enctype="multipart/form-data" class="form-container">
-      <h1 class="form-heading">Update Profile</h1>
-
-      <!-- Display Name -->
-      <div class="form-group">
-        <label for="displayName" class="form-label">Display Name:</label>
-        <input type="text" id="displayName" name="displayName" class="form-input" placeholder="Enter your display name" required>
-      </div>
-
-      <!-- Profile Picture -->
-      <div class="form-group">
-        <label for="profilePicture" class="form-label">Profile Picture:</label>
-        <input type="file" id="profilePicture" name="profilePicture" class="form-file" accept="image/*" required>
-      </div>
-
-      <!-- Description -->
-      <div class="form-group">
-        <label for="profileDescription" class="form-label">Profile Description:</label>
-        <textarea id="profileDescription" name="profileDescription" class="form-textarea" placeholder="Tell us about yourself" rows="4" required></textarea>
-      </div>
-
-      <!-- Submit Button -->
-      <div class="form-group button-group">
-        <button id="formSubmit" type="submit" class="form-button">Update Profile</button>
-      </div>
-    </form>
-    `;
-}
-
 function setPreviewButton() {
     document.getElementById("previewButton")
         .addEventListener("click", async (e) => {
             e.preventDefault();
-            const response = await fetch("/api/homepage/preview", {
+            const response = await fetch("/api/admin/preview", {
                 method: "GET",
             });
             const body = await response.json();
@@ -142,7 +73,7 @@ function setStopPreviewButton() {
     document.getElementById("stopPreviewButton")
         .addEventListener("click", async (e) => {
             e.preventDefault();
-            const response = await fetch("/api/homepage/stop", {
+            const response = await fetch("/api/admin/stop", {
                 method: "GET",
             });
             const body = await response.json();
@@ -156,27 +87,12 @@ function setStopPreviewButton() {
         });
 }
 
-function setEditButton(edit) {
-    if (!edit) {
-        document.getElementById("editProfileButton")
-            .addEventListener("click", async (e) => {
-                e.target.removeAttribute('disabled');
-                e.preventDefault();
-                loadHomePage(true);
-            });
-    } else {
-        document
-            .getElementById("editProfileButton")
-            .setAttribute('disabled', '');
-    }
-}
-
 function setPublishButton() {
     document
         .getElementById("publishButton")
         .addEventListener("click", async (e) => {
             e.preventDefault();
-            const response = await fetch("/api/homepage/publish");
+            const response = await fetch("/api/admin/publish");
             if (response.status >= 400) {
                 navigate("/error");
             }

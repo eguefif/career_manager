@@ -1,14 +1,11 @@
 use webserv_rs::{request::Request, response::Response};
 
-use super::controllers::{edit_profile, preview, profile, publish, stop_preview};
+use super::controllers::{edit_profile, profile};
 
 pub fn route(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
     let action = get_controller_action(&request.uri)?;
     match action {
-        "publish" => publish(),
-        "preview" => preview(),
-        "stop" => stop_preview(),
         "profile" => profile(),
         "edit" => edit_profile(request.body),
         _ => None,

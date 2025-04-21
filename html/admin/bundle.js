@@ -2,6 +2,7 @@ import { loadHomePage } from "./js/homepage.js";
 import { loadPortfolioPage } from "./js/portfolio.js";
 import { loadErrorPage } from "./js/errorpage.js";
 import { loadBlog } from "./js/blog.js";
+import { loadProfilePage } from "./js/profile.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("popstate", handleRoute);
@@ -25,6 +26,7 @@ function initRouter() {
 export function navigate(route) {
     const routes = [
         { title: "Home", path: "/" },
+        { title: "Profile", path: "/profile" },
         { title: "Portfolio index", path: "/portfolio/index" },
         { title: "Portfolio new", path: "/portfolio/new" },
         { title: "Portfolio list", path: "/portfolio/edit" },
@@ -84,6 +86,9 @@ async function handleRoute() {
             break;
         case "error":
             loadErrorPage();
+            break;
+        case "profile":
+            loadProfilePage();
             break;
         default:
             await loadHomePage();

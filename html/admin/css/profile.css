@@ -1,0 +1,25 @@
+.profile-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 900px;
+    align-items: center;
+    justify-content: flex-start;
+    margin-inline: auto;
+    margin-top: 25px;
+}
+
+.profile-img {
+    width: 200px; 
+    height: auto; 
+    margin-inline: auto;
+    border-radius: 999px; 
+}
+
+.profile-text {
+    max-width: 500px;
+    margin-inline:auto;
+    padding-left: 20px; 
+    justify-content: left;
+    text-align: justify;
+}

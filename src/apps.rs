@@ -1,3 +1,4 @@
+pub mod admin;
 pub mod article;
-pub mod homepage;
 pub mod portfolio;
+pub mod profile;

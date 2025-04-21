@@ -18,10 +18,10 @@ function getPortfolioContent(data) {
     return `
 <h1>My Portfolio</h1>
 <section id="portfolio">
-<div>
-<div id="addProjectButton" class="button">Add project</div>
-</div>
-${projects}
+    <div>
+        <div id="addProjectButton" class="button">Add project</div>
+    </div>
+    ${projects}
 </section>
     `;
 }

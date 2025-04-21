@@ -1,45 +1,24 @@
 import { navigate } from '../bundle.js';
 
-export async function loadHomePage() {
+export async function loadProfilePage(edit = false, editBody = {}) {
+    const response = await fetch("/api/homepage/profile");
+    const data = await response.json();
     document.getElementById("content").innerHTML = getHomePageLayout();
-    if (await isPreviewRunning()) {
-        document.getElementById("stopPreviewButton").disabled = false;
-        document.getElementById("previewButton").style.display = 'none';
-        document.getElementById("seePreviewButton").style.display = 'block';
-        setSeePreviewButton();
+    if (edit) {
+        populateEditHomePage(data, editBody);
     } else {
-        document.getElementById("stopPreviewButton").disabled = true;
-        document.getElementById("previewButton").style.display = 'block';
-        document.getElementById("seePreviewButton").style.display = 'none';
-        setPreviewButton();
+        await populateHomePageContent(data);
     }
-    setStopPreviewButton();
-    setPublishButton(edit);
-}
-
-async function isPreviewRunning() {
-    try {
-        const response = await fetch("http://127.0.0.1:8000", { mode: "no-cors" });
-        if (response.status >= 400) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    catch (_) {
-        return false;
-    }
+    setProfileButton(edit);
 }
 
 function getHomePageLayout() {
     return `
     <section id="homepage">
         <div id="homePageButtons">
-            <button id="previewButton" type="submit" href="" class="button">Start Preview</button>
-            <button id="seePreviewButton" type="submit" href="http://127.0.0.1:8000" target="_blank" class="button">See Preview</button>
-            <button id="stopPreviewButton" type="submit" href="" class="button">Stop Preview</button>
-            <button id="publishButton" type="submit" href="" class="button switchable">Publish</button>
+            <button id="editProfileButton" type="submit" href="" class="button switchable">Edit Profile</button>
         </div>
+        <div id="homePageContent">
     </section>
     `;
 }
@@ -113,48 +92,6 @@ function getEditProfileContent() {
     `;
 }
 
-function setPreviewButton() {
-    document.getElementById("previewButton")
-        .addEventListener("click", async (e) => {
-            e.preventDefault();
-            const response = await fetch("/api/homepage/preview", {
-                method: "GET",
-            });
-            const body = await response.json();
-            if (body["success"] == true) {
-                alert("Success");
-                navigate("/");
-            } else {
-                alert("failure");
-            }
-        });
-}
-
-function setSeePreviewButton() {
-    document.getElementById("seePreviewButton")
-        .addEventListener("click", async (e) => {
-            e.preventDefault();
-            window.open("http://127.0.0.1:8000", "_blank");
-        });
-}
-
-function setStopPreviewButton() {
-    document.getElementById("stopPreviewButton")
-        .addEventListener("click", async (e) => {
-            e.preventDefault();
-            const response = await fetch("/api/homepage/stop", {
-                method: "GET",
-            });
-            const body = await response.json();
-            if (body["success"] == true) {
-                alert("Success");
-                navigate("/");
-            } else {
-                alert("failure");
-                navigate("/error");
-            }
-        });
-}
 
 function setEditButton(edit) {
     if (!edit) {
@@ -171,24 +108,56 @@ function setEditButton(edit) {
     }
 }
 
-function setPublishButton() {
+function setProfileButton(edit) {
+    if (edit) {
+        document
+            .getElementById("seeProfileButton")
+            .addEventListener("click", async (e) => {
+                e.target.removeAttribute('disabled');
+                e.preventDefault();
+                loadHomePage(false);
+            });
+    } else {
+        document
+            .getElementById("seeProfileButton")
+            .setAttribute('disabled', '');
+    }
+}
+
+function setSubmitButton(data) {
     document
-        .getElementById("publishButton")
+        .getElementById("formSubmit")
         .addEventListener("click", async (e) => {
             e.preventDefault();
-            const response = await fetch("/api/homepage/publish");
+            const body = makeFormBody(data);
+            const response = await fetch("/api/homepage/edit", {
+                method: "POST",
+                body: body
+            });
             if (response.status >= 400) {
                 navigate("/error");
-            }
-            else {
-                const data = await response.json();
-                if (data.success == true) {
-                    alert("The website was successfully pushed on GitHub");
-                    navigate("/");
+            } else {
+                const body = await response.json();
+                if (body["success"] === true) {
+                    loadHomePage(false, body);
                 } else {
-                    alert("Failed to push on GitHub");
-                    navigate("/error");
+                    loadHomePage(true, body);
                 }
             }
         });
+}
+
+function makeFormBody(data) {
+    const displayName = document.getElementById("displayName").value;
+    const description = document.getElementById("profileDescription").value;
+    let picture = document.getElementById("profilePicture").value;
+    if (!picture) {
+        picture = data["picture"];
+    }
+    return JSON.stringify({
+        display_name: displayName,
+        description: description,
+        picture: picture,
+        id: data["id"]
+    });
 }

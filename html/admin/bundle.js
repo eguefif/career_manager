@@ -2,6 +2,7 @@ import { loadHomePage } from "./js/homepage.js";
 import { loadPortfolioPage } from "./js/portfolio.js";
 import { loadErrorPage } from "./js/errorpage.js";
 import { loadBlog } from "./js/blog.js";
+import { loadProfilePage } from "./js/profile.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("popstate", handleRoute);
@@ -47,6 +48,7 @@ async function handleRoute() {
     const route = window.location.pathname;
     const firstLevelRoute = extractRoute(route, 0);
     const secondLevelRoute = extractRoute(route, 1);
+    console.log(route);
     switch (firstLevelRoute) {
         case "portfolio":
             switch (secondLevelRoute) {
@@ -85,6 +87,8 @@ async function handleRoute() {
         case "error":
             loadErrorPage();
             break;
+        case "profile":
+            loadProfilePage();
         default:
             await loadHomePage();
             break;

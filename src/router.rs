@@ -68,7 +68,7 @@ mod tests {
 
     #[test]
     fn it_should_get_api_ressource() {
-        let uri = "/api/homepage/build";
+        let uri = "/api/profile/build";
         let result = get_ressource_type_uri(uri);
 
         assert_eq!(result, ResourceType::Api)

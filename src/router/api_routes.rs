@@ -1,4 +1,4 @@
-use crate::apps::{article, homepage, portfolio};
+use crate::apps::{admin, article, portfolio, profile};
 use webserv_rs::{request::Request, response::Response};
 
 /// To add an api ressource, you need first to create an app in src/apps
@@ -14,7 +14,8 @@ pub fn route_api(request: Request) -> Option<Response> {
     let _body = String::from_utf8_lossy(&request.body);
     let action_route = get_action_route(&request.uri)?;
     match action_route {
-        "profile" => homepage::routes::route(request),
+        "admin" => admin::routes::route(request),
+        "profile" => profile::routes::route(request),
         "portfolio" => portfolio::routes::route(request),
         "blog" => article::routes::route(request),
         _ => None,

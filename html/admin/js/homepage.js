@@ -15,6 +15,8 @@ export async function loadHomePage() {
     }
     setStopPreviewButton();
     setPublishButton();
+    setWriteArticleButton();
+    setAddProjectButton();
 }
 
 async function isPreviewRunning() {
@@ -39,6 +41,8 @@ function getHomePageLayout() {
             <button id="seePreviewButton" type="submit" href="http://127.0.0.1:8000" target="_blank" class="button">See Preview</button>
             <button id="stopPreviewButton" type="submit" href="" class="button">Stop Preview</button>
             <button id="publishButton" type="submit" href="" class="button switchable">Publish</button>
+            <button id="writeArticleButton" type="submit" href="" class="button">Write Article</button>
+            <button id="addProjectButton" type="submit" href="" class="button">Add a Project</button>
         </div>
     </section>
     `;
@@ -106,5 +110,23 @@ function setPublishButton() {
                     navigate("/error");
                 }
             }
+        });
+}
+
+function setWriteArticleButton() {
+    document
+        .getElementById("writeArticleButton")
+        .addEventListener("click", (e) => {
+            e.preventDefault();
+            navigate("/blog/new");
+        });
+}
+
+function setAddProjectButton() {
+    document
+        .getElementById("addProjectButton")
+        .addEventListener("click", (e) => {
+            e.preventDefault();
+            navigate("/portfolio/new");
         });
 }

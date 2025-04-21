@@ -1,11 +1,12 @@
 .home-page-buttons {
     position: fixed;
     display: flex;
+    flex-wrap: wrapped;
     gap: 20px;
-    width: 350px;
+    width: 250px;
     height: 100px;
-    max-width: 350px;
-    max-height: 100px;
+    max-width: 250px;
+    max-height: 500px;
     inset: 0px;
     padding: 15px;
     margin: auto;

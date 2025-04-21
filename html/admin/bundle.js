@@ -26,6 +26,7 @@ function initRouter() {
 export function navigate(route) {
     const routes = [
         { title: "Home", path: "/" },
+        { title: "Profile", path: "/profile" },
         { title: "Portfolio index", path: "/portfolio/index" },
         { title: "Portfolio new", path: "/portfolio/new" },
         { title: "Portfolio list", path: "/portfolio/edit" },
@@ -48,7 +49,6 @@ async function handleRoute() {
     const route = window.location.pathname;
     const firstLevelRoute = extractRoute(route, 0);
     const secondLevelRoute = extractRoute(route, 1);
-    console.log(route);
     switch (firstLevelRoute) {
         case "portfolio":
             switch (secondLevelRoute) {
@@ -89,6 +89,7 @@ async function handleRoute() {
             break;
         case "profile":
             loadProfilePage();
+            break;
         default:
             await loadHomePage();
             break;

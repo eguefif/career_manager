@@ -40,9 +40,9 @@ function getHomePageLayout() {
             <button id="previewButton" type="submit" href="" class="button">Start Preview</button>
             <button id="seePreviewButton" type="submit" href="http://127.0.0.1:8000" target="_blank" class="button">See Preview</button>
             <button id="stopPreviewButton" type="submit" href="" class="button">Stop Preview</button>
-            <button id="publishButton" type="submit" href="" class="button switchable">Publish</button>
             <button id="writeArticleButton" type="submit" href="" class="button">Write Article</button>
             <button id="addProjectButton" type="submit" href="" class="button">Add a Project</button>
+            <button id="publishButton" type="submit" href="" class="button switchable">Publish</button>
         </div>
     </section>
     `;

@@ -1,13 +1,20 @@
+#homepage{
+}
 .home-page-buttons {
     position: fixed;
     display: flex;
-    flex-wrap: wrapped;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
     gap: 20px;
-    width: 250px;
-    height: 100px;
-    max-width: 250px;
-    max-height: 500px;
+    width: 500px;
+    height: 500px;
     inset: 0px;
     padding: 15px;
     margin: auto;
+}
+
+#homepage .button {
+    width: 200px;
+    height: 100px;
 }

@@ -27,6 +27,5 @@ For learning purposes, I made my own tools. They are basic and not production-gr
 * [webserver library](https://github.com/eguefif/webserv-rs) that can handle chunked, compressed packets.
 * [md to html converter](https://github.com/eguefif/md_to_html)
 * template language and a renderer based on context
-* a basic ORM that can insert, update, or retrieve data.
-* a basic routing system (I've learn so much about how browser build their urls!)
-
+* a basic ORM that can insert, update, delete, or retrieve data.
+* a basic routing system (I've learn so much about how browsers build URLs!)

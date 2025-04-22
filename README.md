@@ -7,7 +7,7 @@ It can:
 * add and edit the portfolio's projects
 * Add and edit blog articles.
 
-[image](./manager.gif)
+![image](./manager.gif)
 
 # How it works
 It is inspired by [local first](https://localfirstweb.dev/) kind of design. I want to simplify what I push online and keep all the logic locally.

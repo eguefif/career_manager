@@ -13,7 +13,7 @@ It can:
 It is inspired by [local first](https://localfirstweb.dev/) kind of design. I want to simplify what I push online and keep all the logic locally.
 The program is composed by:
 * a local backend server written in Rust
-* a Single Page Application for the interface
+* a Single Page Application for the local admin page
 
 I don't have many dependencies. I designed the [HTTP server library](https://github.com/eguefif/webserv-rs/) and the [MD converter](https://github.com/eguefif/md_to_html/).
 I use serde, chrono, and sqlite3 in the application. The server crate uses chrono and flate (for compression).
